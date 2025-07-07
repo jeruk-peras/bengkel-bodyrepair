@@ -6,6 +6,8 @@ use App\Controllers\BaseController;
 use App\Libraries\ResponseJSONCollection;
 use App\Libraries\SideServerDatatables;
 use App\Models\CabangModel;
+use App\Models\JenisModel;
+use App\Models\SatuanModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class ServerSideController extends BaseController
@@ -125,6 +127,28 @@ class ServerSideController extends BaseController
         $modelCabang = new CabangModel();
         try {
             $data = $modelCabang->select('id_cabang, nama_cabang')->findAll();
+            return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function fetchSatuan()
+    {
+        $modelSatuan = new SatuanModel();
+        try {
+            $data = $modelSatuan->select('id_satuan, nama_satuan')->findAll();
+            return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function fetchJenis()
+    {
+        $modelJenis = new JenisModel();
+        try {
+            $data = $modelJenis->select('id_jenis, nama_jenis')->findAll();
             return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
         } catch (\Throwable $e) {
             return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
@@ -374,6 +398,76 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['diskon'] . '%'),
                 htmlspecialchars('Rp ' . number_format($row['harga_panel'])),
                 htmlspecialchars('Rp ' . number_format($row['upah_mekanik'])),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
+
+    public function material()
+    {
+        $table = 'material';
+        $primaryKey = 'id_material';
+        $columns = ['material.id_material', 'material.nama_material', 'material.merek', 'material.harga', 'material.stok', 'cabang.nama_cabang', 'satuan.nama_satuan', 'jenis.nama_jenis'];
+        $orderableColumns = ['material.nama_material', 'material.harga'];
+        $searchableColumns = ['material.nama_material', 'material.harga'];
+        $defaultOrder = ['material.nama_material', 'ASC'];
+
+        $join = [
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = material.cabang_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'jenis',
+                'on' => 'jenis.id_jenis = material.jenis_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'satuan',
+                'on' => 'satuan.id_satuan = material.satuan_id',
+                'type' => ''
+            ],
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'material.cabang_id IN' => session('selected_akses')
+            ];
+        } else {
+            $where = [
+                'material.cabang_id IN' => [session('selected_akses')]
+            ];
+        }
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_material']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['nama_jenis']),
+                htmlspecialchars($row['nama_material']),
+                htmlspecialchars($row['merek']),
+                htmlspecialchars('Rp ' . number_format($row['harga'])),
+                htmlspecialchars($row['stok']),
+                htmlspecialchars($row['nama_satuan']),
             ];
         }
 

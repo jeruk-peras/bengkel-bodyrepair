@@ -19,6 +19,8 @@ $routes->get('/dashboard', 'DashboardController::index');
 // routes side server
 $routes->group('/api', function ($routes) {
     $routes->get('cabang', 'ServerSideController::fetchCabang');
+    $routes->get('satuan', 'ServerSideController::fetchSatuan');
+    $routes->get('jenis', 'ServerSideController::fetchJenis');
 });
 
 
@@ -32,6 +34,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('satuan', 'ServerSideController::satuan');
     $routes->post('status', 'ServerSideController::status');
     $routes->post('biaya', 'ServerSideController::biaya');
+    $routes->post('material', 'ServerSideController::material');
 });
 
 
@@ -124,9 +127,20 @@ $routes->group('/status', function ($routes) {
 $routes->group('/biaya', function ($routes) {
     $routes->get('/', 'SettingBiayaController::index');
     $routes->post('/', 'SettingBiayaController::save', ['filter' => ['selectCabang']]);
-
+    
     $routes->get('(:num)/edit', 'SettingBiayaController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'SettingBiayaController::update/$1', ['filter' => ['selectCabang']]);
     
     $routes->post('(:num)/delete', 'SettingBiayaController::delete/$1');
+});
+
+// routes Material 
+$routes->group('/material', function ($routes) {
+    $routes->get('/', 'MaterialController::index');
+    $routes->post('/', 'MaterialController::save', ['filter' => ['selectCabang']]);
+
+    $routes->get('(:num)/edit', 'MaterialController::edit/$1', ['filter' => ['selectCabang']]);
+    $routes->post('(:num)/edit', 'MaterialController::update/$1', ['filter' => ['selectCabang']]);
+    
+    $routes->post('(:num)/delete', 'MaterialController::delete/$1');
 });

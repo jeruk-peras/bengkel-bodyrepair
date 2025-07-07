@@ -58,6 +58,17 @@
 
         <li>
             <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bx bx-box"></i></div>
+                <div class="menu-title">Material</div>
+            </a>
+            <ul class="mm-collapse">
+                <li><a href="<?= base_url('material'); ?>"><i class='bx bx-radio-circle'></i>Data Material</a></li>
+                <li><a href="<?= base_url('jenis'); ?>"><i class='bx bx-radio-circle'></i>Material Masuk</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-category"></i></div>
                 <div class="menu-title">Referensi</div>
             </a>
