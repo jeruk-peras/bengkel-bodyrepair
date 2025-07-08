@@ -7,6 +7,7 @@ use App\Libraries\ResponseJSONCollection;
 use App\Libraries\SideServerDatatables;
 use App\Models\CabangModel;
 use App\Models\JenisModel;
+use App\Models\MaterialMasukDetailModel;
 use App\Models\SatuanModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -479,5 +480,140 @@ class ServerSideController extends BaseController
         ];
 
         return $this->response->setJSON($outputdata);
+    }
+
+    public function materialMasuk()
+    {
+        $table = 'material_masuk';
+        $primaryKey = 'id_material_masuk';
+        $columns = ['material_masuk.id_material_masuk', 'material_masuk.tanggal', 'material_masuk.no_delivery', 'material_masuk.suplier', 'material_masuk.total_harga', 'material_masuk.catatan', 'material_masuk.status', 'cabang.nama_cabang'];
+        $orderableColumns = ['material_masuk.tanggal', 'material_masuk.no_delivery', 'material_masuk.suplier', 'material_masuk.total_harga', 'material_masuk.catatan'];
+        $searchableColumns = ['material_masuk.tanggal', 'material_masuk.no_delivery', 'material_masuk.suplier', 'material_masuk.total_harga', 'material_masuk.catatan'];
+        $defaultOrder = ['material_masuk.tanggal', 'ASC'];
+
+        $join = [
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = material_masuk.cabang_id',
+                'type' => ''
+            ],
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'material_masuk.cabang_id IN' => session('selected_akses')
+            ];
+        } else {
+            $where = [
+                'material_masuk.cabang_id IN' => [session('selected_akses')]
+            ];
+        }
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_material_masuk']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars(date_format(date_create($row['tanggal']), "d M Y H:i")),
+                htmlspecialchars($row['no_delivery']),
+                htmlspecialchars($row['suplier']),
+                htmlspecialchars($row['id_material_masuk']),
+                htmlspecialchars(number_format($row['total_harga'])),
+                htmlspecialchars($row['catatan']),
+                htmlspecialchars($row['status']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
+
+    public function itemMaterialMasuk()
+    {
+        $id = $this->request->getPost('id_material_masuk');
+
+        $modelMaterialMasukDetail = new MaterialMasukDetailModel();
+        $data = $modelMaterialMasukDetail
+            ->select('material_masuk_detail.id_material_masuk_detail, material_masuk_detail.harga_masuk, material_masuk_detail.stok_masuk, material.nama_material, material.stok, satuan.nama_satuan, jenis.nama_jenis')
+            ->join('material', 'material.id_material = material_masuk_detail.material_id', 'left')
+            ->join('jenis', 'jenis.id_jenis = material.jenis_id', 'left')
+            ->join('satuan', 'satuan.id_satuan = material.satuan_id', 'left')
+            ->where('material_masuk_detail.material_masuk_id', $id)
+            ->orderBy('material_masuk_detail.id_material_masuk_detail', 'DESC')
+            ->findAll();
+
+        $html = '';
+        $no = 1;
+        foreach ($data as $row) {
+            $html .=
+                '<tr>
+                    <input type="hidden" name="id_material_masuk_detail[]" value="' . $row['id_material_masuk_detail'] . '">
+                    <td>' . $no++ . '</td>
+                    <td>' . $row['nama_jenis'] . '</td>
+                    <td>' . $row['nama_material'] . '</td>
+                    <td class="text-center">' . $row['stok'] . '</td>
+                    <td>' . $row['nama_satuan'] . '</td>
+                    <td>
+                        <div class="input-group" style="width: 160px;"> 
+                            <span class="input-group-text" id="basic-addon1">Rp</span>
+                            <input type="number" name="harga_masuk[' . $row['id_material_masuk_detail'] . ']" value="' . $row['harga_masuk'] . '" class="form-control input-change" aria-describedby="basic-addon1">
+                        </div>
+                    </td>
+                    <td><input type="number" name="stok_masuk[' . $row['id_material_masuk_detail'] . ']" class="form-control input-change" value="' . $row['stok_masuk'] . '" style="width: 110px;"></td>
+                    <td>
+                        <button  class="me-2 btn btn-sm btn-danger btn-delete-item" data-id="' . $row['id_material_masuk_detail'] . '"><i class="bx bx-trash me-0"></i></button>
+                    </td>   
+                </tr>';
+        }
+
+        return ResponseJSONCollection::success($html, 'Fecth item berhasil', ResponseInterface::HTTP_OK);
+    }
+
+    public function itemsMaterialMasuk()
+    {
+        $id = $this->request->getPost('id_material_masuk');
+
+        $modelMaterialMasukDetail = new MaterialMasukDetailModel();
+        $data = $modelMaterialMasukDetail
+            ->select('material_masuk_detail.*, material.nama_material, material.harga, material.stok, satuan.nama_satuan, jenis.nama_jenis')
+            ->join('material', 'material.id_material = material_masuk_detail.material_id', 'left')
+            ->join('jenis', 'jenis.id_jenis = material.jenis_id', 'left')
+            ->join('satuan', 'satuan.id_satuan = material.satuan_id', 'left')
+            ->where('material_masuk_detail.material_masuk_id', $id)
+            ->findAll();
+
+        $html = '';
+        $no = 1;
+        foreach ($data as $row) {
+            $html .=
+                '<tr>
+                    <td>' . $no++ . '</td>
+                    <td>' . $row['nama_jenis'] . '</td>
+                    <td>' . $row['nama_material'] . '</td>
+                    <td>' . $row['nama_satuan'] . '</td>
+                    <td>Rp ' . number_format($row['harga'] - $row['harga_masuk']) . '</td>
+                    <td>Rp ' . number_format($row['harga']) . '</td>
+                    <td>' . $row['stok'] - $row['stok_masuk'] . '</td>
+                    <td>' . $row['stok_masuk'] . '</td>
+                    <td>' . $row['stok'] . '</td>
+                </tr>';
+        }
+
+        return ResponseJSONCollection::success($html, 'Fecth item berhasil', ResponseInterface::HTTP_OK);
     }
 }

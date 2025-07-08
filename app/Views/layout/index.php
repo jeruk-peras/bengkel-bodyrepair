@@ -91,6 +91,10 @@
 				},
 			});
 		});
+
+		$(function () {
+			$('[data-bs-toggle="tooltip"]').tooltip();
+		})
 	</script>
 	
 	<script src="<?= base_url(); ?>assets/plugins/sweetalert2/dist/sweetalert2.min.js"></script>

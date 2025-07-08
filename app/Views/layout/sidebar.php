@@ -63,7 +63,7 @@
             </a>
             <ul class="mm-collapse">
                 <li><a href="<?= base_url('material'); ?>"><i class='bx bx-radio-circle'></i>Data Material</a></li>
-                <li><a href="<?= base_url('jenis'); ?>"><i class='bx bx-radio-circle'></i>Material Masuk</a></li>
+                <li><a href="<?= base_url('material-masuk'); ?>"><i class='bx bx-radio-circle'></i>Material Masuk</a></li>
             </ul>
         </li>
 

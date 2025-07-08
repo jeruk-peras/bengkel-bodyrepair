@@ -35,6 +35,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('status', 'ServerSideController::status');
     $routes->post('biaya', 'ServerSideController::biaya');
     $routes->post('material', 'ServerSideController::material');
+    $routes->post('material-masuk', 'ServerSideController::materialMasuk');
 });
 
 
@@ -143,4 +144,27 @@ $routes->group('/material', function ($routes) {
     $routes->post('(:num)/edit', 'MaterialController::update/$1', ['filter' => ['selectCabang']]);
     
     $routes->post('(:num)/delete', 'MaterialController::delete/$1');
+});
+
+// routes Material Masuk
+$routes->group('/material-masuk', function ($routes) {
+    $routes->get('/', 'MaterialMasukController::index');
+
+    $routes->get('add', 'MaterialMasukController::add');
+    $routes->post('add', 'MaterialMasukController::save', ['filter' => ['selectCabang']]);
+
+    $routes->get('item/(:num)', 'MaterialMasukController::item/$1');
+    $routes->post('(:num)/add-item', 'MaterialMasukController::itemAdd/$1');
+    $routes->post('del-item', 'MaterialMasukController::itemDelete');
+    $routes->post('item-temp-save', 'MaterialMasukController::itemTempSave');
+    $routes->post('sync-data-item', 'MaterialMasukController::itemSyncData');
+    $routes->post('cancel-sync-data-item', 'MaterialMasukController::itemCancelSyncData');
+    $routes->post('render-item', 'ServerSideController::itemMaterialMasuk');
+    $routes->post('items', 'ServerSideController::itemsMaterialMasuk');
+
+
+    $routes->get('(:num)/edit', 'MaterialMasukController::edit/$1', ['filter' => ['selectCabang']]);
+    $routes->post('(:num)/edit', 'MaterialMasukController::update/$1', ['filter' => ['selectCabang']]);
+    
+    $routes->post('(:num)/delete', 'MaterialMasukController::delete/$1');
 });
