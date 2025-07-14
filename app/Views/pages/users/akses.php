@@ -41,7 +41,7 @@
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td>
-                                    <a href="/users/akses-add/<?= $u['id_user']; ?>" class="btn btn-sm btn-primary"><i class="bx bx-pencil me-0"></i></a>
+                                    <a href="/users/akses-add/<?= $u['id_user']; ?>" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Edit Data"><i class="bx bx-pencil me-0"></i></a>
                                 </td>
                                 <td><?= $u['nama_lengkap']; ?><br /><small><?= $u['username']; ?> - <?= $u['role']; ?></small></td>
                                 <td><?= userAkases($u['id_user']); ?></td>

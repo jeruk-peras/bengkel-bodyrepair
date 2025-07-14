@@ -15,9 +15,9 @@
             targets: 1, // Target kolom
             render: function(data, type, row, meta) {
                 var btn =
-                    '<a href="/admin/' + data + '/edit" class="me-2 btn btn-sm btn-primary btn-edit"><i class="bx bx-pencil me-0"></i></a>' +
-                    '<a href="/admin/' + data + '/edit-password" class="me-2 btn btn-sm btn-primary btn-pass"><i class="bx bx-lock me-0"></i></a>' +
-                    '<a href="/admin/' + data + '/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-id-produk="' + data + '"><i class="bx bx-trash me-0"></i></a>'
+                    '<a href="/admin/' + data + '/edit" class="me-2 btn btn-sm btn-primary btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Edit Data"><i class="bx bx-pencil me-0"></i></a>' +
+                    '<a href="/admin/' + data + '/edit-password" class="me-2 btn btn-sm btn-primary btn-pass" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ubah Password"><i class="bx bx-lock me-0"></i></a>' +
+                    '<a href="/admin/' + data + '/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-id-produk="' + data + '" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
                 return btn;
             }
         }, ],
@@ -27,6 +27,13 @@
         language: {
             url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/id.json',
         },
+    });
+
+    table.on('draw.dt', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=\"tooltip\"]'));
+        tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
     });
 
     // fetch data cabang

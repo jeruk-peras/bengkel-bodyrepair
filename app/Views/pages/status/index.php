@@ -45,8 +45,8 @@
                                     <tr>
                                         <td><?= $i++; ?></td>
                                         <td>
-                                            <a href="/status/<?= $row['id_status']; ?>/edit" class="me-2 btn btn-sm btn-primary btn-edit"><i class="bx bx-pencil me-0"></i></a>
-                                            <a href="/status/<?= $row['id_status']; ?>/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-id-produk="<?= $row['id_status']; ?>"><i class="bx bx-trash me-0"></i></a>
+                                            <a href="/status/<?= $row['id_status']; ?>/edit" class="me-2 btn btn-sm btn-primary btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Edit Data"><i class="bx bx-pencil me-0"></i></a>
+                                            <a href="/status/<?= $row['id_status']; ?>/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-id-produk="<?= $row['id_status']; ?>" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>
                                         </td>
                                         <td><?= $row['nama_cabang']; ?></td>
                                         <td><?= $row['nama_status']; ?></td>
