@@ -87,7 +87,7 @@ class StatusController extends BaseController
         $data = $this->request->getPost(); // mengambil post data
 
         $data = [
-            'nama_status'     => $data['nama_status'],
+            'nama_status'     => strtoupper($data['nama_status']),
             'harga_status'   => $data['harga_status'],
             'cabang_id'     => $this->id_cabang
         ];
@@ -126,7 +126,7 @@ class StatusController extends BaseController
         $data = $this->request->getPost(); // mengambil post data
 
         $data = [
-            'nama_status'     => $data['nama_status'],
+            'nama_status'     => strtoupper($data['nama_status']),
             'harga_status'   => $data['harga_status'],
             'cabang_id'     => $this->id_cabang
         ];
