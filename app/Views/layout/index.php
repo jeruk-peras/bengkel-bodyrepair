@@ -13,7 +13,7 @@
 	<link href="<?= base_url(); ?>assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
 	<link href="<?= base_url(); ?>assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
 	<link href="<?= base_url(); ?>assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-	<link type="text/css" href="<?= base_url(); ?>assets/plugins/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet"/>	
+	<link type="text/css" href="<?= base_url(); ?>assets/plugins/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
 
 	<!-- loader-->
 	<link href="<?= base_url(); ?>assets/css/pace.min.css" rel="stylesheet" />
@@ -33,7 +33,7 @@
 	<script src="<?= base_url(); ?>assets/js/jquery.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
-	
+
 	<title><?= $title; ?> - Sistem Manajemen Bengkel Bodyrepair</title>
 
 	<style>
@@ -41,8 +41,28 @@
 			content: '* ';
 			color: red;
 		}
+
+		div.tox-editor-header>div.tox-promotion {
+			display: none;
+		}
 	</style>
-	
+
+	<script src="<?= base_url(); ?>assets/plugins/tinymce/tinymce.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			// tyni mce
+			tinymce.init({
+				selector: 'textarea#detail_pengerjaan',
+				plugins: 'searchreplace autolink  directionality code visualchars fullscreen link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount charmap accordion ',
+				menubar: 'file edit view  format tools table ',
+				toolbar: "fontsize | align numlist bullist | bold italic underline lineheight | link table forecolor backcolor removeformat | code fullscreen preview",
+				line_height_formats: '0 1 1.2 1.4 1.6 2',
+				height: 300,
+				content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+			});
+		});
+	</script>
+
 </head>
 
 <body>
@@ -80,7 +100,7 @@
 	<!-- <script src="<?= base_url(); ?>assets/plugins/raphael/raphael-min.js"></script> -->
 	<script src="<?= base_url(); ?>assets/plugins/morris/js/morris.js"></script>
 	<!-- <script src="<?= base_url(); ?>assets/js/index2.js"></script> -->
-	
+
 	<!--app JS-->
 	<script src="<?= base_url(); ?>assets/js/app.js"></script>
 	<script>
@@ -92,11 +112,11 @@
 			});
 		});
 
-		$(function () {
+		$(function() {
 			$('[data-bs-toggle="tooltip"]').tooltip();
 		})
 	</script>
-	
+
 	<script src="<?= base_url(); ?>assets/plugins/sweetalert2/dist/sweetalert2.min.js"></script>
 
 	<script>
@@ -127,7 +147,6 @@
 				});
 			}
 		}
-
 	</script>
 </body>
 

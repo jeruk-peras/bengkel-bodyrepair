@@ -21,6 +21,12 @@ $routes->group('/api', function ($routes) {
     $routes->get('cabang', 'ServerSideController::fetchCabang');
     $routes->get('satuan', 'ServerSideController::fetchSatuan');
     $routes->get('jenis', 'ServerSideController::fetchJenis');
+    $routes->get('material', 'ServerSideController::fetchMaterial', ['filter' => ['selectCabang']]);
+    $routes->get('mekanik', 'ServerSideController::fetchMekanik', ['filter' => ['selectCabang']]);
+    $routes->get('(:num)/status-unit', 'ServerSideController::fetchStatusUnit/$1');
+    $routes->get('(:num)/progres-status-unit', 'ServerSideController::fetchProsesStatusUnit/$1');
+    $routes->get('(:num)/material-unit', 'ServerSideController::fetchMaterialUnit/$1');
+    $routes->get('(:num)/riwayat-unit', 'ServerSideController::fetchRiwayatUnit/$1');
 });
 
 
@@ -36,6 +42,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('biaya', 'ServerSideController::biaya');
     $routes->post('material', 'ServerSideController::material');
     $routes->post('material-masuk', 'ServerSideController::materialMasuk');
+    $routes->post('unit', 'ServerSideController::unit');
 });
 
 
@@ -167,4 +174,22 @@ $routes->group('/material-masuk', function ($routes) {
     $routes->post('(:num)/edit', 'MaterialMasukController::update/$1', ['filter' => ['selectCabang']]);
     
     $routes->post('(:num)/delete', 'MaterialMasukController::delete/$1');
+});
+
+// route unit
+$routes->group('/unit', function ($routes) {
+    $routes->get('/', 'UnitController::index');
+    $routes->get('add', 'UnitController::add');
+    $routes->post('add', 'UnitController::save', ['filter' => ['selectCabang']]);
+
+    $routes->get('(:num)/edit', 'UnitController::edit/$1', ['filter' => ['selectCabang']]);
+    $routes->post('(:num)/edit', 'UnitController::update/$1', ['filter' => ['selectCabang']]);
+    
+    $routes->post('(:num)/update-status', 'UnitController::updateStatus/$1');
+    $routes->post('(:num)/status-update', 'UnitController::statusUpdate/$1');
+    $routes->get('(:num)/detail', 'UnitController::detail/$1');
+    
+    $routes->post('(:num)/add-material', 'UnitController::saveMaterial/$1', ['filter' => ['selectCabang']]);
+    
+    $routes->post('(:num)/delete', 'UnitController::delete/$1');
 });

@@ -8,7 +8,12 @@ use App\Libraries\SideServerDatatables;
 use App\Models\CabangModel;
 use App\Models\JenisModel;
 use App\Models\MaterialMasukDetailModel;
+use App\Models\MaterialModel;
+use App\Models\MekanikModel;
 use App\Models\SatuanModel;
+use App\Models\UnitMaterialModel;
+use App\Models\UnitStatusHargaModel;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class ServerSideController extends BaseController
@@ -615,5 +620,365 @@ class ServerSideController extends BaseController
         }
 
         return ResponseJSONCollection::success($html, 'Fecth item berhasil', ResponseInterface::HTTP_OK);
+    }
+
+    public function unit()
+    {
+        $table = 'unit';
+        $primaryKey = 'id_unit';
+        $columns = ['unit.id_unit', 'unit.nama_customer', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'unit.asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'cabang.nama_cabang'];
+        $orderableColumns = ['unit.nama_customer', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'unit.asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
+        $searchableColumns = ['unit.nama_customer', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'unit.asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
+        $defaultOrder = ['unit.diskon', 'ASC'];
+
+        $join = [
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = unit.cabang_id',
+                'type' => ''
+            ]
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'unit.cabang_id IN' => session('selected_akses')
+            ];
+        } else {
+            $where = [
+                'unit.cabang_id IN' => [session('selected_akses')]
+            ];
+        }
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_unit']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['nomor_spp']),
+                htmlspecialchars($row['nama_customer']),
+                htmlspecialchars($row['nomor_polisi']),
+                htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
+                htmlspecialchars($row['asuransi']),
+                htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
+                htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
+                ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
+
+    public function fetchMaterial(int $id_cabang = 0)
+    {
+        // set id cabang
+        $id_cabang = session('selected_akses');
+
+        $modelMaterial = new MaterialModel();
+        try {
+            $data = $modelMaterial
+                ->select('material.id_material, material.nama_material, material.merek, material.harga, material.stok, material.cabang_id, satuan.nama_satuan')
+                ->join('satuan', 'satuan.id_satuan = material.satuan_id', 'LEFT')
+                ->where('material.cabang_id', $id_cabang)->findAll();
+
+            return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function fetchMekanik(int $id_cabang = 0)
+    {
+        // set id cabang
+        $id_cabang = session('selected_akses');
+
+        $model = new MekanikModel();
+        try {
+            $data = $model->where('cabang_id', $id_cabang)->findAll();
+
+            return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function fetchStatusUnit(int $id)
+    {
+        $modelStatus = new UnitStatusHargaModel();
+        try {
+            $sub = $this->db->table('unit_status')
+                ->select('unit_status_harga_id')
+                ->where('unit_id', $id)
+                ->get()
+                ->getResultArray();
+
+            // hendla jika sub kosong maka kembalikan ''
+            $sub = (empty($sub) ? [0 => ['unit_status_harga_id' => 0]] : $sub);
+
+            $ids = array_column($sub, 'unit_status_harga_id');
+
+            $data = $modelStatus
+                ->select('id_unit_status_harga, nama_status')
+                ->where('unit_status_harga.unit_id', $id)
+                ->whereNotIn('unit_status_harga.id_unit_status_harga', $ids)
+                ->findAll();
+
+            return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function fetchProsesStatusUnit(int $id)
+    {
+        $modelStatus = new UnitStatusHargaModel();
+        try {
+            $data = $modelStatus->select('unit_status_harga.id_unit_status_harga, unit_status_harga.nama_status, unit_status.*')
+                ->join('unit_status', 'unit_status.unit_status_harga_id = unit_status_harga.id_unit_status_harga', 'LEFT')
+                ->where('unit_status_harga.unit_id', $id)
+                ->orderBy('unit_status_harga.id_unit_status_harga', 'ASC')
+                ->findAll();
+
+            $unit = $this->db->table('unit')->where('id_unit', $id)->get()->getRowArray();
+
+            $html =
+                '<div class="position-absolute top-50 start-0 w-100 translate-middle-y" style="height:2px; background:#e9ecef; z-index:0;"></div>
+                <div class="text-center position-relative" style="z-index:1; width:12%; min-width: 100px;">
+                    <div class="rounded-circle bg-success text-white mx-auto mb-1" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+                        <i class="bx bx-check" style="font-size:1.2rem;"></i>
+                    </div>
+                    <div class="fw-semibold">Unit Masuk</div>
+                    <div class="small text-secondary">' . date_format(date_create($unit['tanggal_masuk']), "d M Y") . '</div>
+                </div>';
+
+            $i = 0;
+            $j = 1;
+            foreach ($data as $row) {
+
+                $active = $data[$i + 1]['tanggal_update'] ?? '';
+                $active2 = $data[$i + 2]['tanggal_update'] ?? '';
+
+                if ($row['tanggal_update'] == '') {
+                    $html .=
+                        '<div class="text-center position-relative" style="z-index:1; width:12%; min-width: 100px;">
+                            <div class="rounded-circle bg-light text-secondary mx-auto mb-1 border" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+                                <span class="fw-bold">' . ($j + 1) . '</span>
+                            </div>
+                            <div class="fw-semibold">' . $row['nama_status'] . '</div>
+                            <div class="small text-secondary">Menunggu</div>
+                        </div>';
+                } elseif ($active == '' && $active2 == '' && $unit['status'] == 0) {
+                    $html .=
+                        '<div class="text-center position-relative" style="z-index:1; width:12%; min-width: 100px;">
+                            <div class="rounded-circle bg-primary text-white mx-auto mb-1" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+                                <i class="bx bx-loader-alt bx-spin" style="font-size:1.2rem;"></i>
+                            </div>
+                            <div class="fw-semibold">' . $row['nama_status'] . '</div>
+                            <div class="small text-secondary">Sedang Proses</div>
+                        </div>';
+                } else {
+                    $html .=
+                        '<div class="text-center position-relative" style="z-index:1; width:12%; min-width: 100px;">
+                            <div class="rounded-circle bg-success text-white mx-auto mb-1" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+                                <i class="bx bx-check" style="font-size:1.2rem;"></i>
+                            </div>
+                            <div class="fw-semibold">' . $row['nama_status'] . '</div>
+                            <div class="small text-secondary">' . date_format(date_create($row['tanggal_update']), "d M Y") . '</div>
+                        </div>';
+                }
+                $i++;
+                $j++;
+            }
+
+            if ($unit['status'] == 0) {
+                $html .=
+                    '<div class="text-center position-relative" style="z-index:1; width:12%; min-width: 100px;">
+                        <div class="rounded-circle bg-light text-secondary mx-auto mb-1 border" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+                            <span class="fw-bold">' . ($j + 1) . '</span>
+                        </div>
+                        <div class="fw-semibold">Selesai</div>
+                        <div class="small text-secondary">Menunggu</div>
+                    </div>';
+            } else {
+
+                $html .=
+                    '<div class="text-center position-relative" style="z-index:1; width:12%; min-width: 100px;">
+                        <div class="rounded-circle bg-success text-white mx-auto mb-1" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+                            <i class="bx bx-check" style="font-size:1.2rem;"></i>
+                        </div>
+                        <div class="fw-semibold">Selesai</div>
+                        <div class="small text-secondary">' . date_format(date_create($unit['updated_at']), "d M Y") . '</div>
+                    </div>';
+            }
+
+
+
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $data], 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function fetchMaterialUnit(int $id)
+    {
+        $model = new UnitMaterialModel();
+        try {
+            $data = $model
+                ->select('unit_material.*, material.nama_material, material.merek, material.harga, material.stok, satuan.nama_satuan, jenis.nama_jenis')
+                ->join('material', 'material.id_material = unit_material.material_id', 'left')
+                ->join('satuan', 'satuan.id_satuan = material.satuan_id', 'left')
+                ->join('jenis', 'jenis.id_jenis = material.jenis_id', 'left')
+                ->where('unit_material.unit_id', $id)
+                ->findAll();
+
+            $html = '';
+
+            $i = 1;
+            foreach ($data as $row) {
+                $html .=
+                    '<tr>
+                        <td>' . $i++ . '</td>
+                        <td>' . $row['nama_jenis'] . '</td>
+                        <td>' . $row['nama_material'] . '</td>
+                        <td>' . $row['jumlah'] . '</td>
+                        <td>' . $row['nama_satuan'] . '</td>
+                        <td>' . $row['detail_jumlah'] . '</td>
+                        <td>' . $row['tanggal'] . '</td>
+                    </tr>';
+            }
+
+
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $data], 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    // fetch riwayat unit
+    public function fetchRiwayatUnit(int $id)
+    {
+        try {
+            // buat query ke table unit_material lalu join ke mekanik
+            $material = $this->db->table('unit_material')
+                ->select('unit_material.*, material.nama_material, material.stok, mekanik.nama_mekanik')
+                ->join('material', 'material.id_material = unit_material.material_id', 'left')
+                ->join('mekanik', 'mekanik.id_mekanik = unit_material.mekanik_id', 'left')
+                ->where('unit_material.unit_id', $id)
+                ->get()->getResultArray();
+
+            $status = $this->db->table('unit_status')
+                ->select('unit_status.*, unit_status_harga.nama_status, unit_status_harga.harga_status')
+                ->join('unit_status_harga', 'unit_status_harga.id_unit_status_harga = unit_status.unit_status_harga_id', 'left')
+                ->where('unit_status.unit_id', $id)
+                ->orderBy('unit_status.id_unit_status', 'DESC')
+                ->get()->getResultArray();
+
+
+            $data = [];
+            foreach ($material as $row) {
+                $data[] = [
+                    'tanggal' => date_format(date_create($row['tanggal']), "d M Y H:i"),
+                    'nama_riwayat' => 'Material ditambahkan',
+                    'catatan' => $row['nama_material'] . ' (jml ' . $row['jumlah'] . ')',
+                    'by' => $row['nama_mekanik'],
+                    'data' => 'material',
+                ];
+            }
+
+            foreach ($status as $row) {
+                $data[] = [
+                    'tanggal' => date_format(date_create($row['tanggal_update']), "d M Y H:i"),
+                    'nama_riwayat' => 'Status diubah ke ' . $row['nama_status'],
+                    'catatan' => $row['catatan'],
+                    'by' => $row['by_user'],
+                    'data' => 'status',
+                    'gambar' => '/assets/images/status/' . $row['gambar_status'],
+                ];
+            }
+
+            // data unit
+            $unit = $this->db->table('unit')->where('id_unit', $id)->get()->getRowArray();
+            $data[] = [
+                'tanggal' => $unit['tanggal_masuk'],
+                'nama_riwayat' => 'Unit masuk',
+                'catatan' => $unit['nomor_polisi'] . ' (' . $unit['model_unit'] . ')',
+                'by' => $unit['nama_customer'],
+                'data' => 'material',
+            ];
+
+            // jika unit sudah selesai, tambahkan riwayat selesai
+            if ($unit['status'] == 1) {
+                $data[] = [
+                    'tanggal' => $unit['updated_at'],
+                    'nama_riwayat' => 'Unit selesai',
+                    'catatan' => 'Unit telah selesai',
+                    'by' => $unit['nama_customer'],
+                    'data' => 'material',
+                ];
+            }
+
+            // urutkan data berdasarkan tanggal
+            usort($data, function ($a, $b) {
+                return strtotime($b['tanggal']) - strtotime($a['tanggal']);
+            });
+
+            $html = '';
+
+            foreach ($data as $row) {
+
+                // ubah format tanggal
+                $row['tanggal'] = date_format(date_create($row['tanggal']), "d M Y H:i");
+                if ($row['data'] == 'material') {
+                    $html .=
+                        '<div class="list-group-item d-flex align-items-start bg-light mb-2 rounded border-0">
+                            <div class="me-3 mt-1">
+                                <button class="btn btn-inverse-info">
+                                    <i class="bx bx-file me-0" style="font-size:1.3rem;"></i>
+                                </button>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">' . $row['nama_riwayat'] . '</div>
+                                <div class="small">' . $row['catatan'] . '</div>
+                                <div class="small text-secondary">Oleh: ' . $row['by'] . '</div>
+                            </div>
+                            <div class="text-end small text-secondary ms-2">' . $row['tanggal'] . '</div>
+                        </div>';
+                } elseif ($row['data'] == 'status') {
+                    $html .=
+                        '<div class="list-group-item d-flex align-items-start bg-light mb-2 rounded border-0">
+                            <div class="me-3 mt-1">
+                                <button class="btn btn-inverse-success" id="btn-gambar-unit" data-gambar="' . $row['gambar'] . '" data-riwayat="' . $row['nama_riwayat'] . '">
+                                    <i class="bx bx-refresh me-0" style="font-size:1.3rem;"></i>
+                                </button>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">' . $row['nama_riwayat'] . '</div>
+                                <div class="small">' . $row['catatan'] . '</div>
+                                <div class="small text-secondary">Oleh: ' . $row['by'] . '</div>
+                            </div>
+                            <div class="text-end small text-secondary ms-2">' . $row['tanggal'] . '</div>
+                        </div>';
+                }
+            }
+
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $data], 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (DatabaseException $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
+        }
     }
 }

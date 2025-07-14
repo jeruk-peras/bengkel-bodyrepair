@@ -46,6 +46,20 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
+        
+        <li class="btn btn-primary">
+            <a href="<?= base_url('unit/add'); ?>" >
+                <div class="parent-icon text-light"><i class='bx bx-plus'></i></div>
+                <div class="menu-title text-light">Unit Baru</div>
+            </a>
+        </li>
+
+        <li>
+            <a href="<?= base_url('unit'); ?>">
+                <div class="parent-icon"><i class='bx bx-customize'></i></div>
+                <div class="menu-title">Data Unit</div>
+            </a>
+        </li>
 
         <?php if (session('user_type') == 'admin'):  ?>
             <li>

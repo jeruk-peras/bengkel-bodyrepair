@@ -84,8 +84,9 @@ function dataUser($data)
 function biayaCabang($id_cabang, $data)
 {
     $db = \Config\Database::connect();
+    $id_cabang = is_array($id_cabang) ? 0 : $id_cabang;
     $builder = $db->table('setting_biaya');
     $builder->where('cabang_id', $id_cabang);
     $result = $builder->get()->getRowArray();
-    return $result[$data];
+    return $result[$data] ?? '';
 }
