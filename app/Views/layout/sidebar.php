@@ -4,7 +4,7 @@
             <img src="<?= base_url(); ?>assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
         </div>
         <div>
-            <h4 class="logo-text">Rocker</h4>
+            <h4 class="logo-text">BENGKEL MANAJEMEN</h4>
         </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-menu'></i>
         </div>
@@ -102,7 +102,7 @@
             </a>
             <ul class="mm-collapse">
                 <li><a href="<?= base_url('laporan/closing-mekanik'); ?>"><i class='bx bx-radio-circle'></i>Closing Mekanik</a></li>
-                <li><a href="<?= base_url('laporan/closingan'); ?>"><i class='bx bx-radio-circle'></i>Closingan</a></li>
+                <li><a href=""><i class='bx bx-radio-circle'></i>Closingan</a></li>
             </ul>
         </li>
 
