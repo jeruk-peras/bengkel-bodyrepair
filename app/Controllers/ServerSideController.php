@@ -736,6 +736,7 @@ class ServerSideController extends BaseController
                 ->select('id_unit_status_harga, nama_status')
                 ->where('unit_status_harga.unit_id', $id)
                 ->whereNotIn('unit_status_harga.id_unit_status_harga', $ids)
+                ->orderBy('unit_status_harga.urutan', 'ASC')
                 ->findAll();
 
             return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);

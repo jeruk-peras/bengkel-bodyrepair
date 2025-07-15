@@ -21,6 +21,10 @@ class UnitStatusHarga extends Migration
             'harga_status' => [
                 'type'       => 'DOUBLE',
             ],
+            'urutan' => [
+                'type'           => 'INT',
+                'constraint'     => 11,
+            ],
             'unit_id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
