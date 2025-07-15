@@ -200,6 +200,8 @@ $routes->group('/unit', function ($routes) {
 $routes->group('/laporan', function ($routes) {
     $routes->get('closing-mekanik', 'LaporanController::closingMekanik');
     $routes->get('closingan', 'LaporanController::index');
+
+    $routes->post('closing-mekanik', 'LaporanController::sideDataClosingMekanik');
     
     // testing
     $routes->get('status/(:num)', 'LaporanController::status/$1');
