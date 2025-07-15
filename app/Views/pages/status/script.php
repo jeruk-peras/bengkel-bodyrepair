@@ -1,4 +1,53 @@
+<script src="<?= base_url(); ?>assets/plugins/jquery-ui-1.14.1/jquery-ui.js"></script>
 <script>
+    // sortable
+    $(document).ready(function() {
+        $('#table-sortable tbody').sortable({
+            update: function(event, ui) {
+                $(this).children().each(function(index) {
+                    if ($(this).attr('data-order') !== (index + 1)) {
+                        $(this).attr('data-order', (index + 1)).addClass('new-posision')
+                    }
+                })
+
+                savePosisiHendler();
+            }
+        });
+
+        function savePosisiHendler() {
+            var baseURL = $('#table-sortable').attr('data-postURL')
+            var posisi = []
+            $('.new-posision').each(function() {
+                posisi.push({
+                    id: $(this).attr('data-primary'),
+                    order: $(this).attr('data-order')
+                })
+                $(this).removeClass('new-posision')
+            })
+
+            $.ajax({
+                url: baseURL,
+                method: 'POST',
+                data: {
+                    <?= csrf_token() ?>: '<?= csrf_hash() ?>',
+                    posisi
+                },
+                success: function(respons) {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 500)
+                },
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    alertMesage(response.status, response.message);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 800)
+                }
+            })
+        }
+    })
+
     // katika modal di tutup
     $('#form-data-modal').on('hidden.bs.modal', function() {
         $('#form-data').attr('action', '');

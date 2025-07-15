@@ -26,7 +26,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table align-middle mb-0" id="datatabl" style="width: 100%;">
+                <table class="table align-middle mb-0" id="table-sortable" style="width: 100%;" data-postURL="<?= base_url('status/order-data'); ?>">
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
@@ -42,7 +42,7 @@
                             $total = 0; ?>
                             <?php foreach ($data as $row):  ?>
                                 <?php if ($c['id_cabang'] == $row['id_cabang']):  ?>
-                                    <tr>
+                                    <tr data-primary="<?= $row['id_status']; ?>" data-order="<?= $row['urutan']; ?>">
                                         <td><?= $i++; ?></td>
                                         <td>
                                             <a href="/status/<?= $row['id_status']; ?>/edit" class="me-2 btn btn-sm btn-primary btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Edit Data"><i class="bx bx-pencil me-0"></i></a>

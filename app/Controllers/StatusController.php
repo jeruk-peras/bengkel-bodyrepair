@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Libraries\ResponseJSONCollection;
 use App\Models\StatusModel;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class StatusController extends BaseController
@@ -24,7 +25,7 @@ class StatusController extends BaseController
         ];
 
         $table = 'status';
-        $columns = ['status.id_status', 'status.nama_status', 'status.harga_status', 'cabang.nama_cabang', 'cabang.id_cabang'];
+        $columns = ['status.id_status', 'status.nama_status', 'status.harga_status', 'status.urutan', 'cabang.nama_cabang', 'cabang.id_cabang'];
 
         $join = [
             [
@@ -57,6 +58,7 @@ class StatusController extends BaseController
                 }
             }
         }
+        $builder->orderBy('status.urutan', 'ASC');
 
         $query = $builder->get();
         $data['data'] = $query->getResultArray();
@@ -152,6 +154,27 @@ class StatusController extends BaseController
             return ResponseJSONCollection::success([], 'Data berhasil dihapus.', ResponseInterface::HTTP_OK);
         } catch (\Throwable $e) {
             return ResponseJSONCollection::error([], 'Data tidak bisa dihapus.', ResponseInterface::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function orderData()
+    {
+        $arrayPostOrder = $this->request->getPost('posisi');
+        $order = [];
+        foreach ($arrayPostOrder as $key => $row) {
+            if (count($row) < 2) continue;
+
+            $order[] = [
+                'id_status' => $row['id'],
+                'urutan' => $row['order']
+            ];
+        }
+
+        try {
+            $this->modelStatus->updateBatch($order, 'id_status');
+            return ResponseJSONCollection::success([], 'Success', ResponseInterface::HTTP_OK);
+        } catch (DatabaseException $e) {
+            return ResponseJSONCollection::error([$e], 'Error', ResponseInterface::HTTP_OK);
         }
     }
 }

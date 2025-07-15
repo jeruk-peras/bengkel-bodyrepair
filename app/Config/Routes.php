@@ -125,6 +125,8 @@ $routes->group('/status', function ($routes) {
     $routes->get('/', 'StatusController::index');
     $routes->post('/', 'StatusController::save', ['filter' => ['selectCabang']]);
 
+    $routes->post('order-data', 'StatusController::orderData', ['filter' => ['selectCabang']]);
+
     $routes->get('(:num)/edit', 'StatusController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'StatusController::update/$1', ['filter' => ['selectCabang']]);
     
