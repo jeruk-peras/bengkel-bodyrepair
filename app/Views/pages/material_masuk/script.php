@@ -31,7 +31,7 @@
             // hide kolom
             targets: 9,
             visible: false,
-        }],
+        }, <?= (session('role') == 'admin_cabang') ? "{ targets: 2, visible: false }," : ""?>],
         pageLength: 25,
         lengthMenu: [25, 50, 100, 'All'],
         scrollX: true,

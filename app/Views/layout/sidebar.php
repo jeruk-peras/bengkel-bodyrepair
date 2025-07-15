@@ -87,11 +87,13 @@
                 <div class="menu-title">Referensi</div>
             </a>
             <ul class="mm-collapse">
-                <li><a href="<?= base_url('satuan'); ?>"><i class='bx bx-radio-circle'></i>Satuan</a></li>
-                <li><a href="<?= base_url('jenis'); ?>"><i class='bx bx-radio-circle'></i>Jenis</a></li>
-                <li><a href="<?= base_url('biaya'); ?>"><i class='bx bx-radio-circle'></i>Biaya</a></li>
+                <?php if (session('user_type') == 'admin'):  ?>
+                    <li><a href="<?= base_url('satuan'); ?>"><i class='bx bx-radio-circle'></i>Satuan</a></li>
+                    <li><a href="<?= base_url('jenis'); ?>"><i class='bx bx-radio-circle'></i>Jenis</a></li>
+                    <li><a href="<?= base_url('biaya'); ?>"><i class='bx bx-radio-circle'></i>Biaya</a></li>
+                    <li><a href="<?= base_url('status'); ?>"><i class='bx bx-radio-circle'></i>Status</a></li>
+                <?php endif;  ?>
                 <li><a href="<?= base_url('mekanik'); ?>"><i class='bx bx-radio-circle'></i>Mekanik</a></li>
-                <li><a href="<?= base_url('status'); ?>"><i class='bx bx-radio-circle'></i>Status</a></li>
             </ul>
         </li>
 
@@ -102,7 +104,7 @@
             </a>
             <ul class="mm-collapse">
                 <li><a href="<?= base_url('laporan/closing-mekanik'); ?>"><i class='bx bx-radio-circle'></i>Closing Mekanik</a></li>
-                <li><a href=""><i class='bx bx-radio-circle'></i>Closingan</a></li>
+                <li><a href="#"><i class='bx bx-radio-circle'></i>Closingan</a></li>
             </ul>
         </li>
 

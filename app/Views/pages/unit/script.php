@@ -12,15 +12,17 @@
             } // Kirim token CSRF
         },
         columnDefs: [{
-            targets: 1, // Target kolom
-            render: function(data, type, row, meta) {
-                var btn =
-                    '<a href="/unit/' + data + '/edit" class="me-2 btn btn-sm btn-primary btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Edit Data"><i class="bx bx-pencil me-0"></i></a>' +
-                    '<a href="/unit/' + data + '/detail" data-id="' + data + '" class="me-2 btn btn-sm btn-primary btn-detail" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Detail Data"><i class="bx bx-info-circle me-0"></i></a>' +
-                    '<a href="/unit/' + data + '/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
-                return btn;
-            }
-        }, ],
+                targets: 1, // Target kolom
+                render: function(data, type, row, meta) {
+                    var btn =
+                        '<a href="/unit/' + data + '/edit" class="me-2 btn btn-sm btn-primary btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Edit Data"><i class="bx bx-pencil me-0"></i></a>' +
+                        '<a href="/unit/' + data + '/detail" data-id="' + data + '" class="me-2 btn btn-sm btn-primary btn-detail" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Detail Data"><i class="bx bx-info-circle me-0"></i></a>' +
+                        '<a href="/unit/' + data + '/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
+                    return btn;
+                }
+            },
+            <?= (session('role') == 'admin_cabang') ? "{ targets: 2, visible: false }," : ""?>
+        ],
         pageLength: 25,
         lengthMenu: [25, 50, 100, 'All'],
         scrollX: true,
@@ -419,7 +421,7 @@
         });
     })
 
-     // hendle delete button
+    // hendle delete button
     table.on('click', 'tbody tr td a.btn-delete', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');
