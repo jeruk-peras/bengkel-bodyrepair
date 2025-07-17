@@ -124,7 +124,7 @@
                     <div class="col-3 col-md-1">
                         <label for="diskon" class="form-label">Diskon</label>
                         <div class="position-relative input-icon">
-                            <input type="text" inputmode="numeric" maxlength="3" name="diskon" class="form-control" value="<?= biayaCabang(session('selected_akses'), 'diskon'); ?>" style="padding-left: 0.75rem; padding-right: 1.90rem;" id="diskon">
+                            <input type="text" inputmode="numeric" maxlength="3" name="diskon" class="form-control" value="<?= biayaCabang(session('selected_akses'), 'diskon'); ?>" style="padding-left: 0.75rem; padding-right: 1.90rem;" id="diskon" readonly>
                             <span class="position-absolute top-50 translate-middle-y" style="right: 15px !important; left: unset;">%</span>
                         </div>
                         <div class="invalid-feedback" id="invalid_diskon"></div>
@@ -140,20 +140,20 @@
                     <div class="col-9 col-sm-8 col-md-4">
                         <label for="harga_panel" class="form-label">Harga Panel</label>
                         <div class="position-relative input-icon">
-                            <input type="text" inputmode="numeric" name="harga_panel" class="form-control" id="harga_panel" value="<?= biayaCabang(session('selected_akses'), 'harga_panel'); ?>" placeholder="Harga Panel">
+                            <input type="text" inputmode="numeric" name="harga_panel" class="form-control" id="harga_panel" value="<?= biayaCabang(session('selected_akses'), 'harga_panel'); ?>" readonly placeholder="Harga Panel">
                             <span class="position-absolute top-50 translate-middle-y">Rp </span>
                         </div>
                     </div>
                     <div class="col-3 col-sm-4 col-md-1">
                         <label for="jumlah_panel" class="form-label">Panel</label>
                         <input type="text" class="form-control" readonly id="jumlah_panel">
-                        <input type="hidden" name="jumlah_panel" readonly id="jumlah_panel_act">
+                        <input type="hidden" name="jumlah_panel" id="jumlah_panel_act">
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <label for="upah_mekanik" class="form-label">Upah Mekanik</label>
                         <div class="position-relative input-icon">
-                            <input type="text" inputmode="numeric" name="upah_mekanik" class="form-control" id="upah_mekanik" value="<?= biayaCabang(session('selected_akses'), 'upah_mekanik'); ?>" placeholder="Upah Mekanik">
+                            <input type="text" inputmode="numeric" name="upah_mekanik" class="form-control" id="upah_mekanik" value="<?= biayaCabang(session('selected_akses'), 'upah_mekanik'); ?>" placeholder="Upah Mekanik" readonly>
                             <span class="position-absolute top-50 translate-middle-y">Rp </span>
                         </div>
                     </div>

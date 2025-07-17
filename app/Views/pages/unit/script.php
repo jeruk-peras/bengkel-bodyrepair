@@ -21,7 +21,7 @@
                     return btn;
                 }
             },
-            <?= (session('role') == 'admin_cabang') ? "{ targets: 2, visible: false }," : ""?>
+            <?= (session('role') == 'admin_cabang') ? "{ targets: 2, visible: false }," : "" ?>
         ],
         pageLength: 25,
         lengthMenu: [25, 50, 100, 'All'],
@@ -96,6 +96,7 @@
                 $.each(response.data, function(key, value) {
                     $('#' + key).val(value);
                 });
+                $('#jumlah_panel').val(parseFloat(response.data.jumlah_panel).toFixed(2));
                 $('#jumlah_panel_act').val(response.data.jumlah_panel);
                 tinymce.get('detail_pengerjaan').setContent(response.data.detail_pengerjaan || '');
             },
@@ -126,13 +127,15 @@
                 $('#btn-selesai').attr('data-href', '/unit/' + id + '/status-update');
                 $('#form-add-material').attr('action', '/unit/' + id + '/add-material');
                 statusUnit(id);
-                materialUnit(id);
+                materialUnit(id); 
                 progresStatus(id);
                 riwayatUnit(id);
                 $.each(response.data, function(key, value) {
                     $('#detail_' + key).html(value);
                     if (key == 'status') $('#detail_status').html((value == 0 ? 'Sedang Proses' : 'Selesai'));
                 });
+                $('#detail_jumlah_panel').text(parseFloat(response.data.jumlah_panel).toFixed(2));
+
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
