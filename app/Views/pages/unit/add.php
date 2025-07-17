@@ -90,7 +90,7 @@
                 <div class="row g-3 mb-4">
                     <div class="col-12 col-sm-12 col-md-4">
                         <label for="nomor_spp" class="form-label required">Nomor SPP</label>
-                        <input type="text" name="nomor_spp" class="form-control" id="nomor_spp" value="<?= $nomor_spp; ?>" placeholder="No SPP" readonly>
+                        <input type="text" name="nomor_spp" class="form-control" id="nomor_spp" placeholder="No SPP">
                         <div class="invalid-feedback" id="invalid_nomor_spp"></div>
                     </div>
                     <div class="col-6 col-sm-6 col-md-4">
