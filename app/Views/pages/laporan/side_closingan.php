@@ -4,7 +4,7 @@
               <td colspan="4" style="text-align:center;font-weight:bold;font-size:20px;">
                   PT. NUR LISAN SAKTI<br>
                   PERHITUNGAN CLOSNG<br>
-                  Periode JUNI 2025
+                  Periode <?= strtoupper(date('F Y')); ?>
               </td>
           </tr>
           <tr>
