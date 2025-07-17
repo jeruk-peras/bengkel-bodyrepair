@@ -53,7 +53,7 @@ $routes->group('/cabang', function ($routes) {
 
     $routes->get('(:num)/edit', 'CabangController::edit/$1');
     $routes->post('(:num)/edit', 'CabangController::update/$1');
-    
+
     $routes->post('(:num)/delete', 'CabangController::delete/$1');
 });
 
@@ -64,7 +64,7 @@ $routes->group('/jenis', function ($routes) {
 
     $routes->get('(:num)/edit', 'JenisController::edit/$1');
     $routes->post('(:num)/edit', 'JenisController::update/$1');
-    
+
     $routes->post('(:num)/delete', 'JenisController::delete/$1');
 });
 
@@ -75,7 +75,7 @@ $routes->group('/satuan', function ($routes) {
 
     $routes->get('(:num)/edit', 'SatuanController::edit/$1');
     $routes->post('(:num)/edit', 'SatuanController::update/$1');
-    
+
     $routes->post('(:num)/delete', 'SatuanController::delete/$1');
 });
 
@@ -89,7 +89,7 @@ $routes->group('/users', function ($routes) {
     $routes->post('akses-add/(:num)', 'UsersController::akses_save/$1');
 
     $routes->post('akses/select', 'AccountController::selectAksess');
-    
+
     $routes->get('(:num)/edit', 'UsersController::edit/$1');
     $routes->post('(:num)/edit', 'UsersController::update/$1');
     $routes->post('(:num)/delete', 'UsersController::delete/$1');
@@ -116,7 +116,7 @@ $routes->group('/mekanik', function ($routes) {
 
     $routes->get('(:num)/edit', 'MekanikController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'MekanikController::update/$1', ['filter' => ['selectCabang']]);
-    
+
     $routes->post('(:num)/delete', 'MekanikController::delete/$1');
 });
 
@@ -129,7 +129,7 @@ $routes->group('/status', function ($routes) {
 
     $routes->get('(:num)/edit', 'StatusController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'StatusController::update/$1', ['filter' => ['selectCabang']]);
-    
+
     $routes->post('(:num)/delete', 'StatusController::delete/$1');
 });
 
@@ -137,10 +137,10 @@ $routes->group('/status', function ($routes) {
 $routes->group('/biaya', function ($routes) {
     $routes->get('/', 'SettingBiayaController::index');
     $routes->post('/', 'SettingBiayaController::save', ['filter' => ['selectCabang']]);
-    
+
     $routes->get('(:num)/edit', 'SettingBiayaController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'SettingBiayaController::update/$1', ['filter' => ['selectCabang']]);
-    
+
     $routes->post('(:num)/delete', 'SettingBiayaController::delete/$1');
 });
 
@@ -151,7 +151,7 @@ $routes->group('/material', function ($routes) {
 
     $routes->get('(:num)/edit', 'MaterialController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'MaterialController::update/$1', ['filter' => ['selectCabang']]);
-    
+
     $routes->post('(:num)/delete', 'MaterialController::delete/$1');
 });
 
@@ -174,7 +174,7 @@ $routes->group('/material-masuk', function ($routes) {
 
     $routes->get('(:num)/edit', 'MaterialMasukController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'MaterialMasukController::update/$1', ['filter' => ['selectCabang']]);
-    
+
     $routes->post('(:num)/delete', 'MaterialMasukController::delete/$1');
 });
 
@@ -186,23 +186,21 @@ $routes->group('/unit', function ($routes) {
 
     $routes->get('(:num)/edit', 'UnitController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'UnitController::update/$1', ['filter' => ['selectCabang']]);
-    
+
     $routes->post('(:num)/update-status', 'UnitController::updateStatus/$1');
     $routes->post('(:num)/status-update', 'UnitController::statusUpdate/$1');
     $routes->get('(:num)/detail', 'UnitController::detail/$1');
-    
+
     $routes->post('(:num)/add-material', 'UnitController::saveMaterial/$1', ['filter' => ['selectCabang']]);
-    
+
     $routes->post('(:num)/delete', 'UnitController::delete/$1');
 });
 
 // route laporan
 $routes->group('/laporan', function ($routes) {
     $routes->get('closing-mekanik', 'LaporanController::closingMekanik');
-    $routes->get('closingan', 'LaporanController::index');
+    $routes->get('closingan', 'LaporanController::closingan');
 
     $routes->post('closing-mekanik', 'LaporanController::sideDataClosingMekanik');
-    
-    // testing
-    $routes->get('status/(:num)', 'LaporanController::status/$1');
+    $routes->post('closingan', 'LaporanController::sideDataClosingan');
 });

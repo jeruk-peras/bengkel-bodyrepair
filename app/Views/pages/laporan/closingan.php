@@ -7,7 +7,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="<?= base_url('dashboard'); ?>"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active">Laporan</li>
-                    <li class="breadcrumb-item active" aria-current="page">Laporan Closing Mekanik</li>
+                    <li class="breadcrumb-item active" aria-current="page">Laporan Closingan</li>
                 </ol>
             </nav>
         </div>
@@ -17,16 +17,29 @@
     <div class="card radius-10">
         <div class="card-header border-0 bg-transparent">
             <div class="d-flex align-items-center table-responsive">
-                <div class="me-5">
-                    <h6 class="mb-0">Laporan Closing Mekanik</h6>
+                <div>
+                    <h6 class="mb-0 me-5">Laporan Closingan</h6>
                 </div>
                 <div class="ms-auto">
                     <form class="d-flex align-items-center" method="POST" action="" id="filter-form">
                         <?= csrf_field(); ?>
-                        <label for="tanggal_awal" class="me-2 mb-0">Tanggal&nbsp;Masuk:</label>
-                        <input type="date" id="tanggal_awal" name="tanggal_awal" class="form-control form-control-sm me-2" value="<?= esc($tanggal_awal ?? '') ?>">
-                        <span class="me-2">s/d</span>
-                        <input type="date" id="tanggal_akhir" name="tanggal_akhir" class="form-control form-control-sm me-2" value="<?= esc($tanggal_akhir ?? '') ?>">
+                        <label for="diskon" class="me-2 mb-0">Diskon&nbsp;:</label>
+                        <div class="position-relative input-icon">
+                            <input type="text" inputmode="numeric" name="diskon" class="form-control form-control-sm text-center" id="jumlah" required style="width: 60px; padding-left: unset; padding-right: 1rem;">
+                            <span class="position-absolute top-50 translate-middle-y satuan-material" style="right: 8px !important; left: unset;">%</span>
+                        </div>
+
+                        <label for="persen_sharing" class="ms-2 me-2 mb-0">Sharing&nbsp;:</label>
+                        <div class="position-relative input-icon">
+                            <input type="text" inputmode="numeric" name="sharing" class="form-control form-control-sm text-center" id="jumlah" required style="width: 60px; padding-left: unset; padding-right: 1rem;">
+                            <span class="position-absolute top-50 translate-middle-y satuan-material" style="right: 8px !important; left: unset;">%</span>
+                        </div>
+
+                        <label for="tanggal_awal" class="ms-2 me-2 mb-0">Tanggal&nbsp;:</label>
+                        <input type="date" id="tanggal_awal" name="tanggal_awal" class="form-control form-control-sm me-2">
+                        <span class="me-2">s/d</span>   
+                        <input type="date" id="tanggal_akhir" name="tanggal_akhir" class="form-control form-control-sm me-2">
+
                         <button type="submit" class="btn btn-sm btn-primary" id="btn-filter">Filter</button>
                     </form>
                 </div>
@@ -36,7 +49,7 @@
             <div class="table-responsive" id="data-closingan">
                 <div class="text-center my-5">
                     <img src="<?= base_url('assets/images/Search-rafiki.svg'); ?>" alt="Cari Data" style="max-width:350px;" class="mb-4">
-                    <h5>Silakan lakukan filter tanggal terlebih dahulu untuk melihat data closing mekanik.</h5>
+                    <h5>Silakan lakukan filter Periode terlebih dahulu untuk melihat data closingan.</h5>
                 </div>
             </div>
         </div>

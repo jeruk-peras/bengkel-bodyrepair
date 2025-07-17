@@ -325,7 +325,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-3" style="overflow-x: scroll;">
+                    <div class="mb-3" style="overflow-x: auto;">
                         <div class="mb-3 fw-semibold">Progress Pekerjaan</div>
                         <div class="d-flex align-items-center justify-content-between position-relative" style="min-height:90px;" id="progres-unit">
                             <div class="position-absolute top-50 start-0 w-100 translate-middle-y" style="height:2px; background:#e9ecef; z-index:0;"></div>
@@ -387,7 +387,7 @@
 
                     <div class="mb-4">
                         <div class="fw-semibold mb-2">Riwayat Aktivitas</div>
-                        <div class="list-group list-group-flush" id="riwayat-unit" style="max-height: 300px;overflow-y: scroll;"></div>
+                        <div class="list-group list-group-flush" id="riwayat-unit" style="max-height: 300px; overflow-y: auto;"></div>
                     </div>
                 </div>
             </div>
@@ -460,7 +460,7 @@
 </div>
 
 <!-- modal gambar unit -->
- <div class="modal fade" id="modal-gambar-unit" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal-gambar-unit" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
