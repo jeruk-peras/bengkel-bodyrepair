@@ -33,6 +33,7 @@
 	<script src="<?= base_url(); ?>assets/js/jquery.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+	<script src="<?= base_url(); ?>assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
 
 	<title><?= $title; ?> - Sistem Manajemen Bengkel Bodyrepair</title>
 
@@ -41,7 +42,7 @@
 			content: '* ';
 			color: red;
 		}
-
+		
 		div.tox-editor-header>div.tox-promotion {
 			display: none;
 		}
@@ -95,11 +96,7 @@
 	<script src="<?= base_url(); ?>assets/plugins/simplebar/js/simplebar.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/metismenu/js/metisMenu.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-	<script src="<?= base_url(); ?>assets/plugins/chartjs/js/chart.js"></script>
 	<!--Morris JavaScript -->
-	<!-- <script src="<?= base_url(); ?>assets/plugins/raphael/raphael-min.js"></script> -->
-	<script src="<?= base_url(); ?>assets/plugins/morris/js/morris.js"></script>
-	<!-- <script src="<?= base_url(); ?>assets/js/index2.js"></script> -->
 
 	<!--app JS-->
 	<script src="<?= base_url(); ?>assets/js/app.js"></script>

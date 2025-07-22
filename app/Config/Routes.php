@@ -29,6 +29,13 @@ $routes->group('/api', function ($routes) {
     $routes->get('(:num)/riwayat-unit', 'ServerSideController::fetchRiwayatUnit/$1');
 });
 
+// routes dashboard
+$routes->get('/dashboard/grafik-pendapatan', 'DashboardController::grafikPendapatan');
+$routes->get('/dashboard/grafik-bulanan', 'DashboardController::grafikPendapatanPerbulan');
+$routes->post('/dashboard/grafik-material', 'DashboardController::grafikMaterial');
+$routes->post('/dashboard/widget-data', 'DashboardController::widgetData');
+$routes->post('/dashboard/widget-closing', 'DashboardController::widgetClosing');
+
 
 // routes side server
 $routes->group('/datatable-server-side', function ($routes) {
