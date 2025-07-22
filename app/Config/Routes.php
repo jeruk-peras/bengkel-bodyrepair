@@ -44,6 +44,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('admin-cabang', 'ServerSideController::admin');
     $routes->post('mekanik', 'ServerSideController::mekanik');
     $routes->post('jenis', 'ServerSideController::jenis');
+    $routes->post('asuransi', 'ServerSideController::asuransi');
     $routes->post('satuan', 'ServerSideController::satuan');
     $routes->post('status', 'ServerSideController::status');
     $routes->post('biaya', 'ServerSideController::biaya');
@@ -73,6 +74,17 @@ $routes->group('/jenis', function ($routes) {
     $routes->post('(:num)/edit', 'JenisController::update/$1');
 
     $routes->post('(:num)/delete', 'JenisController::delete/$1');
+});
+
+// routes Asuransi 
+$routes->group('/asuransi', function ($routes) {
+    $routes->get('/', 'AsuransiController::index');
+    $routes->post('/', 'AsuransiController::save');
+
+    $routes->get('(:num)/edit', 'AsuransiController::edit/$1');
+    $routes->post('(:num)/edit', 'AsuransiController::update/$1');
+
+    $routes->post('(:num)/delete', 'AsuransiController::delete/$1');
 });
 
 // routes Satuan 

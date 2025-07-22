@@ -92,6 +92,42 @@ class ServerSideController extends BaseController
         return $this->response->setJSON($outputdata);
     }
 
+    public function asuransi()
+    {
+        $table = 'asuransi';
+        $primaryKey = 'id_asuransi';
+        $columns = ['id_asuransi', 'nama_asuransi'];
+        $orderableColumns = ['nama_asuransi'];
+        $searchableColumns = ['nama_asuransi'];
+        $defaultOrder = ['nama_asuransi', 'ASC'];
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_asuransi']),
+                htmlspecialchars($row['nama_asuransi']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
+
     public function satuan()
     {
         $table = 'satuan';
