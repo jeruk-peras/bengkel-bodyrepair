@@ -93,6 +93,7 @@
             success: function(response) {
                 $('#form-data-modal').modal('show');
                 $('#form-data').attr('action', url);
+                fetchAsuransi(response.data.asuransi_id);
                 $.each(response.data, function(key, value) {
                     $('#' + key).val(value);
                 });
@@ -234,6 +235,35 @@
             }
         })
     })
+
+    // hendle fetch data asurnsi untuk select
+    function fetchAsuransi(id) {
+        $.ajax({
+            url: '/api/asuransi',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var $select = $('#asuransi_id');
+                $select.empty();
+                $select.append('<option value="">None</option>');
+                $.each(response.data, function(index, item) {
+                    $select.append('<option value="' + item.id_asuransi + '">' + item.nama_asuransi + '</option>');
+                });
+
+                let tomSelect = new TomSelect("#asuransi_id", {
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+
+                tomSelect.setValue(id)
+            },
+            error: function() {
+
+            }
+        })
+    }
 
     // penggunaan material
     $('#modal-material-data').on('show.bs.modal', function() {

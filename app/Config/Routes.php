@@ -21,6 +21,7 @@ $routes->group('/api', function ($routes) {
     $routes->get('cabang', 'ServerSideController::fetchCabang');
     $routes->get('satuan', 'ServerSideController::fetchSatuan');
     $routes->get('jenis', 'ServerSideController::fetchJenis');
+    $routes->get('asuransi', 'ServerSideController::fetchAsuransi');
     $routes->get('material', 'ServerSideController::fetchMaterial', ['filter' => ['selectCabang']]);
     $routes->get('mekanik', 'ServerSideController::fetchMekanik', ['filter' => ['selectCabang']]);
     $routes->get('(:num)/status-unit', 'ServerSideController::fetchStatusUnit/$1');

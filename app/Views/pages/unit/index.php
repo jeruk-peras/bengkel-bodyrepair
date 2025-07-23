@@ -100,9 +100,9 @@
                         </div>
 
                         <div class="col-sm-6 col-md-3 col-6">
-                            <label for="asuransi" class="form-label required">Asuransi</label>
-                            <input type="text" name="asuransi" class="form-control" id="asuransi" placeholder="Asuransi">
-                            <div class="invalid-feedback" id="invalid_asuransi"></div>
+                            <label for="asuransi_id" class="form-label required">Asuransi</label>
+                            <select name="asuransi_id" id="asuransi_id" data-placeholder="Asuransi" autocomplete="off"></select>
+                            <div class="invalid-feedback" id="invalid_asuransi_id"></div>
                         </div>
 
                         <div class="col-md-6">
@@ -257,7 +257,7 @@
                                     </tr>
                                     <tr>
                                         <td>Asuransi :</td>
-                                        <th class="text-end" id="detail_asuransi"></th>
+                                        <th class="text-end" id="detail_nama_asuransi"></th>
                                     </tr>
                                 </table>
                             </div>

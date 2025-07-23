@@ -60,7 +60,7 @@ class UnitController extends BaseController
             'nomor_polisi'      => $data['nomor_polisi'],
             'model_unit'        => $data['model_unit'],
             'warna_unit'        => $data['warna_unit'],
-            'asuransi'          => $data['asuransi'],
+            'asuransi_id'       => $data['asuransi_id'],
             'nomor_mesin'       => $data['nomor_mesin'],
             'nomor_rangka'      => $data['nomor_rangka'],
             'nomor_spp'         => $data['nomor_spp'],
@@ -154,7 +154,7 @@ class UnitController extends BaseController
             'nomor_polisi'      => $data['nomor_polisi'],
             'model_unit'        => $data['model_unit'],
             'warna_unit'        => $data['warna_unit'],
-            'asuransi'          => $data['asuransi'],
+            'asuransi_id'       => $data['asuransi_id'],
             'nomor_mesin'       => $data['nomor_mesin'],
             'nomor_rangka'      => $data['nomor_rangka'],
             'nomor_spp'         => $data['nomor_spp'],
@@ -265,12 +265,13 @@ class UnitController extends BaseController
     public function detail(int $id)
     {
         try {
-            $data = $this->modelUnit->find($id); // mengambil data
+            $data = $this->modelUnit->select('unit.*, asuransi.nama_asuransi')->join('asuransi', 'unit.asuransi_id = asuransi.id_asuransi', '')->find($id); // mengambil data
             // jika data tidak ditemukan
             if (!$data) {
                 return ResponseJSONCollection::error([], 'Data tidak ditemukan.', ResponseInterface::HTTP_BAD_REQUEST);
             }
 
+            $data['asuransi_id'] = $data['nama_asuransi'];
             $data['tanggal_masuk'] = date_format(date_create($data['tanggal_masuk']), "d M Y");
             $data['estimasi_selesai'] = date_format(date_create($data['estimasi_selesai']), "d M Y");
             $data['harga_spp'] = number_format($data['harga_spp']);

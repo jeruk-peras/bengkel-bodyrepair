@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Libraries\ResponseJSONCollection;
 use App\Libraries\SideServerDatatables;
+use App\Models\AsuransiModel;
 use App\Models\CabangModel;
 use App\Models\JenisModel;
 use App\Models\MaterialMasukDetailModel;
@@ -169,6 +170,17 @@ class ServerSideController extends BaseController
         $modelCabang = new CabangModel();
         try {
             $data = $modelCabang->select('id_cabang, nama_cabang')->findAll();
+            return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+     public function fetchAsuransi()
+    {
+        $modelAsuransi = new AsuransiModel();
+        try {
+            $data = $modelAsuransi->select('id_asuransi, nama_asuransi')->findAll();
             return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
         } catch (\Throwable $e) {
             return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
@@ -662,7 +674,7 @@ class ServerSideController extends BaseController
     {
         $table = 'unit';
         $primaryKey = 'id_unit';
-        $columns = ['unit.id_unit', 'unit.nama_customer', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'unit.asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'cabang.nama_cabang'];
+        $columns = ['unit.id_unit', 'unit.nama_customer', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'cabang.nama_cabang'];
         $orderableColumns = ['unit.nama_customer', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'unit.asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
         $searchableColumns = ['unit.nama_customer', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'unit.asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
         $defaultOrder = ['unit.diskon', 'ASC'];
@@ -671,6 +683,11 @@ class ServerSideController extends BaseController
             [
                 'table' => 'cabang',
                 'on' => 'cabang.id_cabang = unit.cabang_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'asuransi',
+                'on' => 'asuransi.id_asuransi = unit.asuransi_id',
                 'type' => ''
             ]
         ];
@@ -703,7 +720,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_customer']),
                 htmlspecialchars($row['nomor_polisi']),
                 htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
-                htmlspecialchars($row['asuransi']),
+                htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
                 ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),

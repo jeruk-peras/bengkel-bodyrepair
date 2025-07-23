@@ -67,9 +67,9 @@
                     </div>
 
                     <div class="col-sm-6 col-md-3 col-6">
-                        <label for="asuransi" class="form-label required">Asuransi</label>
-                        <input type="text" name="asuransi" class="form-control" id="asuransi" placeholder="Asuransi">
-                        <div class="invalid-feedback" id="invalid_asuransi"></div>
+                        <label for="asuransi_id" class="form-label required">Asuransi</label>
+                        <select name="asuransi_id" id="asuransi_id" data-placeholder="Asuransi"  autocomplete="off"></select>
+                        <div class="invalid-feedback" id="invalid_asuransi_id"></div>
                     </div>
 
                     <div class="col-md-6">
@@ -209,6 +209,34 @@
             }
         })
     })
+
+    // hendle fetch data asurnsi untuk select
+    function fetchAsuransi() {
+        $.ajax({
+            url: '/api/asuransi',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var $select = $('#asuransi_id');
+                $select.empty();
+                $select.append('<option value="">None</option>');
+                $.each(response.data, function(index, item) {
+                    $select.append('<option value="' + item.id_asuransi + '">' + item.nama_asuransi + '</option>');
+                });
+
+                new TomSelect("#asuransi_id", {
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+            },
+            error: function() {
+
+            }
+        })
+    }
+    fetchAsuransi();
 
     // hendle perhitungan 
     function hitungDiskon() {

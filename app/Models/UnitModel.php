@@ -35,7 +35,7 @@ class UnitModel extends Model
         'nomor_polisi'      => 'required|max_length[50]',
         'model_unit'        => 'required|max_length[100]',
         'warna_unit'        => 'required|max_length[100]',
-        'asuransi'          => 'required|max_length[100]',
+        'asuransi_id'          => 'required|max_length[100]',
         'nomor_mesin'       => 'required|max_length[100]',
         'nomor_rangka'      => 'required|max_length[100]',
         'nomor_spp'         => 'required|max_length[100]',
@@ -76,7 +76,7 @@ class UnitModel extends Model
             'required'   => 'Warna unit wajib diisi.',
             'max_length' => 'Warna unit maksimal 100 karakter.',
         ],
-        'asuransi' => [
+        'asuransi_id' => [
             'required'   => 'Asuransi wajib diisi.',
             'max_length' => 'Asuransi maksimal 100 karakter.',
         ],

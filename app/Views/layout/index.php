@@ -34,6 +34,8 @@
 	<script src="<?= base_url(); ?>assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
+	<link href="<?= base_url(); ?>assets/plugins/tom-select-2.4.3/package/dist/css/tom-select.bootstrap5.css" rel="stylesheet">
+	<script src="<?= base_url(); ?>assets/plugins/tom-select-2.4.3/package/dist/js/tom-select.complete.min.js"></script>
 
 	<title><?= $title; ?> - Sistem Manajemen Bengkel Bodyrepair</title>
 
@@ -42,7 +44,7 @@
 			content: '* ';
 			color: red;
 		}
-		
+
 		div.tox-editor-header>div.tox-promotion {
 			display: none;
 		}
