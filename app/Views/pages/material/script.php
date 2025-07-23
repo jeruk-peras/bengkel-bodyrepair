@@ -19,7 +19,7 @@
                     '<a href="/material/' + data + '/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-id-produk="' + data + '" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
                 return btn;
             }
-        }, <?= (session('role') == 'admin_cabang') ? "{ targets: 2, visible: false }," : ""?>],
+        }, <?= (session('role') == 'admin_cabang') ? "{ targets: 2, visible: false }," : "" ?>],
         pageLength: 25,
         lengthMenu: [25, 50, 100, 'All'],
         scrollX: true,
@@ -35,8 +35,15 @@
         });
     });
 
+    // instanse tom selest
+    let tomSelectSatuan = null;
+    let tomSelectJenis = null;
+
     // fetch data satuan
-    function fetchSatuan() {
+    function fetchSatuan(id = null) {
+
+        if (tomSelectSatuan !== null) tomSelectSatuan.destroy();
+
         $.ajax({
             url: '/api/satuan',
             type: 'GET',
@@ -47,13 +54,24 @@
                 $.each(response.data, function(index, item) {
                     $select.append('<option value="' + item.id_satuan + '">' + item.nama_satuan + '</option>');
                 });
+
+                tomSelectSatuan = new TomSelect("#satuan_id", {
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+
+                if (id !== null) tomSelectSatuan.setValue(id)
             }
         });
     };
-    fetchSatuan();
 
     // fetch data cabang
-    function fetchJenis() {
+    function fetchJenis(id = null) {
+
+        if (tomSelectJenis !== null) tomSelectJenis.destroy();
+
         $.ajax({
             url: '/api/jenis',
             type: 'GET',
@@ -64,10 +82,22 @@
                 $.each(response.data, function(index, item) {
                     $select.append('<option value="' + item.id_jenis + '">' + item.nama_jenis + '</option>');
                 });
+
+                tomSelectJenis = new TomSelect("#jenis_id", {
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+                if (id !== null) tomSelectJenis.setValue(id)
             }
         });
     };
-    fetchJenis();
+
+    $('#btn-modal-material').click(function() {
+        fetchJenis();
+        fetchSatuan();
+    });
 
     // katika modal di tutup
     $('#form-data-modal').on('hidden.bs.modal', function() {
@@ -120,6 +150,8 @@
             success: function(response) {
                 $('#form-data-modal').modal('show');
                 $('#form-data').attr('action', url);
+                fetchJenis(response.data.jenis_id);
+                fetchSatuan(response.data.satuan_id);
                 $.each(response.data, function(key, value) {
                     $('#' + key).val(value);
                 });

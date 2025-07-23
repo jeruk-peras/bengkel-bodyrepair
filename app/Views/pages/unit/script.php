@@ -128,7 +128,7 @@
                 $('#btn-selesai').attr('data-href', '/unit/' + id + '/status-update');
                 $('#form-add-material').attr('action', '/unit/' + id + '/add-material');
                 statusUnit(id);
-                materialUnit(id); 
+                materialUnit(id);
                 progresStatus(id);
                 riwayatUnit(id);
                 $.each(response.data, function(key, value) {
@@ -236,8 +236,12 @@
         })
     })
 
+    // instanse tom select
+    let tomSelectAsuransi = null;
+
     // hendle fetch data asurnsi untuk select
     function fetchAsuransi(id) {
+        if (tomSelectAsuransi !== null) tomSelectAsuransi.destroy();
         $.ajax({
             url: '/api/asuransi',
             type: 'GET',
@@ -250,14 +254,14 @@
                     $select.append('<option value="' + item.id_asuransi + '">' + item.nama_asuransi + '</option>');
                 });
 
-                let tomSelect = new TomSelect("#asuransi_id", {
+                tomSelectAsuransi = new TomSelect("#asuransi_id", {
                     sortField: {
                         field: "text",
                         direction: "asc"
                     }
                 });
 
-                tomSelect.setValue(id)
+                if (id !== null) tomSelectAsuransi.setValue(id)
             },
             error: function() {
 
@@ -276,30 +280,44 @@
         var material = $('#material_id').html();
         var $html =
             `<div class="row p-2" id="row-material">
-                <div class="mb-3 col-sm-12 col-md-12 col-lg-4 col-12">
-                    <select class="form-select form-select-sm select-material" name="material_id[]" required>${material}</select>
+                <div class="col-sm-12 col-md-12 col-lg-6 col-12">
+                    <select class="form-select form-select-sm select-material tom-select" name="material_id[]" required>${material}</select>
                 </div>
-                <div class="mb-3 col-sm-6 col-md-4 col-lg-2 col-6">
+                <div class="col-sm-6 col-md-4 col-lg-2 col-6">
                     <div class="position-relative input-icon">
                         <input type="text" name="harga[]" class="form-control form-control-sm harga-material" readonly required placeholder="xxxxxx">
                         <span class="position-absolute top-50 translate-middle-y">Rp </span>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-6 col-md-3 col-lg-2 col-6">
+                <div class="col-sm-6 col-md-3 col-lg-2 col-6">
                     <div class="position-relative input-icon">
                         <span class="position-absolute top-50 translate-middle-y stok-material "></span>
                         <input type="text" inputmode="numeric" name="jumlah[]" class="form-control form-control-sm" id="jumlah" required style="padding-left: 2.5rem; padding-right: 1.90rem;">
                         <span class="position-absolute top-50 translate-middle-y satuan-material" style="right: 15px !important; left: unset;"></span>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-10 col-md-4 col-lg-3 col-10">
+                <div class="col-sm-10 col-md-4 col-lg-1 col-10">
                     <input type="text" name="detail_jumlah[]" class="form-control form-control-sm" required placeholder="Detail jumlah">
                 </div>
-                <div class="mb-3 col align-self-end">
+                <div class="col align-self-end">
                     <button type="button" class="btn btn-danger w-100 btn-sm" id="btn-del-row">-</button>
                 </div>
             </div>`;
         $('#row-material').after($html);
+
+        new TomSelect(".tom-select", {
+            placeholder: 'Pilih opsi...',
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+            onInitialize: function() {
+                // Fokus ke input Tom Select setelah inisialisasi
+                setTimeout(() => {
+                    this.control_input.focus();
+                }, 10);
+            }
+        });
     })
 
     // handle delete row
@@ -329,17 +347,31 @@
         }
     });
 
+    // instance tom select
+    let tomSelectMaterial = null;
+    let tomSelectMekanik = null;
+
     function dataMaterial() {
+
+        if (tomSelectMaterial !== null) tomSelectMaterial.destroy();
+
         $.ajax({
             url: '/api/material',
             type: 'GET',
             dataType: 'json',
             success: function(response) {
                 var $select = $('#material_id');
-                $select.empty();
-                $select.append('<option hidden>-- Pilih Material --</option>');
+                $select.empty().append('<option value="">Pilih opsi...</option>');
                 $.each(response.data, function(index, item) {
                     $select.append('<option data-stok="' + item.stok + '" data-satuan="' + item.nama_satuan + '" data-harga="' + item.harga + '" value="' + item.id_material + '">' + item.nama_material + '</option>');
+                });
+
+                tomSelectMaterial = new TomSelect("#material_id", {
+                    placeholder: 'Pilih opsi...',
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
                 });
             },
             error: function(xhr, status, error) {
@@ -354,17 +386,33 @@
     }
 
     function dataMekanik() {
+        if (tomSelectMekanik !== null) tomSelectMekanik.destroy();
+
         $.ajax({
             url: '/api/mekanik',
             type: 'GET',
             dataType: 'json',
             success: function(response) {
                 var $select = $('#mekanik_id');
-                $select.empty();
-                $select.append('<option hidden>-- Pilih Mekanik --</option>');
+                $select.empty().append('<option value="" hidden>-- Pilih Mekanik --</option>');
                 $.each(response.data, function(index, item) {
                     $select.append('<option value="' + item.id_mekanik + '">' + item.nama_mekanik + '</option>');
                 });
+
+                tomSelectMekanik = new TomSelect("#mekanik_id", {
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    },
+                    onInitialize: function() {
+                        // Fokus ke input Tom Select setelah inisialisasi
+                        setTimeout(() => {
+                            this.control_input.focus();
+                        }, 10);
+                    }
+                });
+
+                if (id !== null) tomSelectMekanik.setValue(id)
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
@@ -389,11 +437,9 @@
             type: 'POST',
             data: formData,
             success: function(response) {
-                $('#form-data-modal').modal('hide');
-                table.ajax.reload(null, false); // Reload data tanpa reset pagination
                 alertMesage(response.status, response.message);
-                detailData(response.data.url, response.data.id);
                 $('#modal-material-data').modal('hide');
+                detailData(response.data.url, response.data.id);
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);

@@ -422,18 +422,18 @@
                     </div>
 
                     <div class="row p-2" id="row-material">
-                        <div class="mb-3 col-sm-12 col-md-12 col-lg-4 col-12">
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-12">
                             <label class="form-label required">Material</label>
-                            <select class="form-select form-select-sm select-material" name="material_id[]" id="material_id" required></select>
+                            <select class="form-select form-select-sm select-material" name="material_id[]" data-placeholder="Material" id="material_id" required></select>
                         </div>
-                        <div class="mb-3 col-sm-6 col-md-4 col-lg-2 col-6">
+                        <div class="col-sm-6 col-md-4 col-lg-2 col-6">
                             <label class="form-label required">Harga</label>
                             <div class="position-relative input-icon">
                                 <input type="text" name="harga[]" class="form-control form-control-sm harga-material" readonly placeholder="xxxxxx">
                                 <span class="position-absolute top-50 translate-middle-y">Rp </span>
                             </div>
                         </div>
-                        <div class="mb-3 col-sm-6 col-md-3 col-lg-2 col-6">
+                        <div class="col-sm-6 col-md-3 col-lg-2 col-6">
                             <label class="form-label required">Jumlah</label>
                             <div class="position-relative input-icon">
                                 <span class="position-absolute top-50 translate-middle-y stok-material"></span>
@@ -442,11 +442,11 @@
                             </div>
                             <div class="form-text text-danger" id="invalid_jumlah"></div>
                         </div>
-                        <div class="mb-3 col-sm-10 col-md-4 col-lg-3 col-10">
-                            <label class="form-label required">Detail Jumlah</label>
+                        <div class="col-sm-10 col-md-4 col-lg-1 col-10">
+                            <label class="form-label required">Detail</label>
                             <input type="text" name="detail_jumlah[]" class="form-control form-control-sm" id="detail_jumlah" required>
                         </div>
-                        <div class="mb-3 col align-self-end">
+                        <div class="col align-self-end">
                             <button type="button" class="btn w-100 btn-primary btn-sm" id="btn-add-row">+</button>
                         </div>
                     </div>

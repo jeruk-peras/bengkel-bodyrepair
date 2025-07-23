@@ -20,7 +20,7 @@
                     <h6 class="mb-0">Daftar Material</h6>
                 </div>
                 <div class="ms-auto">
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#form-data-modal"><i class="bx bx-plus"></i> Tambah</button>
+                    <button class="btn btn-sm btn-primary" id="btn-modal-material" data-bs-toggle="modal" data-bs-target="#form-data-modal"><i class="bx bx-plus"></i> Tambah</button>
                 </div>
             </div>
         </div>
@@ -81,18 +81,12 @@
                         </div>
                         <div class="col-md-6">
                             <label for="satuan_id" class="form-label required">Satuan Material</label>
-                            <select name="satuan_id" class="form-control" id="satuan_id">
-                                <option value="">asd</option>
-                                <option value="">asd</option>
-                            </select>
+                            <select name="satuan_id" class="form-select" data-placeholder="Satuan" id="satuan_id"></select>
                             <div class="invalid-feedback" id="invalid_satuan_id"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="jenis_id" class="form-label required">Jenis Material</label>
-                            <select name="jenis_id" class="form-control" id="jenis_id">
-                                <option value="">asd</option>
-                                <option value="">asd</option>
-                            </select>
+                            <select name="jenis_id" class="form-select" data-placeholder="Jenis" id="jenis_id"></select>
                             <div class="invalid-feedback" id="invalid_jenis_id"></div>
                         </div>
                     </div>
