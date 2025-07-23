@@ -33,7 +33,7 @@
                             <th>#</th>
                             <th>Cabang</th>
                             <th>Nomor SPP</th>
-                            <th>Nama Customer</th>
+                            <th>Nama SO</th>
                             <th>Nomor Polisi</th>
                             <th>Model/Warna</th>
                             <th>Asuransi</th>
@@ -60,23 +60,11 @@
             <form action="" method="post" id="form-data">
                 <?= csrf_field(); ?>
                 <div class="modal-body">
-                    <h6 class="mb-1">Informasi Customer</h6>
-                    <p class="mb-2">Silakan lengkapi data customer bengkel pada form berikut.</p>
                     <div class="row g-3 mb-3">
-                        <div class="col-sm-6 col-md-6 col-6">
-                            <label for="nama_customer" class="form-label required">Nama Customer</label>
-                            <input type="text" name="nama_customer" class="form-control" id="nama_customer" placeholder="Nama Customer">
-                            <div class="invalid-feedback" id="invalid_nama_customer"></div>
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-6">
-                            <label for="no_handphone" class="form-label required">No Handphone</label>
-                            <input type="text" name="no_handphone" class="form-control" id="no_handphone" placeholder="No Handphone">
-                            <div class="invalid-feedback" id="invalid_no_handphone"></div>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="alamat" class="form-label required">Alamat</label>
-                            <textarea name="alamat" class="form-control" id="alamat"></textarea>
-                            <div class="invalid-feedback" id="invalid_alamat"></div>
+                        <div class="col-sm-12 col-md-12 col-12">
+                            <label for="nama_so" class="form-label required">Nama SO</label>
+                            <input type="text" name="nama_so" class="form-control" id="nama_so" placeholder="Nama So">
+                            <div class="invalid-feedback" id="invalid_nama_so"></div>
                         </div>
                     </div>
 
@@ -123,12 +111,12 @@
                     <div class="row g-3 mb-4">
                         <div class="col-12 col-sm-12 col-md-4">
                             <label for="nomor_spp" class="form-label required">Nomor SPP</label>
-                            <input type="text" name="nomor_spp" class="form-control" id="nomor_spp" value="<?= $nomor_spp ?? ''; ?>" placeholder="No SPP" readonly>
+                            <input type="text" name="nomor_spp" class="form-control" id="nomor_spp" value="<?= $nomor_spp ?? ''; ?>" placeholder="No SPP">
                             <div class="invalid-feedback" id="invalid_nomor_spp"></div>
                         </div>
                         <div class="col-6 col-sm-6 col-md-4">
                             <label for="tanggal_masuk" class="form-label required">Tanggal Masuk</label>
-                            <input type="date" name="tanggal_masuk" class="form-control" id="tanggal_masuk" placeholder="Tanggal Masuk" value="<?= date('Y-m-d'); ?>" readonly>
+                            <input type="date" name="tanggal_masuk" class="form-control" id="tanggal_masuk" placeholder="Tanggal Masuk" value="<?= date('Y-m-d'); ?>">
                             <div class="invalid-feedback" id="invalid_tanggal_masuk"></div>
                         </div>
                         <div class="col-6 col-sm-6 col-md-4">
@@ -220,26 +208,16 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row mb-3">
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-2">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2">
                             <div class="p-2 rounded bg-light h-100">
-                                <h6>Informasi Customer</h6>
                                 <table class="w-100">
                                     <tr>
-                                        <td>Nama Curtomer :</td>
-                                        <th class="text-end" id="detail_nama_customer"></th>
-                                    </tr>
-                                    <tr>
-                                        <td>No Handphone :</td>
-                                        <th class="text-end" id="detail_no_handphone"></th>
-                                    </tr>
-                                    <tr>
-                                        <td>Alamat :</td>
-                                        <th class="text-end" id="detail_alamat"></th>
+                                        <th>Nama SO : <span id="detail_nama_so"></span> </th>
                                     </tr>
                                 </table>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-2">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-2">
                             <div class="p-2 rounded bg-light h-100">
                                 <h6>Informasi Unit</h6>
                                 <table class="w-100">
@@ -262,7 +240,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-2">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-2">
                             <div class="p-2 rounded bg-light h-100">
                                 <h6>Informasi Pekerjaan</h6>
                                 <table class="w-100">
@@ -287,7 +265,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-2">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-2">
                             <div class="p-2 rounded bg-light h-100">
                                 <h6>Informasi Biaya</h6>
                                 <table class="w-100">

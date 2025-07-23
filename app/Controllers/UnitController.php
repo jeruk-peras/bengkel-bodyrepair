@@ -44,8 +44,6 @@ class UnitController extends BaseController
             'title' => $this->title,
         ];
 
-        $data['nomor_spp'] = $this->modelUnit->generateNoOrder();
-
         return view('pages/unit/add', $data);
     }
 
@@ -54,9 +52,7 @@ class UnitController extends BaseController
         $data = $this->request->getPost(); // mengambil post data
 
         $data = [
-            'nama_customer'     => $data['nama_customer'],
-            'no_handphone'      => $data['no_handphone'],
-            'alamat'            => $data['alamat'],
+            'nama_so'           => $data['nama_so'],
             'nomor_polisi'      => $data['nomor_polisi'],
             'model_unit'        => $data['model_unit'],
             'warna_unit'        => $data['warna_unit'],
@@ -148,9 +144,7 @@ class UnitController extends BaseController
         $data = $this->request->getPost(); // mengambil post data
 
         $data = [
-            'nama_customer'     => $data['nama_customer'],
-            'no_handphone'      => $data['no_handphone'],
-            'alamat'            => $data['alamat'],
+            'nama_so'           => $data['nama_so'],
             'nomor_polisi'      => $data['nomor_polisi'],
             'model_unit'        => $data['model_unit'],
             'warna_unit'        => $data['warna_unit'],
@@ -363,12 +357,12 @@ class UnitController extends BaseController
 
     private function _deleteGambarStatus($gambar)
     {
-        define('EXT', '.' . pathinfo(__FILE__, PATHINFO_EXTENSION));
-        define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
-        define('PUBPATH', str_replace(SELF, '', FCPATH)); 
+        // define('EXT', '.' . pathinfo(__FILE__, PATHINFO_EXTENSION));
+        // define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
+        // define('PUBPATH', str_replace(SELF, '', FCPATH)); 
         
         if ($gambar && file_exists('./assets/images/status/' . $gambar)) {
-            unlink(PUBPATH . 'assets/images/status/' . $gambar); // hapus gambar
+            unlink('assets/images/status/' . $gambar); // hapus gambar
         }
     }
 }

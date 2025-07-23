@@ -18,6 +18,7 @@
         </tr>
     </thead>
     <tbody>
+        <?php $total_panel = 0; ?>
         <?php foreach ($units as $row):  ?>
             <tr>
                 <td><?= $row['no']; ?></td>
@@ -31,9 +32,11 @@
                     <td class="text-end"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="<?= $s['harga_status'] ?> * jml panel">Rp <?= number_format($s['total_harga_status']); ?></span></td>
                 <?php endforeach  ?>
             </tr>
-        <?php endforeach  ?>
+        <?php $total_panel += $row['jumlah_panel'];  ?>
+        <?php endforeach ; ?>
         <tr>
-            <th class="text-end" colspan="7">TOTAL</th>
+            <th class="text-end" colspan="6">TOTAL</th>
+            <th class="text-center"><?= round($total_panel, 2) ?></th>
             <?php foreach ($status as $r):  ?>
                 <th class="text-end">Rp <?= number_format($harga_status_total[$r['nama_status']]); ?></th>
             <?php endforeach;  ?>

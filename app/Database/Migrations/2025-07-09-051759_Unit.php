@@ -19,16 +19,9 @@ class Unit extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],
-            'nama_customer' => [
+            'nama_so' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
-            ],
-            'no_handphone' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '20',
-            ],
-            'alamat' => [
-                'type'       => 'TEXT',
             ],
 
             'nomor_polisi' => [

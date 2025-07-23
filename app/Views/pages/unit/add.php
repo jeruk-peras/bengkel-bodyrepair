@@ -27,23 +27,11 @@
         <div class="card-body">
             <form action="" method="post" id="form-data">
                 <?= csrf_field(); ?>
-                <h6 class="mb-1">Informasi Customer</h6>
-                <p class="mb-2">Silakan lengkapi data customer bengkel pada form berikut.</p>
                 <div class="row g-3 mb-3">
-                    <div class="col-sm-6 col-md-6 col-6">
-                        <label for="nama_customer" class="form-label required">Nama Customer</label>
-                        <input type="text" name="nama_customer" class="form-control" id="nama_customer" placeholder="Nama Customer">
-                        <div class="invalid-feedback" id="invalid_nama_customer"></div>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-6">
-                        <label for="no_handphone" class="form-label required">No Handphone</label>
-                        <input type="text" name="no_handphone" class="form-control" id="no_handphone" placeholder="No Handphone">
-                        <div class="invalid-feedback" id="invalid_no_handphone"></div>
-                    </div>
-                    <div class="col-md-12">
-                        <label for="alamat" class="form-label required">Alamat</label>
-                        <textarea name="alamat" class="form-control" id="alamat"></textarea>
-                        <div class="invalid-feedback" id="invalid_alamat"></div>
+                    <div class="col-sm-12 col-md-12 col-12">
+                        <label for="nama_so" class="form-label required">Nama SO</label>
+                        <input type="text" name="nama_so" class="form-control" id="nama_so" placeholder="Nama So">
+                        <div class="invalid-feedback" id="invalid_nama_so"></div>
                     </div>
                 </div>
 
@@ -95,7 +83,7 @@
                     </div>
                     <div class="col-6 col-sm-6 col-md-4">
                         <label for="tanggal_masuk" class="form-label required">Tanggal Masuk</label>
-                        <input type="date" name="tanggal_masuk" class="form-control" id="tanggal_masuk" placeholder="Tanggal Masuk" value="<?= date('Y-m-d'); ?>" readonly>
+                        <input type="date" name="tanggal_masuk" class="form-control" id="tanggal_masuk" placeholder="Tanggal Masuk" value="<?= date('Y-m-d'); ?>">
                         <div class="invalid-feedback" id="invalid_tanggal_masuk"></div>
                     </div>
                     <div class="col-6 col-sm-6 col-md-4">

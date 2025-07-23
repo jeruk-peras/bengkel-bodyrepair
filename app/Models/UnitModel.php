@@ -29,9 +29,7 @@ class UnitModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'nama_customer'     => 'required|max_length[100]',
-        'no_handphone'      => 'required|max_length[20]',
-        'alamat'            => 'required',
+        'nama_so'     => 'required|max_length[100]',
         'nomor_polisi'      => 'required|max_length[50]',
         'model_unit'        => 'required|max_length[100]',
         'warna_unit'        => 'required|max_length[100]',
@@ -53,16 +51,9 @@ class UnitModel extends Model
         'cabang_id'         => 'required|integer',
     ];
     protected $validationMessages   = [
-        'nama_customer' => [
-            'required'   => 'Nama customer wajib diisi.',
-            'max_length' => 'Nama customer maksimal 100 karakter.',
-        ],
-        'no_handphone' => [
-            'required'   => 'No handphone wajib diisi.',
-            'max_length' => 'No handphone maksimal 20 karakter.',
-        ],
-        'alamat' => [
-            'required'   => 'Alamat wajib diisi.',
+        'nama_so' => [
+            'required'   => 'Nama so wajib diisi.',
+            'max_length' => 'Nama so maksimal 100 karakter.',
         ],
         'nomor_polisi' => [
             'required'   => 'Nomor polisi wajib diisi.',
@@ -153,23 +144,4 @@ class UnitModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    function generateNoOrder()
-    {
-        $prefix = 'UNT';
-        $tahun = date('Y');
-        $bulan = date('m');
-
-        // Ambil nomor urut terakhir bulan ini dari database
-        $db = \Config\Database::connect();
-        $builder = $db->table('unit');
-        $builder->selectMax('nomor_spp');
-        $builder->where('YEAR(created_at)', $tahun);
-        $builder->where('MONTH(created_at)', $bulan);
-        $last = $builder->get()->getRow();
-
-        $noUrut = ($last && $last->nomor_spp) ? (substr($last->nomor_spp, 12, 4) + 1) : 1;
-        $noUrutStr = str_pad($noUrut, 4, '0', STR_PAD_LEFT);
-        return "{$prefix}.{$tahun}.{$bulan}.{$noUrutStr}";
-    }
 }
