@@ -43,9 +43,9 @@ class Unit extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],
-            'asuransi' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
+            'asuransi_id' => [
+                'type'       => 'INT',
+                'constraint' => '11',
             ],
             'nomor_mesin' => [
                 'type'       => 'VARCHAR',
