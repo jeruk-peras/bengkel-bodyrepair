@@ -88,6 +88,7 @@
             </a>
             <ul class="mm-collapse">
                 <?php if (session('user_type') == 'admin'):  ?>
+                    <li><a href="<?= base_url('asuransi'); ?>"><i class='bx bx-radio-circle'></i>Asuransi</a></li>
                     <li><a href="<?= base_url('satuan'); ?>"><i class='bx bx-radio-circle'></i>Satuan</a></li>
                     <li><a href="<?= base_url('jenis'); ?>"><i class='bx bx-radio-circle'></i>Jenis</a></li>
                     <li><a href="<?= base_url('biaya'); ?>"><i class='bx bx-radio-circle'></i>Biaya</a></li>
