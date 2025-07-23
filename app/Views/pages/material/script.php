@@ -50,7 +50,7 @@
             dataType: 'json',
             success: function(response) {
                 var $select = $('#satuan_id');
-                $select.empty();
+                $select.empty().append('<option value="">Pilih opsi...</option>');
                 $.each(response.data, function(index, item) {
                     $select.append('<option value="' + item.id_satuan + '">' + item.nama_satuan + '</option>');
                 });
@@ -78,7 +78,7 @@
             dataType: 'json',
             success: function(response) {
                 var $select = $('#jenis_id');
-                $select.empty();
+                 $select.empty().append('<option value="">Pilih opsi...</option>');
                 $.each(response.data, function(index, item) {
                     $select.append('<option value="' + item.id_jenis + '">' + item.nama_jenis + '</option>');
                 });
