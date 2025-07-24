@@ -215,7 +215,7 @@ class UnitController extends BaseController
         if ($gambarStatus) $fileName = UploadFileLibrary::uploadImage($gambarStatus, $path);
 
         $data = [
-            'tanggal_update'        => date("Y-m-d H:i:s"),
+            'tanggal_update'        => $dataPost['tanggal_update'] ?? date('Y-m-d H:i:s'),
             'unit_status_harga_id'  => $dataPost['unit_status_harga_id'],
             'catatan'               => $dataPost['catatan'] ?? '',
             'gambar_status'         => $fileName ?? NULL,
