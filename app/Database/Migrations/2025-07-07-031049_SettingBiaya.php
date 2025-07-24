@@ -24,6 +24,10 @@ class SettingBiaya extends Migration
             'upah_mekanik' => [
                 'type'       => 'DOUBLE',
             ],
+            'sharing' => [
+                'type'           => 'INT',
+                'constraint'     => 11,
+            ],
             'cabang_id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
