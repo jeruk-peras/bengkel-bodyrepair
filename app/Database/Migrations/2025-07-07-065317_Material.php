@@ -26,8 +26,7 @@ class Material extends Migration
                 'type'       => 'DOUBLE',
             ],
             'stok' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
+                'type'           => 'FLOAT',
             ],
             'satuan_id' => [
                 'type'           => 'INT',

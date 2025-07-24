@@ -26,8 +26,7 @@ class MaterialMasukDetail extends Migration
                 'type'       => 'DOUBLE',
             ],
             'stok_masuk' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
+                'type'           => 'FLOAT',
             ],
         ]);
         $this->forge->addKey('id_material_masuk_detail', true);
