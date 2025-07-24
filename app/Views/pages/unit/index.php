@@ -380,7 +380,7 @@
 <!-- modal pemakaian produk -->
 <div class="modal fade" id="modal-material-data" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-sm-down modal-fullscreen-lg-down modal-fullscreen-md-down">
-        <div class="modal-content">
+        <div class="modal-content" style="height: 100vh;">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">Form Penggunaan Material</h1>
                 <button type="button" id="close-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
