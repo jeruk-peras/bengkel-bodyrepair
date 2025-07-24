@@ -27,7 +27,8 @@
                         <input type="date" id="tanggal_awal" name="tanggal_awal" class="form-control form-control-sm me-2" value="<?= esc($tanggal_awal ?? '') ?>">
                         <span class="me-2">s/d</span>
                         <input type="date" id="tanggal_akhir" name="tanggal_akhir" class="form-control form-control-sm me-2" value="<?= esc($tanggal_akhir ?? '') ?>">
-                        <button type="submit" class="btn btn-sm btn-primary" id="btn-filter">Filter</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2" id="btn-filter">Filter</button>
+                        <button type="button" class="btn btn-sm btn-primary" id="btn-print">Print</button>
                     </form>
                 </div>
             </div>
@@ -42,6 +43,14 @@
         </div>
     </div>
 </div>
+<script src="<?= base_url('/assets/js/jquery.PrintArea.js'); ?>"></script>
+<script>
+    $(document).ready(function() {
+        $('#btn-print').click(function() {
+            $('#data-closingan').printArea();
+        });
+    });
+</script>
 <script>
     $('#filter-form').submit(function(e) {
         e.preventDefault();
