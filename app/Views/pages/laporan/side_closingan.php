@@ -4,7 +4,7 @@
               <td colspan="4" style="text-align:center;font-weight:bold;font-size:20px;">
                   PT. NUR LISAN SAKTI<br>
                   PERHITUNGAN CLOSNG<br>
-                  Periode <?= strtoupper(date('F Y')); ?>
+                  PERIODE <?= strtoupper(date('F Y')); ?>
               </td>
           </tr>
           <tr>
@@ -54,7 +54,7 @@
           </tr>
           <tr>
               <td>% Pemakaian Bahan</td>
-              <td style="text-align:right;"><?= number_format(($sharing / $total) * 1, 2) ?>%</td>
+              <td style="text-align:right;"><?= number_format(($total / $sharing) * 1, 2) ?>%</td>
           </tr>
           <tr>
               <td>Cost Perpanel</td>

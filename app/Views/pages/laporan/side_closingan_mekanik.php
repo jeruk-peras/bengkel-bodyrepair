@@ -1,3 +1,12 @@
+<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
+    <tr>
+        <td colspan="4" style="text-align:center;font-weight:bold;font-size:20px;">
+            PT. NUR LISAN SAKTI<br>
+            PERHITUNGAN CLOSNG MEKANIK<br>
+        </td>
+    </tr>
+</table>
+
 <table class="table align-middle mb-0" id="datatable" style="width: 100%;">
     <thead class="table-light">
         <tr>
@@ -30,8 +39,8 @@
                     <td class="text-end"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="<?= $s['harga_status'] ?> * jml panel">Rp<?= number_format($s['total_harga_status']); ?></span></td>
                 <?php endforeach  ?>
             </tr>
-        <?php $total_panel += $row['jumlah_panel'];  ?>
-        <?php endforeach ; ?>
+            <?php $total_panel += $row['jumlah_panel'];  ?>
+        <?php endforeach; ?>
         <tr>
             <th class="text-end" colspan="5 ">TOTAL</th>
             <th class="text-center"><?= round($total_panel, 2) ?></th>
