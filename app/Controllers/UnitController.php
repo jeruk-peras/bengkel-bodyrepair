@@ -105,9 +105,10 @@ class UnitController extends BaseController
         $dataStatus = [];
         foreach ($data as $row) {
             $dataStatus[] = [
-                'nama_status' => $row['nama_status'],
-                'harga_status' => $row['harga_status'],
-                'unit_id' => $id_unit
+                'nama_status'   => $row['nama_status'],
+                'harga_status'  => $row['harga_status'],
+                'urutan'        => $row['urutan'],
+                'unit_id'       => $id_unit
             ];
         }
 
