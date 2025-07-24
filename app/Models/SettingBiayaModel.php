@@ -42,6 +42,10 @@ class SettingBiayaModel extends Model
             'rules' => 'required|numeric',
             'label' => 'Upah Mekanik',
         ],
+        'sharing' => [
+            'rules' => 'required|integer|max_length[3]',
+            'label' => 'Sharing',
+        ],
         'cabang_id' => [
             'rules' => 'required|integer|is_unique[setting_biaya.cabang_id,id_setting_biaya,{id_setting_biaya}]',
             'label' => 'Cabang',
@@ -60,6 +64,11 @@ class SettingBiayaModel extends Model
         'upah_mekanik' => [
             'required' => 'Field {field} wajib diisi.',
             'numeric'  => 'Field {field} harus berupa angka.',
+        ],
+        'sharing' => [
+            'required'   => 'Field {field} wajib diisi.',
+            'integer'    => 'Field {field} harus berupa angka bulat.',
+            'max_length' => 'Field {field} maksimal 3 digit.',
         ],
         'cabang_id' => [
             'required'   => 'Field {field} wajib diisi.',

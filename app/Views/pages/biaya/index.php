@@ -35,6 +35,7 @@
                             <th>Diskon</th>
                             <th>Harga /panel</th>
                             <th>Upah Mekanik</th>
+                            <th>Sharing</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -57,23 +58,28 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="invalid-feedback" id="invalid_cabang_id"></div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="diskon" class="form-label required">Diskon</label>
                             <input type="text" name="diskon" class="form-control" id="diskon" placeholder="Diskon">
                             <div class="invalid-feedback" id="invalid_diskon"></div>
-                            <div class="form-text">*untuk diskon masukan angka saja, jangan sertakan %</div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="harga_panel" class="form-label required">Harga /panel</label>
                             <input type="text" name="harga_panel" class="form-control" id="harga_panel" placeholder="Harga /panel">
                             <div class="invalid-feedback" id="invalid_harga_panel"></div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="upah_mekanik" class="form-label required">Upah Mekanik</label>
                             <input type="text" name="upah_mekanik" class="form-control" id="upah_mekanik" placeholder="Upah Mekanik">
                             <div class="invalid-feedback" id="invalid_upah_mekanik"></div>
                         </div>
+                        <div class="col-md-3">
+                            <label for="sharing" class="form-label required">Sharing</label>
+                            <input type="text" name="sharing" class="form-control" id="sharing" placeholder="Sharing">
+                            <div class="invalid-feedback" id="invalid_sharing"></div>
+                        </div>
                     </div>
+                    <div class="form-text">*untuk diskon dan sharing masukan angka saja, jangan sertakan %</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

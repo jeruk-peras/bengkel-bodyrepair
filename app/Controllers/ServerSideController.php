@@ -412,7 +412,7 @@ class ServerSideController extends BaseController
     {
         $table = 'setting_biaya';
         $primaryKey = 'id_setting_biaya';
-        $columns = ['setting_biaya.id_setting_biaya', 'setting_biaya.diskon', 'setting_biaya.harga_panel', 'setting_biaya.upah_mekanik', 'cabang.nama_cabang'];
+        $columns = ['setting_biaya.id_setting_biaya', 'setting_biaya.diskon', 'setting_biaya.harga_panel', 'setting_biaya.upah_mekanik', 'setting_biaya.sharing', 'cabang.nama_cabang'];
         $orderableColumns = ['setting_biaya.diskon', 'setting_biaya.harga_panel', 'setting_biaya.upah_mekanik'];
         $searchableColumns = ['setting_biaya.diskon', 'setting_biaya.harga_panel', 'setting_biaya.upah_mekanik'];
         $defaultOrder = ['setting_biaya.diskon', 'ASC'];
@@ -452,6 +452,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['diskon'] . '%'),
                 htmlspecialchars('Rp ' . number_format($row['harga_panel'])),
                 htmlspecialchars('Rp ' . number_format($row['upah_mekanik'])),
+                htmlspecialchars($row['sharing'] . '%'),
             ];
         }
 

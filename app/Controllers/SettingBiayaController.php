@@ -34,6 +34,7 @@ class SettingBiayaController extends BaseController
             'diskon' => $data['diskon'],
             'harga_panel' => $data['harga_panel'],
             'upah_mekanik' => $data['upah_mekanik'],
+            'sharing' => $data['sharing'],
             'cabang_id'     => $this->id_cabang
         ];
 
@@ -75,6 +76,7 @@ class SettingBiayaController extends BaseController
             'diskon' => $data['diskon'],
             'harga_panel' => $data['harga_panel'],
             'upah_mekanik' => $data['upah_mekanik'],
+            'sharing' => $data['sharing'],
             'cabang_id'     => $this->id_cabang
         ];
 
