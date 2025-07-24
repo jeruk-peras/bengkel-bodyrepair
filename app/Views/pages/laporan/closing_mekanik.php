@@ -49,6 +49,15 @@
         $('#btn-print').click(function() {
             $('#data-closingan').printArea();
         });
+
+        var filterTanggal = localStorage.getItem('filterTanggal');
+        if (filterTanggal) {
+            const data = JSON.parse(filterTanggal);
+
+            // Isi ulang field berdasarkan name
+            $('input[name="tanggal_awal"]').val(data.tanggal_awal);
+            $('input[name="tanggal_akhir"]').val(data.tanggal_akhir);
+        }
     });
 </script>
 <script>

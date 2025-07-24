@@ -97,10 +97,17 @@ class AccountController extends BaseController
                 $data = $builder->get()->getRowArray();
                 $results = $builder->get()->getNumRows();
             }
+
+            // ambil data diskon dan sharing dari setting_biaya
+            $builder = $this->db->table('setting_biaya')->select('diskon, sharing');
+            $builder->where('cabang_id', $id);
+            $dataBiaya = $builder->get()->getRowArray();
+
             if ($results > 0) {
                 session()->set('selected_akses', $data['cabang_id']);
-                return ResponseJSONCollection::success([$data], 'Akses Cabang ditemukan.', ResponseInterface::HTTP_OK);
+                return ResponseJSONCollection::success([$data, 'biaya' => $dataBiaya], 'Akses Cabang ditemukan.', ResponseInterface::HTTP_OK);
             }
+
             return ResponseJSONCollection::error([], 'Akses Cabang tidak ditemukan.', ResponseInterface::HTTP_BAD_REQUEST);
         } catch (DatabaseException $e) {
             return ResponseJSONCollection::error([$e], 'Terjadi kesalahan.', ResponseInterface::HTTP_BAD_REQUEST);

@@ -62,6 +62,25 @@
         $('#btn-print').click(function() {
             $('#data-closingan').printArea();
         });
+
+        var filterTanggal = localStorage.getItem('filterTanggal');
+        if (filterTanggal) {
+            const data = JSON.parse(filterTanggal);
+
+            // Isi ulang field berdasarkan name
+            $('input[name="tanggal_awal"]').val(data.tanggal_awal);
+            $('input[name="tanggal_akhir"]').val(data.tanggal_akhir);
+        }
+
+        // load data diskon dan sharing dari localStorage
+        var diskon = localStorage.getItem('diskon');
+        var sharing = localStorage.getItem('sharing');
+        if (diskon) {
+            $('input[name="diskon"]').val(diskon);
+        }
+        if (sharing) {
+            $('input[name="sharing"]').val(sharing);
+        }
     });
 </script>
 <script>

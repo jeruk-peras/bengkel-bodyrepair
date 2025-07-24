@@ -138,7 +138,17 @@
             },
             success: function(response) {
                 alertMesage(response.status, response.message);
-                window.location.reload()
+                // set data localStorage data diskon dan sharing
+                if (response.data.biaya) {
+                    localStorage.setItem('diskon', response.data.biaya.diskon);
+                    localStorage.setItem('sharing', response.data.biaya.sharing);
+                } else {
+                    localStorage.removeItem('diskon');
+                    localStorage.removeItem('sharing');
+                }
+
+                // reload page
+                window.location.reload();
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
