@@ -189,7 +189,7 @@ class UnitController extends BaseController
         // validasi gambar
         $setRules = [
             'gambar_status' => [
-                'rules'  => 'uploaded[gambar_status]|max_size[gambar_status,2048]|is_image[gambar_status]|mime_in[gambar_status,image/jpg,image/jpeg,image/png,image/gif]',
+                'rules'  => 'max_size[gambar_status,2048]|is_image[gambar_status]|mime_in[gambar_status,image/jpg,image/jpeg,image/png,image/gif]',
                 'errors' => [
                     'uploaded' => 'Maaf kolom gambar kosong!.',
                     'max_size' => 'Ukuran gambar maksimal 2MB.',
@@ -217,7 +217,7 @@ class UnitController extends BaseController
         $data = [
             'tanggal_update'        => date("Y-m-d H:i:s"),
             'unit_status_harga_id'  => $dataPost['unit_status_harga_id'],
-            'catatan'               => $dataPost['catatan'],
+            'catatan'               => $dataPost['catatan'] ?? '',
             'gambar_status'         => $fileName ?? NULL,
             'by_user'               => (session('nama_user') ?? 'Admin') . '-' . (session('role') ?? ''),
             'unit_id'               => $id,

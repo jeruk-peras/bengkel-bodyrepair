@@ -325,12 +325,12 @@
                                 <div class="invalid-feedback" id="invalid_tanggal_update"></div>
                             </div>
                             <div class="mb-3 col-12">
-                                <label for="catatan" class="form-label required">Catatan</label>
+                                <label for="catatan" class="form-label">Catatan</label>
                                 <textarea type="date" name="catatan" class="form-control form-control-sm" id="catatan"></textarea>
                                 <div class="invalid-feedback" id="invalid_catatan"></div>
                             </div>
                             <div class="mb-3 col-12">
-                                <label for="gambar_status" class="form-label required">Upload Foto</label>
+                                <label for="gambar_status" class="form-label">Upload Foto</label>
                                 <input type="file" name="gambar_status" accept="image/*;capture=camera"" class=" form-control form-control-sm" id="gambar_status">
                                 <div class="invalid-feedback" id="invalid_gambar_status"></div>
                             </div>
