@@ -176,7 +176,7 @@ class ServerSideController extends BaseController
         }
     }
 
-     public function fetchAsuransi()
+    public function fetchAsuransi()
     {
         $modelAsuransi = new AsuransiModel();
         try {
@@ -1034,6 +1034,192 @@ class ServerSideController extends BaseController
             return ResponseJSONCollection::success(['html' => $html, 'data' => $data], 'Berhasil fetch data', ResponseInterface::HTTP_OK);
         } catch (DatabaseException $e) {
             return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function epoxy()
+    {
+        $table = 'cetak';
+        $primaryKey = 'id_cetak';
+        $columns = ['cetak.id_cetak', 'cetak.unit_id', 'cabang.nama_cabang', 'unit.nomor_polisi', 'unit.nomor_spp', 'unit.model_unit', 'asuransi.nama_asuransi'];
+        $orderableColumns = ['cetak.unit_id', 'unit.nomor_polisi', 'unit.nomor_spp', 'unit.model_unit', 'asuransi.nama_asuransi'];
+        $searchableColumns = ['cetak.unit_id', 'unit.nomor_polisi', 'unit.nomor_spp', 'unit.model_unit', 'asuransi.nama_asuransi'];
+        $defaultOrder = ['cetak.unit_id', 'ASC'];
+
+        $join = [
+            [
+                'table' => 'unit',
+                'on' => 'unit.id_unit = cetak.unit_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'asuransi',
+                'on' => 'asuransi.id_asuransi = unit.asuransi_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = unit.cabang_id',
+                'type' => ''
+            ],
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'cabang.id_cabang IN' => session('selected_akses'), 
+                'cetak.kategori_cetak' => 'epoxy'
+            ];
+        } else {
+            $where = [
+                'cabang.id_cabang IN' => [session('selected_akses')],
+                'cetak.kategori_cetak' => 'epoxy'
+            ];
+        }
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_cetak']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['nomor_spp']),
+                htmlspecialchars($row['nomor_polisi']),
+                htmlspecialchars($row['nama_asuransi']),
+                htmlspecialchars($row['model_unit']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    } 
+    
+     public function gandeng()
+    {
+        $table = 'cetak';
+        $primaryKey = 'id_cetak';
+        $columns = ['cetak.id_cetak', 'cetak.unit_id', 'cabang.nama_cabang', 'unit.nomor_polisi', 'unit.nomor_spp', 'unit.model_unit', 'asuransi.nama_asuransi'];
+        $orderableColumns = ['cetak.unit_id', 'unit.nomor_polisi', 'unit.nomor_spp', 'unit.model_unit', 'asuransi.nama_asuransi'];
+        $searchableColumns = ['cetak.unit_id', 'unit.nomor_polisi', 'unit.nomor_spp', 'unit.model_unit', 'asuransi.nama_asuransi'];
+        $defaultOrder = ['cetak.unit_id', 'ASC'];
+
+        $join = [
+            [
+                'table' => 'unit',
+                'on' => 'unit.id_unit = cetak.unit_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'asuransi',
+                'on' => 'asuransi.id_asuransi = unit.asuransi_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = unit.cabang_id',
+                'type' => ''
+            ],
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'cabang.id_cabang IN' => session('selected_akses'), 
+                'cetak.kategori_cetak' => 'gandeng'
+            ];
+        } else {
+            $where = [
+                'cabang.id_cabang IN' => [session('selected_akses')],
+                'cetak.kategori_cetak' => 'gandeng'
+            ];
+        }
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_cetak']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['nomor_spp']),
+                htmlspecialchars($row['nomor_polisi']),
+                htmlspecialchars($row['nama_asuransi']),
+                htmlspecialchars($row['model_unit']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    } 
+
+    public function fetchNoSPP()
+    {
+        $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
+        $data = $this->db->table('unit')
+            ->select('unit.id_unit, unit.nomor_spp, unit.nomor_polisi, asuransi.nama_asuransi, unit.model_unit')
+            ->join('asuransi', 'asuransi.id_asuransi = unit.asuransi_id')
+            ->whereIn('unit.cabang_id', $id_cabang)
+            ->get()->getResultArray();
+
+        return ResponseJSONCollection::success($data, 'Data fetched successfully', ResponseInterface::HTTP_OK);
+    }
+
+    public function fetchCetakFoto(int $id)
+    {
+        try {
+            $data = $this->db->table('cetak_gambar')->select('id_cetak_gambar, gambar')->where('cetak_id', $id)->get()->getResultArray();
+
+            return ResponseJSONCollection::success(['url' => base_url('assets/images/epoxy/'), 'foto' => $data], 'Fetch Foto berhasil.', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function deleteCetakFoto(int $id)
+    {
+        try {
+            // cek apakah id_cetak_gambar ada dan hapus unlink gambar
+            $cetakGambar = $this->db->table('cetak_gambar')->where('id_cetak_gambar', $id)->get()->getRowArray();
+            if (!$cetakGambar) {
+                return ResponseJSONCollection::error([], 'Foto tidak ditemukan.', ResponseInterface::HTTP_NOT_FOUND);
+            }
+
+            if (file_exists(FCPATH . 'assets/images/epoxy/' . $cetakGambar['gambar'])) {
+                unlink(FCPATH . 'assets/images/epoxy/' . $cetakGambar['gambar']);
+            } else {
+                return ResponseJSONCollection::error([], 'Foto tidak ditemukan di server.', ResponseInterface::HTTP_NOT_FOUND);
+            }
+
+            $data = $this->db->table('cetak_gambar')->where('id_cetak_gambar', $id)->delete();
+
+            return ResponseJSONCollection::success([], 'Delete Foto berhasil.', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

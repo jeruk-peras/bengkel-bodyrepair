@@ -15,6 +15,7 @@ $routes->post('/login', 'AccountController::validLogin');
 $routes->get('/logout', 'AccountController::logout');
 
 $routes->get('/dashboard', 'DashboardController::index');
+$routes->get('/dashboard/test', 'DashboardController::test');
 
 // routes side server
 $routes->group('/api', function ($routes) {
@@ -28,6 +29,9 @@ $routes->group('/api', function ($routes) {
     $routes->get('(:num)/progres-status-unit', 'ServerSideController::fetchProsesStatusUnit/$1');
     $routes->get('(:num)/material-unit', 'ServerSideController::fetchMaterialUnit/$1');
     $routes->get('(:num)/riwayat-unit', 'ServerSideController::fetchRiwayatUnit/$1');
+    $routes->get('no-spp', 'ServerSideController::fetchNoSPP');
+    $routes->get('(:num)/cetak-foto', 'ServerSideController::fetchCetakFoto/$1');
+    $routes->post('(:num)/cetak-foto/delete', 'ServerSideController::deleteCetakFoto/$1');
 });
 
 // routes dashboard
@@ -52,6 +56,8 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('material', 'ServerSideController::material');
     $routes->post('material-masuk', 'ServerSideController::materialMasuk');
     $routes->post('unit', 'ServerSideController::unit');
+    $routes->post('epoxy', 'ServerSideController::epoxy');
+    $routes->post('gandeng', 'ServerSideController::gandeng');
 });
 
 
@@ -223,4 +229,22 @@ $routes->group('/laporan', function ($routes) {
 
     $routes->post('closing-mekanik', 'LaporanController::sideDataClosingMekanik');
     $routes->post('closingan', 'LaporanController::sideDataClosingan');
+});
+
+$routes->group('/cetak', function ($routes) {
+    
+    $routes->get('epoxy', 'CetakController::epoxy');
+    $routes->get('epoxy/add', 'CetakController::addEpoxy');
+    $routes->post('epoxy/add', 'CetakController::saveEpoxy', ['filter' => ['selectCabang']]);
+    $routes->get('epoxy/(:num)/detail', 'CetakController::detailEpoxy/$1');
+    
+    $routes->get('gandeng', 'CetakController::gandeng');
+    $routes->get('gandeng/add', 'CetakController::addGandeng');
+    $routes->post('gandeng/add', 'CetakController::saveGandeng', ['filter' => ['selectCabang']]);
+    $routes->get('gandeng/(:num)/detail', 'CetakController::detailGandeng/$1');
+    
+    $routes->get('pemakaian-bahan', 'CetakController::pemakaianBahan');
+    
+    $routes->post('uploadfoto', 'CetakController::uploadFoto');
+    $routes->post('(:num)/delete', 'CetakController::delete/$1', ['filter' => ['selectCabang']]);
 });

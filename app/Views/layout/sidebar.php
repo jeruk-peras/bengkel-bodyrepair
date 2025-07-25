@@ -101,6 +101,18 @@
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-file"></i></div>
+                <div class="menu-title">Cetak</div>
+            </a>
+            <ul class="mm-collapse">
+                <li><a href="<?= base_url('cetak/epoxy'); ?>"><i class='bx bx-radio-circle'></i>Foto Epoxy</a></li>
+                <li><a href="<?= base_url('cetak/gandeng'); ?>"><i class='bx bx-radio-circle'></i>Foto Gandeng</a></li>
+                <li><a href="<?= base_url('cetak/pemakaian-bahan'); ?>"><i class='bx bx-radio-circle'></i>Pemakaian Bahan</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bx bx-file"></i></div>
                 <div class="menu-title">Laporan</div>
             </a>
             <ul class="mm-collapse">

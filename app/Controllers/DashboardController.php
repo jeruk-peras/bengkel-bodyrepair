@@ -276,4 +276,11 @@ class DashboardController extends BaseController
             return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Keslahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
         }
     }
+
+    public function test(){
+        $data = [
+            'title' => 'Test Cropper',
+        ];
+        return view('pages/cetak/test', $data);
+    }
 }
