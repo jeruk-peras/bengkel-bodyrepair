@@ -29,7 +29,7 @@ class UnitModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'nama_so'     => 'required|max_length[100]',
+        'nama_sa'     => 'required|max_length[100]',
         'nomor_polisi'      => 'required|max_length[50]',
         'model_unit'        => 'required|max_length[100]',
         'warna_unit'        => 'required|max_length[100]',
@@ -51,7 +51,7 @@ class UnitModel extends Model
         'cabang_id'         => 'required|integer',
     ];
     protected $validationMessages   = [
-        'nama_so' => [
+        'nama_sa' => [
             'required'   => 'Nama so wajib diisi.',
             'max_length' => 'Nama so maksimal 100 karakter.',
         ],

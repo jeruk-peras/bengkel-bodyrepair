@@ -19,7 +19,7 @@ class Unit extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],
-            'nama_so' => [
+            'nama_sa' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],

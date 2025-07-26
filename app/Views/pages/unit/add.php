@@ -29,9 +29,9 @@
                 <?= csrf_field(); ?>
                 <div class="row g-3 mb-3">
                     <div class="col-sm-12 col-md-12 col-12">
-                        <label for="nama_so" class="form-label required">Nama SO</label>
-                        <input type="text" name="nama_so" class="form-control" id="nama_so" placeholder="Nama So">
-                        <div class="invalid-feedback" id="invalid_nama_so"></div>
+                        <label for="nama_sa" class="form-label required">Nama SA</label>
+                        <input type="text" name="nama_sa" class="form-control" id="nama_sa" placeholder="Nama SA">
+                        <div class="invalid-feedback" id="invalid_nama_sa"></div>
                     </div>
                 </div>
 

@@ -52,7 +52,7 @@ class UnitController extends BaseController
         $data = $this->request->getPost(); // mengambil post data
 
         $data = [
-            'nama_so'           => $data['nama_so'],
+            'nama_sa'           => $data['nama_sa'],
             'nomor_polisi'      => $data['nomor_polisi'],
             'model_unit'        => $data['model_unit'],
             'warna_unit'        => $data['warna_unit'],
@@ -145,7 +145,7 @@ class UnitController extends BaseController
         $data = $this->request->getPost(); // mengambil post data
 
         $data = [
-            'nama_so'           => $data['nama_so'],
+            'nama_sa'           => $data['nama_sa'],
             'nomor_polisi'      => $data['nomor_polisi'],
             'model_unit'        => $data['model_unit'],
             'warna_unit'        => $data['warna_unit'],
