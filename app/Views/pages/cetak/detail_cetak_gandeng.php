@@ -204,9 +204,20 @@
         $('#cropButton').on('click', function() {
             if (!cropper) return;
 
+            const imageData = cropper.getImageData();
+            const cropBoxData = cropper.getCropBoxData();
+
+            // Hitung skala asli terhadap canvas
+            const scaleX = imageData.naturalWidth / imageData.width;
+            const scaleY = imageData.naturalHeight / imageData.height;
+
+            // Ukuran asli hasil crop
+            const actualWidth = cropBoxData.width * scaleX;
+            const actualHeight = cropBoxData.height * scaleY;
+
             const canvas = cropper.getCroppedCanvas({
-                width: 300,
-                height: 300,
+                width: actualWidth,
+                height: actualHeight
             });
 
             canvas.toBlob(function(blob) {

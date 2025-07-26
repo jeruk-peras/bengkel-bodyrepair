@@ -46,9 +46,9 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
-        
+
         <li class="btn btn-primary">
-            <a href="<?= base_url('unit/add'); ?>" >
+            <a href="<?= base_url('unit/add'); ?>">
                 <div class="parent-icon text-light"><i class='bx bx-plus'></i></div>
                 <div class="menu-title text-light">Unit Baru</div>
             </a>
@@ -78,6 +78,7 @@
             <ul class="mm-collapse">
                 <li><a href="<?= base_url('material'); ?>"><i class='bx bx-radio-circle'></i>Data Material</a></li>
                 <li><a href="<?= base_url('material-masuk'); ?>"><i class='bx bx-radio-circle'></i>Material Masuk</a></li>
+                <li><a href="<?= base_url('material-keluar'); ?>"><i class='bx bx-radio-circle'></i>Material Keluar</a></li>
             </ul>
         </li>
 

@@ -351,15 +351,11 @@
                                         <th>Material</th>
                                         <th>Jumlah</th>
                                         <th>Satuan</th>
-                                        <th>Penggunaan</th>
                                         <th>Tanggal</th>
                                     </tr>
                                 </thead>
                                 <tbody id="material-unit"></tbody>
                             </table>
-                        </div>
-                        <div class="mb-2 mt-3 text-end">
-                            <button class="btn btn-primary" data-bs-target="#modal-material-data" data-bs-toggle="modal"><i class="bx bx-plus me-0"></i> Tambah</button>
                         </div>
                     </div>
 
@@ -372,66 +368,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 <button type="button" data-href="" class="btn btn-primary" id="btn-selesai">Unit Selesai</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- modal pemakaian produk -->
-<div class="modal fade" id="modal-material-data" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-sm-down modal-fullscreen-lg-down modal-fullscreen-md-down">
-        <div class="modal-content" style="height: 100vh;">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Form Penggunaan Material</h1>
-                <button type="button" id="close-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post" id="form-add-material">
-                    <?= csrf_field(); ?>
-                    <div class="row p-2">
-                        <div class="mb-3 col-sm-8 col-md-8 col-8">
-                            <label for="mekanik_id" class="form-label required">Mekanik</label>
-                            <select class="form-select form-select-sm" name="mekanik_id" id="mekanik_id" required></select>
-                        </div>
-                        <div class="mb-3 col-sm-4 col-md-4 col-4">
-                            <label for="tanggal" class="form-label required">Tanggal</label>
-                            <input type="date" name="tanggal" class="form-control form-control-sm" id="tanggal" required value="<?= date('Y-m-d'); ?>">
-                        </div>
-                    </div>
-
-                    <div class="row p-2" id="row-material">
-                        <div class="col-sm-12 col-md-12 col-lg-6 col-12">
-                            <label class="form-label required">Material</label>
-                            <select class="form-select form-select-sm select-material" name="material_id[]" data-placeholder="Material" id="material_id" required></select>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-2 col-6">
-                            <label class="form-label required">Harga</label>
-                            <div class="position-relative input-icon">
-                                <input type="text" name="harga[]" class="form-control form-control-sm harga-material" readonly placeholder="xxxxxx">
-                                <span class="position-absolute top-50 translate-middle-y">Rp </span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3 col-lg-2 col-6">
-                            <label class="form-label required">Jumlah</label>
-                            <div class="position-relative input-icon">
-                                <span class="position-absolute top-50 translate-middle-y stok-material"></span>
-                                <input type="text" inputmode="numeric" name="jumlah[]" class="form-control form-control-sm" id="jumlah" required style="padding-left: 2.5rem; padding-right: 1.90rem;">
-                                <span class="position-absolute top-50 translate-middle-y satuan-material" style="right: 15px !important; left: unset;"></span>
-                            </div>
-                            <div class="form-text text-danger" id="invalid_jumlah"></div>
-                        </div>
-                        <div class="col-sm-10 col-md-4 col-lg-1 col-10">
-                            <label class="form-label required">Detail</label>
-                            <input type="text" name="detail_jumlah[]" class="form-control form-control-sm" id="detail_jumlah" required>
-                        </div>
-                        <div class="col align-self-end">
-                            <button type="button" class="btn w-100 btn-primary btn-sm" id="btn-add-row">+</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" id="btn-material">Tambah Material</button>
             </div>
         </div>
     </div>

@@ -676,8 +676,8 @@ class ServerSideController extends BaseController
         $table = 'unit';
         $primaryKey = 'id_unit';
         $columns = ['unit.id_unit', 'unit.nama_so', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'cabang.nama_cabang'];
-        $orderableColumns = ['unit.nama_so', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'unit.asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
-        $searchableColumns = ['unit.nama_so', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'unit.asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
+        $orderableColumns = ['unit.nama_so', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
+        $searchableColumns = ['unit.nama_so', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
         $defaultOrder = ['unit.diskon', 'ASC'];
 
         $join = [
@@ -912,7 +912,6 @@ class ServerSideController extends BaseController
                         <td>' . $row['nama_material'] . '</td>
                         <td>' . $row['jumlah'] . '</td>
                         <td>' . $row['nama_satuan'] . '</td>
-                        <td>' . $row['detail_jumlah'] . '</td>
                         <td>' . $row['tanggal'] . '</td>
                     </tr>';
             }

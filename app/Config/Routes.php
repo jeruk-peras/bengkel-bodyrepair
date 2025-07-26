@@ -204,6 +204,14 @@ $routes->group('/material-masuk', function ($routes) {
     $routes->post('(:num)/delete', 'MaterialMasukController::delete/$1');
 });
 
+$routes->group('/material-keluar', function ($routes) {
+    $routes->get('/', 'MaterialKeluarController::index');
+    $routes->post('(:num)/add', 'MaterialkeluarController::save/$1');
+    $routes->get('(:num)/detail', 'MaterialkeluarController::fetchMaterialUnit/$1');
+
+    $routes->get('(:num)/delete', 'MaterialkeluarController::delete/$1');
+});
+
 // route unit
 $routes->group('/unit', function ($routes) {
     $routes->get('/', 'UnitController::index');

@@ -43,7 +43,7 @@ class MaterialModel extends Model
         ],
         'stok' => [
             'label' => 'Stok',
-            'rules' => 'required|integer',
+            'rules' => 'required|numeric',
         ],
         'satuan_id' => [
             'label' => 'Satuan',
@@ -72,7 +72,7 @@ class MaterialModel extends Model
         ],
         'stok' => [
             'required' => 'Stok wajib diisi.',
-            'integer' => 'Stok harus berupa angka bulat.',
+            'numeric' => 'Stok harus berupa angka bulat.',
         ],
         'satuan_id' => [
             'required' => 'Satuan wajib diisi.',

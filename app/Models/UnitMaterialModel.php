@@ -32,8 +32,8 @@ class UnitMaterialModel extends Model
         'material_id'   => 'required|integer',
         'tanggal'       => 'required|valid_date[Y-m-d H:i:s]',
         'harga'         => 'required|numeric',
-        'jumlah'        => 'required|integer',
-        'detail_jumlah' => 'required|string|max_length[100]',
+        'jumlah'        => 'required|numeric',
+        'total_harga'   => 'required|numeric',
         'mekanik_id'    => 'required|integer',
         'unit_id'       => 'required|integer',
     ];
@@ -52,12 +52,11 @@ class UnitMaterialModel extends Model
         ],
         'jumlah' => [
             'required' => 'Jumlah harus diisi.',
-            'integer'  => 'Jumlah harus berupa angka.',
+            'numeric'  => 'Jumlah harus berupa angka.',
         ],
-        'detail_jumlah' => [
+        'total_harga' => [
             'required'   => 'Detail jumlah harus diisi.',
-            'string'     => 'Detail jumlah harus berupa teks.',
-            'max_length' => 'Detail jumlah maksimal 100 karakter.',
+            'numeric'  => 'Jumlah harus berupa angka.',
         ],
         'mekanik_id' => [
             'required' => 'Mekanik harus diisi.',
