@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Libraries\ResponseJSONCollection;
 use App\Libraries\UploadFileLibrary;
+use App\Models\JenisModel;
+use App\Models\UnitMaterialModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class CetakController extends BaseController
@@ -52,7 +54,7 @@ class CetakController extends BaseController
 
     public function detailEpoxy(int $id)
     {
-         // cek apakah kategori cetak adalah epoxy
+        // cek apakah kategori cetak adalah epoxy
         $cetak = $this->db->table('cetak')->select('kategori_cetak')->where('id_cetak', $id)->get()->getRowArray();
         if (!$cetak || $cetak['kategori_cetak'] !== 'epoxy') {
             return redirect()->to(base_url('cetak/epoxy'));
@@ -209,11 +211,110 @@ class CetakController extends BaseController
         }
     }
 
-    public function pemakaianBahan()
+    public function listUnit()
     {
         $data = [
             'title' => $this->title . ' Pemakaian Bahan',
         ];
+        return view('pages/cetak/pemakaian_bahan', $data);
+    }
+
+    public function pemakaianBahan(int $id)
+    {
+        $data = [
+            'title' => $this->title . ' Pemakaian Bahan',
+        ];
+
+        $unit = $this->db->table('unit')->where('id_unit', $id)->get()->getRowArray();
+
+        $data['data'] = $unit;
         return view('pages/cetak/cetak_pemakaian_bahan', $data);
+    }
+
+    public function pemakaianBahanDetail(int $id)
+    {
+        $modelMaterial = new UnitMaterialModel();
+        try {
+            $html = '';
+
+            // get data jenis material yang digunakan, jadi tidak semua jenis akan didpatkan
+            $dataJenis =  $this->db->table('unit_material')
+                ->select('jenis.*')
+                ->join('material', 'material.id_material = unit_material.material_id', 'left')
+                ->join('jenis', 'jenis.id_jenis = material.jenis_id', 'left')
+                ->where('unit_material.unit_id', $id)->orderBy('jenis.nama_jenis', 'ASC')
+                ->groupBy('jenis.nama_jenis')->get()->getResultArray();
+
+            foreach ($dataJenis as $jenis) {
+                $html .= '
+                <tr style="background-color: darkgrey;">
+                    <th  colspan="5" >' . strtoupper($jenis['nama_jenis']) . '</th>
+                </tr>
+                <tr>
+                    <th>Nama Material</th>
+                    <th>Harga</th>
+                    <th>jml</th>
+                    <th>Total Harga</th>
+                    <th>Mekanik</th>
+                </tr>';
+
+                // get data material sesuai dengan jenisnya
+                $dataMaterial = $modelMaterial
+                    ->select('unit_material.*, material.nama_material, material.merek, material.harga, material.stok, satuan.nama_satuan, mekanik.nama_mekanik')
+                    ->join('mekanik', 'mekanik.id_mekanik = unit_material.mekanik_id', 'left')
+                    ->join('material', 'material.id_material = unit_material.material_id', 'left')
+                    ->join('satuan', 'satuan.id_satuan = material.satuan_id', 'left')
+                    ->where('unit_material.unit_id', $id)->where('material.jenis_id', $jenis['id_jenis'])
+                    ->orderBy('unit_material.tanggal', 'DESC')
+                    ->findAll();
+
+                $total_harga = 0;
+                $total_jumlah = 0;
+                foreach ($dataMaterial as $row) {
+                    $html .=
+                        '<tr>
+                            <td>' . $row['nama_material'] . '</td>
+                            <td class="text-end">Rp' . number_format($row['harga']) . '</td>
+                            <td class="text-center">' . $row['jumlah'] . '</td>
+                            <td class="text-end">Rp' . number_format($row['total_harga']) . '</td>
+                            <td>' . $row['nama_mekanik'] . '</td>
+                        </tr>';
+
+                    $total_harga += $row['total_harga'];
+                    $total_jumlah += $row['jumlah'];
+                }
+
+                $html .= '
+                 <tr>
+                    <th colspan="2" class="text-end">Total&nbsp;</th>
+                    <th class="text-center">' . $total_jumlah . '</th>
+                    <th class="text-end">Rp' . number_format($total_harga) . '</th>
+                    <th></th>
+                </tr>';
+            }
+
+
+
+            // $i = 1;
+            // foreach ($data as $row) {
+            //     $html .=
+            //         '<tr>
+            //             <td>' . $i++ . '</td>
+            //             <td>' . $row['nama_jenis'] . '</td>
+            //             <td>' . $row['nama_material'] . '</td>
+            //             <td>Rp' . $row['harga'] . '</td>
+            //             <td>' . $row['jumlah'] . '</td>
+            //             <td>' . $row['nama_satuan'] . '</td>
+            //             <td>Rp' . $row['total_harga'] . '</td>
+            //             <td>' . $row['tanggal'] . '</td>
+            //             <td><a href="/material-keluar/' . $row['id_unit_material'] . '/delete" class="btn btn-danger btn-sm btn-del"><i class="bx bx-trash me-0"></i></a></td>
+            //         </tr>';
+            // }
+
+
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $dataMaterial], 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
     }
 }

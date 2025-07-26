@@ -251,7 +251,9 @@ $routes->group('/cetak', function ($routes) {
     $routes->post('gandeng/add', 'CetakController::saveGandeng', ['filter' => ['selectCabang']]);
     $routes->get('gandeng/(:num)/detail', 'CetakController::detailGandeng/$1');
     
-    $routes->get('pemakaian-bahan', 'CetakController::pemakaianBahan');
+    $routes->get('pemakaian-bahan', 'CetakController::listUnit');
+    $routes->get('(:num)/pemakaian-bahan', 'CetakController::pemakaianBahan/$1');
+    $routes->get('(:num)/pemakaian-bahan-detail', 'CetakController::pemakaianBahanDetail/$1');
     
     $routes->post('uploadfoto', 'CetakController::uploadFoto');
     $routes->post('(:num)/delete', 'CetakController::delete/$1', ['filter' => ['selectCabang']]);
