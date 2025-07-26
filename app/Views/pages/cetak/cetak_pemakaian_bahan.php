@@ -9,8 +9,8 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="<?= base_url('dashboard'); ?>"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active">Cetak</li>
-                    <li class="breadcrumb-item active">Cetak Foto Epoxy</li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Foto Epoxy</li>
+                    <li class="breadcrumb-item active">Pemakaian Bahan</li>
+                    <li class="breadcrumb-item active" aria-current="page">Cetak Pemakaian Material</li>
                 </ol>
             </nav>
         </div>
