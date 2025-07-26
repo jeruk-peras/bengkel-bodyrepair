@@ -12,11 +12,21 @@
 
         filterTanggal = JSON.parse(filterTanggal);
 
+        var filterTahun = localStorage.getItem('filterTahun');
+        if (filterTahun) {
+            const data = JSON.parse(filterTahun);
+
+            // Isi ulang field berdasarkan name
+            $('#filtertahun').val(data.tahun)
+        }
+
+        filterTahun = JSON.parse(filterTahun);
+
         // Render grafik dengan nilai itu
         <?php if (is_array(session('selected_akses'))): ?>
-            grafikPendapatan();
+            grafikPendapatan(filterTahun);
         <?php endif; ?>
-        grafikPendapatanBulanan();
+        grafikPendapatanBulanan(filterTahun);
         grafikPemakaianBahan(filterTanggal);
         widgetData(filterTanggal);
         widgetClosing(filterTanggal);
@@ -27,22 +37,32 @@
         $('#filter-form').submit(function(e) {
             e.preventDefault();
 
+            localStorage.removeItem('filterTahun')
             localStorage.removeItem('filterTanggal')
 
             var formData = $(this).serializeArray();
-            const data = {};
+            const tanggal = {};
+            const tahun = {};
             formData.forEach(item => {
-                data[item.name] = item.value;
+                if (item.name == 'tahun') tahun[item.name] = item.value;
+                if (item.name !== 'tahun') tanggal[item.name] = item.value;
             });
 
             // Simpan ke localStorage (harus diubah ke string)
-            localStorage.setItem('filterTanggal', JSON.stringify(data));
+            localStorage.setItem('filterTanggal', JSON.stringify(tanggal));
+            localStorage.setItem('filterTahun', JSON.stringify(tahun));
 
             var filterTanggal = localStorage.getItem('filterTanggal');
 
             filterTanggal = JSON.parse(filterTanggal);
 
+            var filterTahun = localStorage.getItem('filterTahun');
+
+            filterTahun = JSON.parse(filterTahun);
+
             // Render grafik dengan nilai 
+            grafikPendapatan(filterTahun);
+            grafikPendapatanBulanan(filterTahun);
             grafikPemakaianBahan(filterTanggal);
             widgetData(filterTanggal);
             widgetClosing(filterTanggal);
@@ -50,13 +70,17 @@
 
         <?php if (is_array(session('selected_akses'))): ?>
             // grafik pendapatan
-            function grafikPendapatan() {
+            function grafikPendapatan(filterTahun) {
                 var series, title, categories;
                 $('#chart4').html('<div class="text-center p-5"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
                 $.ajax({
                     url: '<?= base_url('dashboard/grafik-pendapatan'); ?>',
-                    type: 'GET',
+                    type: 'POST',
                     dataType: 'json',
+                    data: {
+                        '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
+                        filterTahun
+                    },
                     success: function(response) {
                         if (response.status === 200) {
                             // Hapus chart sebelumnya jika sudah ada
@@ -132,13 +156,17 @@
         <?php endif; ?>
 
         // grafik pendapatan bulann
-        function grafikPendapatanBulanan() {
+        function grafikPendapatanBulanan(filterTahun) {
             var series, title, categories;
             $('#chart5').html('<div class="text-center p-5"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
             $.ajax({
                 url: '<?= base_url('dashboard/grafik-bulanan'); ?>',
-                type: 'GET',
+                type: 'POST',
                 dataType: 'json',
+                data: {
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
+                    filterTahun
+                },
                 success: function(response) {
                     if (response.status === 200) {
                         // Hapus chart sebelumnya jika sudah ada

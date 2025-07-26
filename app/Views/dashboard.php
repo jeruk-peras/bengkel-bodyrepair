@@ -7,6 +7,12 @@
         </div>
         <div class="ms-auto">
             <form class="d-flex align-items-center" method="POST" action="" id="filter-form">
+                <label for="tanggal_awal" class="me-2 mb-0">Tahun&nbsp;:</label>
+                <select name="tahun" id="filtertahun" class="form-select form-select-sm me-2">
+                    <?php for ($year = (int)date('Y'); 2020 <= $year; $year--): ?>
+                        <option value="<?= $year; ?>"><?= $year; ?></option>
+                    <?php endfor; ?>
+                </select>
                 <label for="tanggal_awal" class="me-2 mb-0">Tanggal&nbsp;:</label>
                 <input type="date" id="tanggal_awal" name="tanggal_awal" class="form-control form-control-sm me-2" value="<?= esc($tanggal_awal ?? '') ?>">
                 <span class="me-2">s/d</span>
@@ -117,6 +123,17 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-12 mx-auto">
+            <h6>Panduan Filter Dashboard</h6>
+            <ul>
+                <li>*Filter tanggal akan mempengaruhi data Total Panel, Unit Dalam Proses, Unit Selesi, Total Pendapatan, Grafik Penggunaan Material, Dan Closing Mekanik.</li>
+                <li>*Filter Tahun Hanya mempengaruhi data Data Grafik Bulanan.</li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 <?= $this->include('script'); ?>
 <?= $this->endSection(); ?>

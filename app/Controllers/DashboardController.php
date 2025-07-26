@@ -17,9 +17,9 @@ class DashboardController extends BaseController
         return view('dashboard', $data);
     }
 
-     public function widgetClosing()
+    public function widgetClosing()
     {
-       try {
+        try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
             $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'];
             $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'];
@@ -66,7 +66,7 @@ class DashboardController extends BaseController
                         ->orderBy('ush.urutan', 'ASC')
                         ->where('ush.nama_status', $row['nama_status'])->get()->getRowArray();
 
-                     
+
                     $statusUnit['nama_status'] = $statusUnit['nama_status'] ?? null; // jika nama status tidak ditemukan maka set null
                     if ($statusUnit['nama_status'] !== null && $row['nama_status'] == $statusUnit['nama_status']) {
 
@@ -84,7 +84,7 @@ class DashboardController extends BaseController
                 'status' => $statusData,
                 'total_panel' => $total_panel,
                 'total_upah' => $total_upah
-            ]; 
+            ];
 
             // return;
 
@@ -139,6 +139,7 @@ class DashboardController extends BaseController
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
+            $tahun = $this->request->getPost('filterTahun')['tahun'];
 
             // data cabang
             $dataCabang = $this->db->table('cabang')->select('id_cabang, nama_cabang')->whereIn('id_cabang', $id_cabang)
@@ -163,8 +164,8 @@ class DashboardController extends BaseController
 
                 // loping data sesuai dengan bulan
                 foreach ($periode as $key => $bulan) {
-                    $total_spp = $dataUnit->selectSum('harga_spp')->where('cabang_id', $cab['id_cabang'])->where('MONTH(tanggal_masuk)', $key)
-                        ->get()->getRowArray();
+                    $total_spp = $dataUnit->selectSum('harga_spp')->where('cabang_id', $cab['id_cabang'])
+                        ->where('MONTH(tanggal_masuk)', $key)->where('YEAR(tanggal_masuk)', $tahun)->get()->getRowArray();
 
                     $data[$k]['data'][] = $total_spp['harga_spp'] ?? 0;
                 }
@@ -193,6 +194,7 @@ class DashboardController extends BaseController
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
+            $tahun = $this->request->getPost('filterTahun')['tahun'];
 
             // periode bulan
             $periode = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'];
@@ -204,7 +206,8 @@ class DashboardController extends BaseController
             $total = 0;
             // loping data sesuai dengan bulan
             foreach ($periode as $key => $bulan) {
-                $total_spp = $dataUnit->selectSum('harga_spp')->whereIn('cabang_id', $id_cabang)->where('MONTH(tanggal_masuk)', $key)
+                $total_spp = $dataUnit->selectSum('harga_spp')->whereIn('cabang_id', $id_cabang)
+                    ->where('MONTH(tanggal_masuk)', $key)->where('YEAR(tanggal_masuk)', $tahun)
                     ->get()->getRowArray();
 
                 $total = $total_spp['harga_spp'] ?? 0;
