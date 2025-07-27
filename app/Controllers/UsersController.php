@@ -164,14 +164,17 @@ class UsersController extends BaseController
 
     public function akses()
     {
+        $role = [];
+        (session('user_type') == 'admin' && session('role') == 'Admin') ? $role = ['Admin Cabang'] : $role = ['Admin Cabang', 'Admin', 'Super Admin'];
+
         $data = [
             'title' => 'User Akses',
             'cabang' => $this->db->table('cabang')->get()->getResultArray(),
-            'users' => $this->db->table('users')->get()->getResultArray(),
+            'users' => $this->db->table('users')->where('role', $role)->get()->getResultArray(),
         ];
         return view('pages/users/akses', $data);
     }
-    
+
     public function akses_add(int $id)
     {
         $data['title'] = 'User Akses';
@@ -190,12 +193,12 @@ class UsersController extends BaseController
     {
         $akses = $this->request->getPost('cabang') ?? [];
         $data = [];
-        foreach($akses as $key => $val){
+        foreach ($akses as $key => $val) {
             $data[] = [
                 'user_id' => $id,
                 'cabang_id' => $key,
             ];
-        }     
+        }
 
         try {
             // hapus data akses 
@@ -207,6 +210,5 @@ class UsersController extends BaseController
         } catch (\Throwable $th) {
             return redirect()->to('users/akses')->with('message', $th->getMessage());
         }
-
     }
 }

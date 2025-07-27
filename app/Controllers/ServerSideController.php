@@ -218,10 +218,17 @@ class ServerSideController extends BaseController
         $searchableColumns = ['nama_lengkap', 'no_handphone', 'alamat', 'username'];
         $defaultOrder = ['nama_lengkap', 'ASC'];
 
+        $where = [];
+        if (session('user_type') == 'admin' && session('role') == 'Admin') {
+            $where = [
+                'role IN' => ['Admin Cabang']
+            ];
+        }
+
         $sideDatatable = new SideServerDatatables($table, $primaryKey);
 
-        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder);
-        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns);
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, [], $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, [], $where);
         $countAllData = $sideDatatable->countAllData();
 
         // var_dump($data);die;
@@ -234,54 +241,6 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_lengkap']),
                 htmlspecialchars($row['no_handphone']),
                 htmlspecialchars($row['alamat']),
-                htmlspecialchars($row['username']),
-            ];
-        }
-
-        $outputdata = [
-            "draw" => $this->request->getPost('draw'),
-            "recordsTotal" => $countAllData,
-            "recordsFiltered" => $countData,
-            "data" => $rowData,
-        ];
-
-        return $this->response->setJSON($outputdata);
-    }
-
-    public function admin()
-    {
-        $table = 'admin_cabang';
-        $primaryKey = 'id_admin';
-        $columns = ['admin_cabang.id_admin', 'admin_cabang.nama_lengkap', 'admin_cabang.no_handphone', 'admin_cabang.alamat', 'cabang.nama_cabang', 'admin_cabang.username'];
-        $orderableColumns = ['admin_cabang.nama_lengkap', 'admin_cabang.no_handphone', 'admin_cabang.alamat', 'cabang.nama_cabang', 'admin_cabang.username'];
-        $searchableColumns = ['admin_cabang.nama_lengkap', 'admin_cabang.no_handphone', 'admin_cabang.alamat', 'cabang.nama_cabang', 'admin_cabang.username'];
-        $defaultOrder = ['admin_cabang.nama_lengkap', 'ASC'];
-
-        $join = [
-            [
-                'table' => 'cabang',
-                'on' => 'cabang.id_cabang = admin_cabang.cabang_id',
-                'type' => ''
-            ]
-        ];
-
-        $sideDatatable = new SideServerDatatables($table, $primaryKey);
-
-        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join);
-        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join);
-        $countAllData = $sideDatatable->countAllData();
-
-        // var_dump($data);die;
-        $No = $this->request->getPost('start') + 1;
-        $rowData = [];
-        foreach ($data as $row) {
-            $rowData[] = [
-                $No++,
-                htmlspecialchars($row['id_admin']),
-                htmlspecialchars($row['nama_lengkap']),
-                htmlspecialchars($row['no_handphone']),
-                htmlspecialchars($row['alamat']),
-                htmlspecialchars($row['nama_cabang']),
                 htmlspecialchars($row['username']),
             ];
         }
@@ -1065,7 +1024,7 @@ class ServerSideController extends BaseController
 
         if (is_array(session('selected_akses'))) {
             $where = [
-                'cabang.id_cabang IN' => session('selected_akses'), 
+                'cabang.id_cabang IN' => session('selected_akses'),
                 'cetak.kategori_cetak' => 'epoxy'
             ];
         } else {
@@ -1104,9 +1063,9 @@ class ServerSideController extends BaseController
         ];
 
         return $this->response->setJSON($outputdata);
-    } 
-    
-     public function gandeng()
+    }
+
+    public function gandeng()
     {
         $table = 'cetak';
         $primaryKey = 'id_cetak';
@@ -1135,7 +1094,7 @@ class ServerSideController extends BaseController
 
         if (is_array(session('selected_akses'))) {
             $where = [
-                'cabang.id_cabang IN' => session('selected_akses'), 
+                'cabang.id_cabang IN' => session('selected_akses'),
                 'cetak.kategori_cetak' => 'gandeng'
             ];
         } else {
@@ -1174,7 +1133,7 @@ class ServerSideController extends BaseController
         ];
 
         return $this->response->setJSON($outputdata);
-    } 
+    }
 
     public function fetchNoSPP()
     {

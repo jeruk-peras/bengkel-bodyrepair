@@ -25,26 +25,17 @@ class AccountController extends BaseController
         $userModel = new \App\Models\UsersModel();
         $user = $userModel->where('username', $username)->first();
 
-        // Jika tidak ada di users, cek di admin_cabang
-        if (!$user) {
-            $adminModel = new \App\Models\AdminCabangModel();
-            $user = $adminModel->where('username', $username)->first();
-            $akses = $user['cabang_id'];
-            $userType = 'admin_cabang';
-        } else {
+        $db = \Config\Database::connect();
+        $builder = $db->table('users_cabang')->select('cabang.id_cabang, cabang.nama_cabang');
+        $builder->join('cabang', 'cabang.id_cabang = users_cabang.cabang_id');
+        $builder->where('users_cabang.user_id', $user['id_user']);
+        $results = $builder->get()->getResultArray();
 
-            $db = \Config\Database::connect();
-            $builder = $db->table('users_cabang')->select('cabang.id_cabang, cabang.nama_cabang');
-            $builder->join('cabang', 'cabang.id_cabang = users_cabang.cabang_id');
-            $builder->where('users_cabang.user_id', $user['id_user']);
-            $results = $builder->get()->getResultArray();
-
-            foreach ($results as $row) {
-                $akses[] = $row['id_cabang'];
-            }
-
-            $userType = 'admin';
+        foreach ($results as $row) {
+            $akses[] = $row['id_cabang'];
         }
+
+        $userType = $user['role'] == 'Admin Cabang' ? 'admin_cabang' : 'admin';
 
         // Jika tidak ditemukan di kedua tabel
         if (!$user || !password_verify($password, $user['password'])) {
@@ -56,7 +47,7 @@ class AccountController extends BaseController
             'user_id'   => $user['id_user'] ?? $user['id_admin'],
             'nama_user' => $user['nama_lengkap'],
             'username'  => $user['username'],
-            'role'      => $user['role'] ?? $userType,
+            'role'      => $user['role'],
             'logged_in' => true,
             'user_type' => $userType,
             'akses_cabang' => $akses,
@@ -75,28 +66,20 @@ class AccountController extends BaseController
     public function selectAksess()
     {
         $id = $this->request->getPost('key');
+        $id_user = session('user_id');
+
         if ($id == 'all') {
             session()->set('selected_akses', session('akses_cabang'));
             return ResponseJSONCollection::success([$id], 'Akses Cabang ditemukan.', ResponseInterface::HTTP_OK);
         }
 
-        $id_user = session('user_id');
-        $role = session('user_type');
-
         try {
-            if ($role == 'admin_cabang') {
-                $builder = $this->db->table('admin_cabang')->select('admin_cabang.cabang_id');
-                $builder->where('admin_cabang.id_admin', $id_user);
-                $builder->where('admin_cabang.cabang_id', $id);
-                $data = $builder->get()->getRowArray();
-                $results = $builder->get()->getNumRows();
-            } else {
-                $builder = $this->db->table('users_cabang')->select('users_cabang.cabang_id');
-                $builder->where('users_cabang.user_id', $id_user);
-                $builder->where('users_cabang.cabang_id', $id);
-                $data = $builder->get()->getRowArray();
-                $results = $builder->get()->getNumRows();
-            }
+
+            $builder = $this->db->table('users_cabang')->select('users_cabang.cabang_id');
+            $builder->where('users_cabang.user_id', $id_user);
+            $builder->where('users_cabang.cabang_id', $id);
+            $data = $builder->get()->getRowArray();
+            $results = $builder->get()->getNumRows();
 
             // ambil data diskon dan sharing dari setting_biaya
             $builder = $this->db->table('setting_biaya')->select('diskon, sharing');

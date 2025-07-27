@@ -46,7 +46,6 @@ $routes->post('/dashboard/widget-closing', 'DashboardController::widgetClosing')
 $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('cabang', 'ServerSideController::cabang');
     $routes->post('users', 'ServerSideController::users');
-    $routes->post('admin-cabang', 'ServerSideController::admin');
     $routes->post('mekanik', 'ServerSideController::mekanik');
     $routes->post('jenis', 'ServerSideController::jenis');
     $routes->post('asuransi', 'ServerSideController::asuransi');
@@ -121,18 +120,6 @@ $routes->group('/users', function ($routes) {
     $routes->post('(:num)/delete', 'UsersController::delete/$1');
 
     $routes->post('(:num)/edit-password', 'UsersController::update_pass/$1');
-});
-
-// routes Admin Cabang 
-$routes->group('/admin', function ($routes) {
-    $routes->get('/', 'AdminCabangController::index');
-    $routes->post('/', 'AdminCabangController::save');
-
-    $routes->get('(:num)/edit', 'AdminCabangController::edit/$1');
-    $routes->post('(:num)/edit', 'AdminCabangController::update/$1');
-    $routes->post('(:num)/delete', 'AdminCabangController::delete/$1');
-
-    $routes->post('(:num)/edit-password', 'AdminCabangController::update_pass/$1');
 });
 
 // routes Mekanik 

@@ -129,11 +129,8 @@
                     <div class="menu-title">Manajemen User</div>
                 </a>
                 <ul class="mm-collapse">
-                    <?php if (session('user_type') == 'admin' && session('role') == 'Super Admin'):  ?>
-                        <li><a href="<?= base_url('users'); ?>"><i class='bx bx-radio-circle'></i>Users</a></li>
-                        <li><a href="<?= base_url('users/akses'); ?>"><i class='bx bx-radio-circle'></i>Users Akses</a></li>
-                    <?php endif;  ?>
-                    <li><a href="<?= base_url('admin'); ?>"><i class='bx bx-radio-circle'></i>Admin Cabang</a></li>
+                    <li><a href="<?= base_url('users'); ?>"><i class='bx bx-radio-circle'></i>Users</a></li>
+                    <li><a href="<?= base_url('users/akses'); ?>"><i class='bx bx-radio-circle'></i>Users Akses</a></li>
                 </ul>
             </li>
         <?php endif; ?>

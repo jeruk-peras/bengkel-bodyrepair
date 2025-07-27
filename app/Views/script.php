@@ -61,7 +61,9 @@
             filterTahun = JSON.parse(filterTahun);
 
             // Render grafik dengan nilai 
-            grafikPendapatan(filterTahun);
+            <?php if (is_array(session('selected_akses'))): ?>
+                grafikPendapatan(filterTahun);
+            <?php endif; ?>
             grafikPendapatanBulanan(filterTahun);
             grafikPemakaianBahan(filterTanggal);
             widgetData(filterTanggal);

@@ -79,8 +79,11 @@
                             <div class="col-md-6">
                                 <label for="role" class="form-label required">Role</label>
                                 <select name="role" class="form-control" id="role">
-                                    <option value="Admin">Admin</option>
-                                    <option value="Super Admin">Super Admin</option>
+                                    <option value="Admin Cabang">Admin Cabang</option>
+                                    <?php if (session('user_type') == 'admin' && session('role') == 'Super Admin'):  ?>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Super Admin">Super Admin</option>
+                                    <?php endif;  ?>
                                 </select>
                                 <div class="invalid-feedback" id="invalid_role"></div>
                             </div>
