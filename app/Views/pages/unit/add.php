@@ -38,35 +38,35 @@
                 <h6 class="mb-1">Informasi Unit</h6>
                 <p class="mb-2">Silakan lengkapi data Unit bengkel pada form berikut.</p>
                 <div class="row g-3 mb-4">
-                    <div class="col-sm-6 col-md-3 col-6">
+                    <div class="col-sm-6 col-md-4 col-6">
                         <label for="nomor_polisi" class="form-label required">Nomor Polisi</label>
                         <input type="text" name="nomor_polisi" class="form-control" id="nomor_polisi" placeholder="Nomor Polisi">
                         <div class="invalid-feedback" id="invalid_nomor_polisi"></div>
                     </div>
-                    <div class="col-sm-6 col-md-3 col-6">
+                    <div class="col-sm-6 col-md-4 col-6">
                         <label for="model_unit" class="form-label required">Model Unit</label>
                         <input type="text" name="model_unit" class="form-control" id="model_unit" placeholder="Model Unit">
                         <div class="invalid-feedback" id="invalid_model_unit"></div>
                     </div>
-                    <div class="col-sm-6 col-md-3 col-6">
+                    <div class="col-sm-6 col-md-4 col-6">
                         <label for="warna_unit" class="form-label required">Warna Unit</label>
                         <input type="text" name="warna_unit" class="form-control" id="warna_unit" placeholder="Warna Unit">
                         <div class="invalid-feedback" id="invalid_warna_unit"></div>
                     </div>
 
-                    <div class="col-sm-6 col-md-3 col-6">
+                    <div class="col-sm-12 col-md-12 col-12">
                         <label for="asuransi_id" class="form-label required">Asuransi</label>
-                        <select name="asuransi_id" id="asuransi_id" data-placeholder="Asuransi"  autocomplete="off"></select>
+                        <select name="asuransi_id" class="form-select" id="asuransi_id" data-placeholder="Asuransi"  autocomplete="off"></select>
                         <div class="invalid-feedback" id="invalid_asuransi_id"></div>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="nomor_mesin" class="form-label required">Nomor Mesin</label>
+                        <label for="nomor_mesin" class="form-label">Nomor Mesin</label>
                         <input type="text" name="nomor_mesin" class="form-control" id="nomor_mesin" placeholder="Nomor Mesin">
                         <div class="invalid-feedback" id="invalid_nomor_mesin"></div>
                     </div>
                     <div class="col-md-6">
-                        <label for="nomor_rangka" class="form-label required">Nomor Rangka</label>
+                        <label for="nomor_rangka" class="form-label">Nomor Rangka</label>
                         <input type="text" name="nomor_rangka" class="form-control" id="nomor_rangka" placeholder="Nomor Rangka">
                         <div class="invalid-feedback" id="invalid_nomor_rangka"></div>
                     </div>
