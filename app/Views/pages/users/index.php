@@ -32,7 +32,7 @@
                                 <th>No</th>
                                 <th>#</th>
                                 <th>Nama Lengkap</th>
-                                <th>no_handphone</th>
+                                <th>No Handphone</th>
                                 <th>Alamat</th>
                                 <th>Username</th>
                             </tr>

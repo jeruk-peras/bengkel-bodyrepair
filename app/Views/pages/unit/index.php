@@ -6,7 +6,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="<?= base_url('dashboard'); ?>"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Daftar Mekanik Cabang</li>
+                    <li class="breadcrumb-item active" aria-current="page">Data Unit</li>
                 </ol>
             </nav>
         </div>
@@ -17,7 +17,7 @@
         <div class="card-header border-0 bg-transparent">
             <div class="d-flex align-items-center">
                 <div>
-                    <h6 class="mb-0">Daftar Mekanik Cabang</h6>
+                    <h6 class="mb-0">Daftar Unit</h6>
                 </div>
                 <div class="ms-auto">
                     <a href="/unit/add" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Tambah</a>

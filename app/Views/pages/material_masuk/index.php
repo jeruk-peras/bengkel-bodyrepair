@@ -6,7 +6,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="<?= base_url('dashboard'); ?>"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Daftar Material</li>
+                    <li class="breadcrumb-item active" aria-current="page">Daftar Material Masuk</li>
                 </ol>
             </nav>
         </div>
@@ -17,7 +17,7 @@
         <div class="card-header border-0 bg-transparent">
             <div class="d-flex align-items-center">
                 <div>
-                    <h6 class="mb-0">Daftar Material</h6>
+                    <h6 class="mb-0">Daftar Material Masuk</h6>
                 </div>
                 <div class="ms-auto">
                     <!-- <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#form-data-modal"><i class="bx bx-plus"></i> Tambah</button> -->
