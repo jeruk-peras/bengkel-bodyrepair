@@ -37,9 +37,14 @@ class AccountController extends BaseController
 
         $userType = $user['role'] == 'Admin Cabang' ? 'admin_cabang' : 'admin';
 
-        // Jika tidak ditemukan di kedua tabel
+        // Jika tidak  data ditemukan
         if (!$user || !password_verify($password, $user['password'])) {
-            return ResponseJSONCollection::error([$user], 'Username atau password salah', ResponseInterface::HTTP_UNAUTHORIZED);
+            return ResponseJSONCollection::error([$user, $results], 'Username atau password salah', ResponseInterface::HTTP_UNAUTHORIZED);
+        }
+
+        // Jika akses belum di berikan
+        if (empty($results)) {
+            return ResponseJSONCollection::error([], 'Anda tidak memiliki akses.', ResponseInterface::HTTP_FORBIDDEN);
         }
 
         // Set session sesuai tipe user
