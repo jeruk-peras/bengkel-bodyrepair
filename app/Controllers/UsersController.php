@@ -164,13 +164,12 @@ class UsersController extends BaseController
 
     public function akses()
     {
-        $role = [];
         (session('user_type') == 'admin' && session('role') == 'Admin') ? $role = ['Admin Cabang'] : $role = ['Admin Cabang', 'Admin', 'Super Admin'];
 
         $data = [
             'title' => 'User Akses',
             'cabang' => $this->db->table('cabang')->get()->getResultArray(),
-            'users' => $this->db->table('users')->where('role', $role)->get()->getResultArray(),
+            'users' => $this->db->table('users')->whereIn('role', $role)->get()->getResultArray(),
         ];
         return view('pages/users/akses', $data);
     }
