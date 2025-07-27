@@ -221,15 +221,14 @@ class LaporanController extends BaseController
 
                         $unitStatus[] = [
                             'nama_status' => $row['nama_status'],
-                            'harga_status' => $statusUnit['harga_status'],
-                            'total_harga_status' => $totalUpah,
+                            'total_harga_status' => $hargaStatusTotal[$statusUnit['nama_status']]
                         ];
                     } else {
+
                         // jika status belum di set di unit
                         $unitStatus[] = [
                             'nama_status' => $row['nama_status'],
-                            'harga_status' => '0',
-                            'total_harga_status' => '0',
+                            'total_harga_status' => $hargaStatusTotal[$row['nama_status']]
                         ];
                     }
                 }
@@ -244,11 +243,12 @@ class LaporanController extends BaseController
                 'percent_sharing' => $this->request->getPost('sharing') / 100,
             ];
 
+            // $html = '';
             $html = view('pages/laporan/side_closingan', $data);
 
-            return ResponseJSONCollection::success(['html' => $html], 'Data ditemukan', ResponseInterface::HTTP_OK);
+            return ResponseJSONCollection::success(['html' => $html, $data], 'Data ditemukan', ResponseInterface::HTTP_OK);
         } catch (\Exception $e) {
-            return ResponseJSONCollection::error([$e->getFile()], 'Terjadi Kesalahan Server', ResponseInterface::HTTP_BAD_GATEWAY);
+            return ResponseJSONCollection::error([$e->getLine()], 'Terjadi Kesalahan Server', ResponseInterface::HTTP_BAD_GATEWAY);
         }
     }
 }
