@@ -44,6 +44,7 @@ function aksesCabang()
     $builder = $db->table('users_cabang')->select('cabang.id_cabang, cabang.nama_cabang');
     $builder->join('cabang', 'cabang.id_cabang = users_cabang.cabang_id');
     $builder->where('users_cabang.user_id', $id_user);
+    $builder->orderBy('cabang.nama_cabang', 'ASC');
     $results = $builder->get()->getResultArray();
 
     return $results;
