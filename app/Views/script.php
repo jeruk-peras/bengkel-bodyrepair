@@ -85,8 +85,7 @@
                     },
                     success: function(response) {
                         if (response.status === 200) {
-                            // Hapus chart sebelumnya jika sudah ada
-                            // if (chart4 !== null) chart4.destroy();
+                            $('#filtertahun').val(response.tahun)
 
                             title = response.data.title;
                             series = response.data.data;
@@ -171,8 +170,7 @@
                 },
                 success: function(response) {
                     if (response.status === 200) {
-                        // Hapus chart sebelumnya jika sudah ada
-                        // if (chart5 !== null) chart5.destroy();
+                        $('#filtertahun').val(response.data.tahun)
 
                         title = response.data.title;
                         series = response.data.data;
@@ -249,9 +247,10 @@
                 },
                 success: function(response) {
                     if (response.status === 200) {
-                        // Hapus chart sebelumnya jika sudah ada
-                        // if (chart5 !== null) chart5.destroy();
+                        $('input[name="tanggal_awal"]').val(response.data.tanggal_awal);
+                        $('input[name="tanggal_akhir"]').val(response.data.tanggal_akhir);
 
+                        console.log(response.data.tanggal_awal);
                         title = response.data.title;
                         series = response.data.data;
                         categories = response.data.name;
@@ -312,6 +311,9 @@
                 },
                 success: function(response) {
                     if (response.status === 200) {
+                        $('input[name="tanggal_awal"]').val(response.data.tanggal_awal);
+                        $('input[name="tanggal_akhir"]').val(response.data.tanggal_akhir);
+
                         $.each(response.data, function(key, value) {
                             $('#' + key).text(value);
                         });
@@ -337,6 +339,9 @@
                 },
                 success: function(response) {
                     if (response.status === 200) {
+                        $('input[name="tanggal_awal"]').val(response.data.tanggal_awal);
+                        $('input[name="tanggal_akhir"]').val(response.data.tanggal_akhir);
+
                         $('#widget-closing').html(response.data.html);
                     } else {
                         console.error('Error fetching data:', response.message);

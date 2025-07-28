@@ -9,6 +9,18 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class DashboardController extends BaseController
 {
+
+    protected $_tanggal_awal;
+    protected $_tanggal_akhir;
+    protected $_tahun;
+
+    public function __construct()
+    {
+        $this->_tanggal_awal = date("Y-m-") . "01";
+        $this->_tanggal_akhir = date("Y-m-d");
+        $this->_tahun = date("Y");
+    }
+
     public function index()
     {
         $data = [
@@ -21,8 +33,8 @@ class DashboardController extends BaseController
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
-            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'];
-            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'];
+            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'] ?? $this->_tanggal_awal;
+            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'] ?? $this->_tanggal_akhir;
 
             $statusData = $this->db->table('unit_status_harga ush')
                 ->select('ush.*')
@@ -83,7 +95,9 @@ class DashboardController extends BaseController
             $data = [
                 'status' => $statusData,
                 'total_panel' => $total_panel,
-                'total_upah' => $total_upah
+                'total_upah' => $total_upah,
+                'tanggal_awal' => $tanggal_awal,
+                'tanggal_akhir' => $tanggal_akhir,
             ];
 
             // return;
@@ -99,8 +113,8 @@ class DashboardController extends BaseController
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
-            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'];
-            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'];
+            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'] ?? $this->_tanggal_awal;
+            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'] ?? $this->_tanggal_akhir;
 
             $dataUnit = $this->db->table('unit')->whereIn('cabang_id', $id_cabang)->where('unit.tanggal_masuk BETWEEN "' . $tanggal_awal . '" AND "' . $tanggal_akhir . '"');
 
@@ -125,6 +139,8 @@ class DashboardController extends BaseController
                 'unit_proses' => $data['unit_proses'],
                 'unit_selesai' => $data['unit_selesai'],
                 'total_nilai' => number_format($data['total_nilai']),
+                'tanggal_awal' => $tanggal_awal,
+                'tanggal_akhir' => $tanggal_akhir,
             ];
 
 
@@ -139,7 +155,7 @@ class DashboardController extends BaseController
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
-            $tahun = $this->request->getPost('filterTahun')['tahun'];
+            $tahun = $this->request->getPost('filterTahun')['tahun'] ?? $this->_tahun;
 
             // data cabang
             $dataCabang = $this->db->table('cabang')->select('id_cabang, nama_cabang')->whereIn('id_cabang', $id_cabang)
@@ -181,6 +197,7 @@ class DashboardController extends BaseController
                 'title' => 'GRAFIK PENDAPATAN PER BULAN PER CABANG',
                 'data' => $data,
                 'periode' => $per,
+                'tahun' => $tahun
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
@@ -194,7 +211,7 @@ class DashboardController extends BaseController
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
-            $tahun = $this->request->getPost('filterTahun')['tahun'];
+            $tahun = $this->request->getPost('filterTahun')['tahun'] ?? $this->_tahun;
 
             // periode bulan
             $periode = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'];
@@ -224,6 +241,7 @@ class DashboardController extends BaseController
                 'title' => 'GRAFIK PENDAPATAN PER BULAN',
                 'data' => $data,
                 'periode' => $per,
+                'tahun' => $tahun
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
@@ -237,8 +255,8 @@ class DashboardController extends BaseController
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
-            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'];
-            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'];
+            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'] ?? $this->_tanggal_awal;
+            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'] ?? $this->_tanggal_akhir;
 
             $dataJenis = $this->db->table('jenis')->get()->getResultArray();
 
@@ -270,7 +288,9 @@ class DashboardController extends BaseController
             $data = [
                 'title' => 'GRAFIK PENGGUNAAN MATERIAL',
                 'name' => $jenisName,
-                'data' => $persentaseData
+                'data' => $persentaseData,
+                'tanggal_awal' => $tanggal_awal,
+                'tanggal_akhir' => $tanggal_akhir,
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
