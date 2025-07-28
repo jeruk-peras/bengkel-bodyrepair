@@ -19,7 +19,7 @@
 
     <div class="row mb-3">
         <div class="col-8 col-sm-8 col-md-6 col-lg-12 text-end">
-            <a href="<?= base_url('cetak/epoxy'); ?>" class="btn btn-sm btn-primary"><i class="bx bx-left-arrow-alt"></i> Kembali</a>
+            <a href="<?= base_url('cetak/pemakaian-bahan'); ?>" class="btn btn-sm btn-primary"><i class="bx bx-left-arrow-alt"></i> Kembali</a>
             <button class="btn btn-sm btn-primary" id="btn-print"><i class="bx bx-printer"></i> Print</button>
         </div>
     </div>
