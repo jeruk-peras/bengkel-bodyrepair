@@ -158,7 +158,9 @@ class DashboardController extends BaseController
             $tahun = $this->request->getPost('filterTahun')['tahun'] ?? $this->_tahun;
 
             // data cabang
-            $dataCabang = $this->db->table('cabang')->select('id_cabang, nama_cabang')->whereIn('id_cabang', $id_cabang)
+            $dataCabang = $this->db->table('cabang')->select('id_cabang, nama_cabang')
+                ->whereIn('id_cabang', $id_cabang)
+                ->orderBy('nama_cabang', 'ASC')
                 ->get()->getResultArray();
 
             $periode = $this->request->getGet('periode');
