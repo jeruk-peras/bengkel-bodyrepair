@@ -85,7 +85,6 @@
                     },
                     success: function(response) {
                         if (response.status === 200) {
-                            $('#filtertahun').val(response.tahun)
 
                             title = response.data.title;
                             series = response.data.data;
@@ -247,8 +246,6 @@
                 },
                 success: function(response) {
                     if (response.status === 200) {
-                        $('input[name="tanggal_awal"]').val(response.data.tanggal_awal);
-                        $('input[name="tanggal_akhir"]').val(response.data.tanggal_akhir);
 
                         console.log(response.data.tanggal_awal);
                         title = response.data.title;
@@ -339,8 +336,6 @@
                 },
                 success: function(response) {
                     if (response.status === 200) {
-                        $('input[name="tanggal_awal"]').val(response.data.tanggal_awal);
-                        $('input[name="tanggal_akhir"]').val(response.data.tanggal_akhir);
 
                         $('#widget-closing').html(response.data.html);
                     } else {
