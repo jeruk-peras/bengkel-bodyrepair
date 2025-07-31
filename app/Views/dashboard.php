@@ -8,7 +8,7 @@
         <div class="ms-auto">
             <form class="d-flex align-items-center" method="POST" action="" id="filter-form">
                 <label for="tanggal_awal" class="me-2 mb-0">Tahun&nbsp;:</label>
-                <select name="tahun" id="filtertahun" class="form-select form-select-sm me-2">
+                <select name="tahun" id="filtertahun" class="form-select form-select-sm me-2" style="min-width: 80px;">
                     <?php for ($year = (int)date('Y'); 2020 <= $year; $year--): ?>
                         <option value="<?= $year; ?>"><?= $year; ?></option>
                     <?php endfor; ?>
@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-6 col-sm-6 col-lg-6 col-xl-3">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-6 col-sm-6 col-lg-6 col-xl-3">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-5 col-sm-6 col-lg-6 col-xl-2">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -64,8 +64,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-4">
+        <div class="col-7 col-sm-6 col-lg-6 col-xl-4">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
