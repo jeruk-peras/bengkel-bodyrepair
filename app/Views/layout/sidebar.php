@@ -95,6 +95,7 @@
                     <li><a href="<?= base_url('jenis'); ?>"><i class='bx bx-radio-circle'></i>Jenis</a></li>
                     <li><a href="<?= base_url('biaya'); ?>"><i class='bx bx-radio-circle'></i>Biaya</a></li>
                     <li><a href="<?= base_url('status'); ?>"><i class='bx bx-radio-circle'></i>Status</a></li>
+                    <li><a href="<?= base_url('transfer/meterial'); ?>"><i class='bx bx-radio-circle'></i>Transfer Material</a></li>
                 <?php endif;  ?>
                 <li><a href="<?= base_url('mekanik'); ?>"><i class='bx bx-radio-circle'></i>Mekanik</a></li>
             </ul>

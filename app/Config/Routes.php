@@ -184,7 +184,6 @@ $routes->group('/material-masuk', function ($routes) {
     $routes->post('render-item', 'ServerSideController::itemMaterialMasuk');
     $routes->post('items', 'ServerSideController::itemsMaterialMasuk');
 
-
     $routes->get('(:num)/edit', 'MaterialMasukController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'MaterialMasukController::update/$1', ['filter' => ['selectCabang']]);
 
@@ -252,4 +251,11 @@ $routes->group('/cetak', function ($routes) {
     
     $routes->post('uploadfoto', 'CetakController::uploadFoto');
     $routes->post('(:num)/delete', 'CetakController::delete/$1', ['filter' => ['selectCabang']]);
+});
+
+// route transfer
+$routes->group('/transfer', function ($routes) {
+    $routes->get('meterial', 'TransferController::index');
+    $routes->post('preview-meterial', 'TransferController::previewMaterial');
+    $routes->post('transfer-meterial', 'TransferController::transferMaterial');
 });
