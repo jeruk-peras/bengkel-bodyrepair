@@ -236,8 +236,13 @@
             success: function(response) {
                 alertMesage(response.status, response.message);
                 $('#modal-material-data').modal('hide');
-                detailData(response.data.url, response.data.id);
                 $('#form-add-material').removeClass('is-invalid');
+
+                $('#form-add-material')[0].reset();
+                $('.row-material').not(':first').remove(); // Hapus semua baris kecuali yang pertama
+                $('.row-material').eq(0).find('input, select').val('').trigger('change'); // Kosongkan input dari baris pertama
+                $('.row-material .stok-material').text('');
+                $('#btn-material').attr('disabled', false).text('Simpan data');
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
@@ -251,13 +256,6 @@
             }
         })
 
-        $('#form-add-material')[0].reset();
-        // Hapus semua baris kecuali yang pertama
-        $('.row-material').not(':first').remove();
-        // Kosongkan input dari baris pertama
-        $('.row-material').eq(0).find('input, select').val('').trigger('change');
-
-        $('#btn-material').attr('disabled', false).text('Simpan data');
     })
 
     // hendle btn-add-material button

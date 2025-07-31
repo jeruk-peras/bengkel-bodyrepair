@@ -193,10 +193,10 @@ $routes->group('/material-masuk', function ($routes) {
 
 $routes->group('/material-keluar', function ($routes) {
     $routes->get('/', 'MaterialKeluarController::index');
-    $routes->post('(:num)/add', 'MaterialkeluarController::save/$1');
-    $routes->get('(:num)/detail', 'MaterialkeluarController::fetchMaterialUnit/$1');
+    $routes->post('(:num)/add', 'MaterialKeluarController::save/$1');
+    $routes->get('(:num)/detail', 'MaterialKeluarController::fetchMaterialUnit/$1');
 
-    $routes->get('(:num)/delete', 'MaterialkeluarController::delete/$1');
+    $routes->get('(:num)/delete', 'MaterialKeluarController::delete/$1');
 });
 
 // route unit
