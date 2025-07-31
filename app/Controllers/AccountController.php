@@ -31,8 +31,13 @@ class AccountController extends BaseController
         $builder->where('users_cabang.user_id', $user['id_user']);
         $results = $builder->get()->getResultArray();
 
-        foreach ($results as $row) {
-            $akses[] = $row['id_cabang'];
+        // jika akases nya hanya 1 cabang
+        if (count($results) == 1) {
+            $akses = $results[0]['id_cabang'];
+        } else {
+            foreach ($results as $row) {
+                $akses[] = $row['id_cabang'];
+            }
         }
 
         $userType = $user['role'] == 'Admin Cabang' ? 'admin_cabang' : 'admin';
