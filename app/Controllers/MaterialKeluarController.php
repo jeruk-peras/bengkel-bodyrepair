@@ -27,6 +27,14 @@ class MaterialKeluarController extends BaseController
         return view('pages/material_keluar/index', $data);
     }
 
+    public function mixing()
+    {
+        $data = [
+            'title' => $this->title,
+        ];
+        return view('pages/mixing/index', $data);
+    }
+
     public function save(int $id_unit)
     {
         $dataPost = $this->request->getPost();
@@ -90,7 +98,47 @@ class MaterialKeluarController extends BaseController
                 ->join('satuan', 'satuan.id_satuan = material.satuan_id', 'left')
                 ->join('jenis', 'jenis.id_jenis = material.jenis_id', 'left')
                 ->where('unit_material.unit_id', $id)
-                // ->whereNotIn('jenis.nama_jenis', ['Paint'])
+                ->whereNotIn('jenis.nama_jenis', ['Paint'])
+                ->orderBy('unit_material.tanggal', 'DESC')
+                ->orderBy('jenis.nama_jenis', 'ASC')
+                ->findAll();
+
+            $html = '';
+
+            $i = 1;
+            foreach ($data as $row) {
+                $html .=
+                    '<tr>
+                        <td>' . $i++ . '</td>
+                        <td>' . $row['nama_jenis'] . '</td>
+                        <td>' . $row['nama_material'] . '</td>
+                        <td>Rp' . $row['harga'] . '</td>
+                        <td>' . $row['jumlah'] . '</td>
+                        <td>' . $row['nama_satuan'] . '</td>
+                        <td>Rp' . $row['total_harga'] . '</td>
+                        <td>' . $row['tanggal'] . '</td>
+                        <td><a href="/material-keluar/' . $row['id_unit_material'] . '/delete" class="btn btn-danger btn-sm btn-del"><i class="bx bx-trash me-0"></i></a></td>
+                    </tr>';
+            }
+
+
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $data], 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function fetchMaterialMixing(int $id)
+    {
+        $model = new UnitMaterialModel();
+        try {
+            $data = $model
+                ->select('unit_material.*, material.nama_material, material.merek, material.harga, material.stok, satuan.nama_satuan, jenis.nama_jenis')
+                ->join('material', 'material.id_material = unit_material.material_id', 'left')
+                ->join('satuan', 'satuan.id_satuan = material.satuan_id', 'left')
+                ->join('jenis', 'jenis.id_jenis = material.jenis_id', 'left')
+                ->where('unit_material.unit_id', $id)
+                ->whereIn('jenis.nama_jenis', ['Paint'])
                 ->orderBy('unit_material.tanggal', 'DESC')
                 ->orderBy('jenis.nama_jenis', 'ASC')
                 ->findAll();
@@ -123,10 +171,21 @@ class MaterialKeluarController extends BaseController
     public function delete(int $id)
     {
         try {
-            $this->modelUnitMaterial->delete($id);
+            // get data
+            $unitMaterial = $this->modelUnitMaterial->find($id);
+            $modelMaterial = new MaterialModel();
+            $material = $modelMaterial->find($unitMaterial['material_id']);
+
+            // perhitungan stok
+            $stok_baru = $material['stok'] + $unitMaterial['jumlah'];
+
+            // update stok material
+            $update = $modelMaterial->update($material['id_material'], ['stok' => $stok_baru]);
+
+            if ($update) $this->modelUnitMaterial->delete($id);
             return ResponseJSONCollection::success([], 'Data berhasil dihapus.', ResponseInterface::HTTP_OK);
         } catch (\Throwable $e) {
-            return ResponseJSONCollection::error([], 'Data tidak bisa dihapus.', ResponseInterface::HTTP_BAD_REQUEST);
+            return ResponseJSONCollection::error([$e->getMessage(), $e->getLine()], 'Data tidak bisa dihapus.', ResponseInterface::HTTP_BAD_REQUEST);
         }
     }
 }

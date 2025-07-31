@@ -79,6 +79,7 @@
                 <li><a href="<?= base_url('material'); ?>"><i class='bx bx-radio-circle'></i>Data Material</a></li>
                 <li><a href="<?= base_url('material-masuk'); ?>"><i class='bx bx-radio-circle'></i>Material Masuk</a></li>
                 <li><a href="<?= base_url('material-keluar'); ?>"><i class='bx bx-radio-circle'></i>Material Keluar</a></li>
+                <li><a href="<?= base_url('material-mixing'); ?>"><i class='bx bx-radio-circle'></i>Mixing</a></li>
             </ul>
         </li>
 

@@ -15,9 +15,9 @@ class Security extends BaseConfig
      *
      * @var string 'cookie' or 'session'
      */
-    public string $csrfProtection = 'cookie';
+    public string $csrfProtection = 'session';
 
-    /**
+    /** 
      * --------------------------------------------------------------------------
      * CSRF Token Randomization
      * --------------------------------------------------------------------------
@@ -62,7 +62,7 @@ class Security extends BaseConfig
      *
      * Defaults to two hours (in seconds).
      */
-    public int $expires = 7200;
+    public int $expires = 14400;
 
     /**
      * --------------------------------------------------------------------------
