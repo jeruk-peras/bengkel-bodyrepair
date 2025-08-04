@@ -652,15 +652,20 @@ class ServerSideController extends BaseController
             ]
         ];
 
+        $filter = $this->request->getPost('filter');
+        $subQuery = $this->db->table('closing_detail, unit')->select('unit.id_unit')->where('unit.id_unit = closing_detail.unit_id')->getCompiledSelect();
+
         if (is_array(session('selected_akses'))) {
             $where = [
-                'unit.cabang_id IN' => session('selected_akses')
+                'unit.cabang_id IN' => session('selected_akses'),
             ];
         } else {
             $where = [
-                'unit.cabang_id IN' => [session('selected_akses')]
+                'unit.cabang_id IN' => [session('selected_akses')],
             ];
         }
+
+        if($filter == 1) $where['unit.id_unit NOT IN'] = $subQuery; 
 
         $sideDatatable = new SideServerDatatables($table, $primaryKey);
 

@@ -7,8 +7,9 @@
         ajax: {
             url: '/datatable-server-side/unit', // URL file untuk proses select datanya
             type: 'POST',
-            data: {
-                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            data: function(d) {
+                d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';
+                d.filter = $('#datatable').attr('data-filter');
             } // Kirim token CSRF
         },
         columnDefs: [{
@@ -369,6 +370,12 @@
         $('#jumlah_panel_act').val(jumlah_panel_act);
         $('#jumlah_panel').val(jumlah_panel > 0 ? jumlah_panel.toFixed(2) : '');
     }
+
+    $('.btn-filter').click(function() {
+        var f = $(this).attr('data-f');
+        $('#datatable').attr('data-filter', f);
+        table.ajax.reload();
+    })
 
     function hitungUpahMekanik() {
         var upah_mekanik = parseInt($('#upah_mekanik').val());

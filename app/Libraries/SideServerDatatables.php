@@ -53,9 +53,9 @@ class SideServerDatatables
                 if (stripos($key, ' NOT IN') !== false && is_array($val) == false) {
 
                     $builder->where("$key ($val)");
-
+                    
                 } elseif (stripos($key, ' IN') !== false && is_array($val)) {
-
+                    
                     $field = trim(str_ireplace('IN', '', $key));
                     $builder->whereIn($field, $val);
                 } else {

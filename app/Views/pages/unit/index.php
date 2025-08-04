@@ -10,7 +10,11 @@
                 </ol>
             </nav>
         </div>
-        <div class="ms-auto"></div>
+        <div class="ms-auto">
+            <label>Filter : </label>
+            <button class="btn btn-sm btn-outline-primary btn-filter" data-f="1" >Data Unit Berjalan</button>
+            <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0" >Data Unit Closing</button>
+        </div>
     </div>
 
     <div class="card radius-10">
@@ -26,7 +30,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table align-middle mb-0" id="datatable" style="width: 100%;">
+                <table class="table align-middle mb-0" data-filter="1" id="datatable" style="width: 100%;">
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
