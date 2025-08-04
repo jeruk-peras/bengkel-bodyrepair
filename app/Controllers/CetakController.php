@@ -293,26 +293,7 @@ class CetakController extends BaseController
                 </tr>';
             }
 
-
-
-            // $i = 1;
-            // foreach ($data as $row) {
-            //     $html .=
-            //         '<tr>
-            //             <td>' . $i++ . '</td>
-            //             <td>' . $row['nama_jenis'] . '</td>
-            //             <td>' . $row['nama_material'] . '</td>
-            //             <td>Rp' . $row['harga'] . '</td>
-            //             <td>' . $row['jumlah'] . '</td>
-            //             <td>' . $row['nama_satuan'] . '</td>
-            //             <td>Rp' . $row['total_harga'] . '</td>
-            //             <td>' . $row['tanggal'] . '</td>
-            //             <td><a href="/material-keluar/' . $row['id_unit_material'] . '/delete" class="btn btn-danger btn-sm btn-del"><i class="bx bx-trash me-0"></i></a></td>
-            //         </tr>';
-            // }
-
-
-            return ResponseJSONCollection::success(['html' => $html, 'data' => $dataMaterial], 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $dataMaterial ?? []], 'Berhasil fetch data', ResponseInterface::HTTP_OK);
         } catch (\Throwable $e) {
             return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
         }
