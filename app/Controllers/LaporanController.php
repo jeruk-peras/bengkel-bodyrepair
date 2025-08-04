@@ -592,6 +592,7 @@ class LaporanController extends BaseController
 
             $dataPersentase = $this->db->table('closing')
                 ->join('setting_biaya', 'setting_biaya.cabang_id = closing.cabang_id', '')
+                ->where('closing.id_closing', $id_closing)
                 ->get()->getRowArray();
 
             // spp
