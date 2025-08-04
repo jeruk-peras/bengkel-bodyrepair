@@ -70,6 +70,47 @@ class LaporanController extends BaseController
         }
     }
 
+    public function edit(int $id)
+    {
+        try {
+            $data = $this->modelClosing->find($id); // mengambil data
+            // jika data tidak ditemukan
+            if (!$data) {
+                return ResponseJSONCollection::error([], 'Data tidak ditemukan.', ResponseInterface::HTTP_BAD_REQUEST);
+            }
+
+            return ResponseJSONCollection::success($data, 'Data ditemukan.', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function update(int $id)
+    {
+        $data = $this->request->getPost(); // mengambil post data
+
+        $data = [
+            'tanggal'           => $data['tanggal'],
+            'periode_closing'   => $data['periode_closing'],
+            'catatan'           => $data['catatan'],
+            'cabang_id'         => $this->id_cabang,
+        ];
+
+        try {
+
+            $update = $this->modelClosing->update($id, $data); // update data
+            // jika update gagal maka
+            if (!$update) {
+                $errors = $this->modelClosing->errors(); // mengambil data error
+                return ResponseJSONCollection::error($errors, 'Data tidak valid.', ResponseInterface::HTTP_BAD_REQUEST);
+            }
+
+            return ResponseJSONCollection::success([], 'Data berhasil diubah.', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error(['periode_closing' => 'Periode closing sudah digunakan sebelumnya.', 'error_mess' => $e->getMessage()], 'Periode closing sudah digunakan sebelumnya.', ResponseInterface::HTTP_BAD_REQUEST);
+        }
+    }
+
     public function delete(int $id)
     {
         try {

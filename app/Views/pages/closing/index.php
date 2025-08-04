@@ -44,6 +44,54 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="form-data-modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Form Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="post" id="form-data">
+                <?= csrf_field(); ?>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="tanggal" class="form-label required">Tanggal Closing</label>
+                            <input type="datetime-local" name="tanggal" class="form-control" id="tanggal" placeholder="Tanggal" value="<?= date('Y-m-d H:i'); ?>">
+                            <div class="invalid-feedback" id="invalid_tanggal"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="periode_closing" class="form-label required">Periode Closing</label>
+                            <select name="periode_closing" class="form-select" id="periode_closing">
+                                <?php $tahun = date("Y");
+                                $start = new DateTime("$tahun-01-01");
+                                $end = new DateTime("$tahun-12-01"); ?>
+                                <?php while ($start <= $end) :
+                                    $periode = $start->format("F - Y");
+                                    $start->modify("+1 month"); ?>
+                                    <option value="<?= $periode; ?>"><?= $periode; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                            <div class="invalid-feedback" id="invalid_periode_closing"></div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="catatan" class="form-label">Catatan</label>
+                            <textarea name="catatan" class="form-control" id="catatan"></textarea>
+                            <div class="invalid-feedback" id="invalid_harga"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary" id="btn-simpan">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     // load data
     var table = $('#datatable').DataTable({
@@ -61,6 +109,7 @@
             targets: 1, // Target kolom
             render: function(data, type, row, meta) {
                 var btn =
+                    '<a href="/closing/' + data + '/edit" class="me-2 btn btn-sm btn-primary btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Edit Data"><i class="bx bx-pencil me-0"></i></a>' +
                     '<a href="/closing/' + data + '/detail" class="me-2 btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Detail Closing"><i class="bx bx-info-circle me-0"></i></a>' +
                     '<a href="/closing/' + data + '/delete" class="me-2 btn btn-sm btn-danger btn-delete"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
                 return btn;
@@ -81,7 +130,61 @@
         });
     });
 
-     // hendle delete button
+    // hendle save data
+    $('#form-data').submit(function(e) {
+        e.preventDefault();
+        var url, formData;
+        url = $(this).attr('action');
+        formData = $(this).serializeArray();
+        $('#btn-simpan').attr('disabled', true).text('Menyimpan...');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                $('#form-data-modal').modal('hide');
+                table.ajax.reload(null, false); // Reload data tanpa reset pagination
+                alertMesage(response.status, response.message);
+                $('#btn-simpan').attr('disabled', false).text('Simpan data');
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                $('#form-data .form-control').removeClass('is-invalid');
+                $('.invalid-feedback').text('');
+                $('#btn-simpan').attr('disabled', false).text('Simpan data');
+                $.each(response.data, function(key, value) {
+                    $('#' + key).addClass('is-invalid');
+                    $('#invalid_' + key).text(value).show();
+                });
+                alertMesage(response.status, response.message);
+            }
+        })
+    })
+
+    // hendle edit button
+    table.on('click', 'tbody tr td a.btn-edit', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response) {
+                $('#form-data-modal').modal('show');
+                $('#form-data').attr('action', url);
+                $.each(response.data, function(key, value) {
+                    $('#' + key).val(value);
+                });
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                alertMesage(response.status, response.message);
+            }
+        });
+    })
+
+    // hendle delete button
     table.on('click', 'tbody tr td a.btn-delete', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');

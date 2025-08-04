@@ -242,6 +242,8 @@ $routes->group('/closing', function ($routes) {
     $routes->get('', 'LaporanController::closing');
     $routes->get('add', 'LaporanController::add');
     $routes->post('add', 'LaporanController::save');
+    $routes->get('(:num)/edit', 'LaporanController::edit/$1');
+    $routes->post('(:num)/edit', 'LaporanController::update/$1');
     $routes->get('(:num)/detail', 'LaporanController::detail/$1');
     $routes->post('(:num)/delete', 'LaporanController::delete/$1');
     
