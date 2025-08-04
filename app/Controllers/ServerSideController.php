@@ -1180,4 +1180,223 @@ class ServerSideController extends BaseController
             return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    // side closing
+    public function closing()
+    {
+        $table = 'closing';
+        $primaryKey = 'id_closing';
+        $columns = ['closing.id_closing', 'closing.periode_closing', 'closing.tanggal', 'closing.catatan', 'cabang.nama_cabang'];
+        $orderableColumns = ['closing.id_closing', 'closing.periode_closing', 'closing.tanggal', 'closing.catatan'];
+        $searchableColumns = ['closing.id_closing', 'closing.periode_closing', 'closing.tanggal', 'closing.catatan'];
+        $defaultOrder = ['closing.tanggal', 'ASC'];
+
+        $join = [
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = closing.cabang_id',
+                'type' => ''
+            ],
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'cabang.id_cabang IN' => session('selected_akses'),
+            ];
+        } else {
+            $where = [
+                'cabang.id_cabang IN' => [session('selected_akses')],
+            ];
+        }
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_closing']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['tanggal']),
+                htmlspecialchars($row['periode_closing']),
+                htmlspecialchars($row['catatan']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
+
+    public function fetchUnit(int $id)
+    {
+        $id_cabang = $this->db->table('closing')->where('id_closing', $id)->get()->getRowArray()['cabang_id'];
+        $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+
+        $data = $this->db->table('unit')
+            ->select('unit.id_unit, unit.nomor_spp, unit.nomor_polisi, asuransi.nama_asuransi, unit.model_unit')
+            ->join('asuransi', 'asuransi.id_asuransi = unit.asuransi_id')
+            ->where('unit.cabang_id', $id_cabang)
+            ->where("unit.id_unit NOT IN ($subQuery)")
+            ->get()->getResultArray();
+
+        return ResponseJSONCollection::success($data, 'Data fetched successfully', ResponseInterface::HTTP_OK);
+    }
+
+    public function closingUnit(int $id_closing)
+    {
+        $table = 'closing_detail';
+        $primaryKey = 'id_closing_detail';
+        $columns = ['closing_detail.id_closing_detail', 'unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon', 'cabang.nama_cabang'];
+        $orderableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon'];
+        $searchableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon'];
+        $defaultOrder = ['unit.tanggal_masuk', 'DESC'];
+
+        $join = [
+            [
+                'table' => 'unit',
+                'on' => 'unit.id_unit = closing_detail.unit_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'asuransi',
+                'on' => 'asuransi.id_asuransi = unit.asuransi_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = unit.cabang_id',
+                'type' => ''
+            ]
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'closing_detail.closing_id' => $id_closing,
+            ];
+        } else {
+            $where = [
+                'closing_detail.closing_id' => $id_closing,
+            ];
+        }
+
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_closing_detail']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['nomor_spp']),
+                htmlspecialchars($row['nama_sa']),
+                htmlspecialchars($row['nomor_polisi']),
+                htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
+                htmlspecialchars($row['nama_asuransi']),
+                htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
+                htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
+                ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
+                htmlspecialchars($row['jumlah_panel']),
+                htmlspecialchars('Rp' . $row['harga_spp']),
+                htmlspecialchars($row['diskon'] . '%'),
+                htmlspecialchars('Rp' . $row['jumlah_diskon']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
+
+    public function fetchUnitKolektif(int $id_closing)
+    {
+        $table = 'unit';
+        $primaryKey = 'id_unit';
+        $columns = ['unit.id_unit', 'unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon', 'cabang.nama_cabang'];
+        $orderableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon'];
+        $searchableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon'];
+        $defaultOrder = ['unit.tanggal_masuk', 'DESC'];
+
+        $join = [
+            [
+                'table' => 'asuransi',
+                'on' => 'asuransi.id_asuransi = unit.asuransi_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = unit.cabang_id',
+                'type' => ''
+            ]
+        ];
+
+        $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+        $id_cabang = $this->db->table('closing')->where('id_closing', $id_closing)->get()->getRowArray()['cabang_id'];
+
+        $where = [
+            'cabang.id_cabang' => $id_cabang,
+            'unit.id_unit NOT IN' => $subQuery
+        ];
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_unit']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['nomor_spp']),
+                htmlspecialchars($row['nama_sa']),
+                htmlspecialchars($row['nomor_polisi']),
+                htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
+                htmlspecialchars($row['nama_asuransi']),
+                htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
+                htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
+                ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
+                htmlspecialchars($row['jumlah_panel']),
+                htmlspecialchars('Rp' . $row['harga_spp']),
+                htmlspecialchars($row['diskon'] . '%'),
+                htmlspecialchars('Rp' . $row['jumlah_diskon']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
 }

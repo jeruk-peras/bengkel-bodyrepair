@@ -32,6 +32,7 @@ $routes->group('/api', function ($routes) {
     $routes->get('no-spp', 'ServerSideController::fetchNoSPP');
     $routes->get('(:num)/cetak-foto', 'ServerSideController::fetchCetakFoto/$1');
     $routes->post('(:num)/cetak-foto/delete', 'ServerSideController::deleteCetakFoto/$1');
+    $routes->get('(:num)/fetchunit', 'ServerSideController::fetchUnit/$1');
 });
 
 // routes dashboard
@@ -57,6 +58,9 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('unit', 'ServerSideController::unit');
     $routes->post('epoxy', 'ServerSideController::epoxy');
     $routes->post('gandeng', 'ServerSideController::gandeng');
+    $routes->post('closing', 'ServerSideController::closing');
+    $routes->post('(:num)/closing', 'ServerSideController::closingUnit/$1   ');
+    $routes->post('(:num)/fetchunitkolektif', 'ServerSideController::fetchUnitKolektif/$1');
 });
 
 
@@ -231,6 +235,24 @@ $routes->group('/laporan', function ($routes) {
 
     $routes->post('closing-mekanik', 'LaporanController::sideDataClosingMekanik');
     $routes->post('closingan', 'LaporanController::sideDataClosingan');
+});
+
+// closing 
+$routes->group('/closing', function ($routes) {
+    $routes->get('', 'LaporanController::closing');
+    $routes->get('add', 'LaporanController::add');
+    $routes->post('add', 'LaporanController::save');
+    $routes->get('(:num)/detail', 'LaporanController::detail/$1');
+    $routes->post('(:num)/delete', 'LaporanController::delete/$1');
+    
+    $routes->post('add-unit', 'LaporanController::addUnit');
+    $routes->post('(:num)/del-unit', 'LaporanController::deleteUnit/$1');
+    $routes->post('savekolektifunit', 'LaporanController::saveKolektifUnit');
+    
+    $routes->get('(:num)/summary-closing', 'LaporanController::summaryClosing/$1');
+    $routes->get('(:num)/pemakaian-bahan-detail', 'LaporanController::pemakaianBahanDetail/$1');
+    $routes->get('(:num)/closing-mekanik', 'LaporanController::closingMekanik/$1');
+    $routes->get('(:num)/closingan', 'LaporanController::closingan/$1');
 });
 
 $routes->group('/cetak', function ($routes) {

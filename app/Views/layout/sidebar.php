@@ -68,6 +68,12 @@
                     <div class="menu-title">Cabang</div>
                 </a>
             </li>
+            <li>
+                <a href="<?= base_url('closing'); ?>">
+                    <div class="parent-icon"><i class='bx bx-cabinet'></i></div>
+                    <div class="menu-title">Data Closing</div>
+                </a>
+            </li>
         <?php endif;  ?>
 
         <li>
