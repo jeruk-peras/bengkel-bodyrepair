@@ -7,8 +7,9 @@
         ajax: {
             url: '/datatable-server-side/unit', // URL file untuk proses select datanya
             type: 'POST',
-            data: {
-                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            data: function(d) {
+                d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';
+                d.filter = $('#datatable').attr('data-filter');
             } // Kirim token CSRF
         },
         columnDefs: [{
@@ -130,7 +131,7 @@
         var stok = parseInt($row.find('.stok-material').text()) || 0;
         var jumlah = parseInt($row.find('#jumlah').val()) || 0;
 
-        if (jumlah > stok) {    
+        if (jumlah > stok) {
             $row.find('#jumlah').val(stok); // Reset jumlah ke stok maksimum
         }
     });
@@ -296,7 +297,7 @@
                     },
                     success: function(response) {
                         alertMesage(response.status, response.message);
-                        
+
                     },
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);
@@ -305,5 +306,14 @@
                 });
             }
         });
+    })
+
+    $('.btn-filter').click(function() {
+        var f = $(this).attr('data-f');
+        $('#datatable').attr('data-filter', f);
+        table.ajax.reload();
+
+        $('.btn-filter').removeClass('active');
+        $(this).addClass('active');
     })
 </script>

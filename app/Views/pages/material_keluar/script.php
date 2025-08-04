@@ -7,8 +7,9 @@
         ajax: {
             url: '/datatable-server-side/unit', // URL file untuk proses select datanya
             type: 'POST',
-            data: {
-                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            data: function(d) {
+                d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';
+                d.filter = $('#datatable').attr('data-filter');
             } // Kirim token CSRF
         },
         columnDefs: [{
@@ -305,5 +306,14 @@
                 });
             }
         });
+    })
+
+    $('.btn-filter').click(function() {
+        var f = $(this).attr('data-f');
+        $('#datatable').attr('data-filter', f);
+        table.ajax.reload();
+
+        $('.btn-filter').removeClass('active');
+        $(this).addClass('active');
     })
 </script>
