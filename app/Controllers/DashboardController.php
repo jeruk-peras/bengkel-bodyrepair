@@ -129,7 +129,7 @@ class DashboardController extends BaseController
             foreach ($result as $row) {
 
                 $data['total_panel'] += $row['jumlah_panel'];
-                $data['total_nilai'] += $row['harga_spp'];
+                $data['total_nilai'] += $row['jumlah_diskon'];
                 $data['unit_proses'] += ($row['status'] == 0 ? 1 : 0);
                 $data['unit_selesai'] += ($row['status'] == 1 ? 1 : 0);
             }
