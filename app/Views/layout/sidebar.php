@@ -119,17 +119,6 @@
             </ul>
         </li>
 
-        <li>
-            <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class="bx bx-file"></i></div>
-                <div class="menu-title">Laporan</div>
-            </a>
-            <ul class="mm-collapse">
-                <li><a href="<?= base_url('laporan/closing-mekanik'); ?>"><i class='bx bx-radio-circle'></i>Closing Mekanik</a></li>
-                <li><a href="<?= base_url('laporan/closingan'); ?>"><i class='bx bx-radio-circle'></i>Closingan</a></li>
-            </ul>
-        </li>
-
         <?php if (session('user_type') == 'admin'):  ?>
             <li>
                 <a href="javascript:;" class="has-arrow">
