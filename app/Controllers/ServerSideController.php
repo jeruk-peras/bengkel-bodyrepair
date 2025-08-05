@@ -653,7 +653,13 @@ class ServerSideController extends BaseController
         ];
 
         $filter = $this->request->getPost('filter');
-        $subQuery = $this->db->table('closing_detail, unit')->select('unit.id_unit')->where('unit.id_unit = closing_detail.unit_id')->getCompiledSelect();
+        $subQuery = $this->db->table('closing_detail, unit')->select('unit.id_unit')->where('unit.id_unit = closing_detail.unit_id');
+
+        $filter1 = $subQuery->getCompiledSelect();
+        $filter2 = [];
+        foreach ($subQuery->get()->getResultArray() as $row) {
+            $filter2[] = $row['unit_id'];
+        }
 
         if (is_array(session('selected_akses'))) {
             $where = [
@@ -665,7 +671,8 @@ class ServerSideController extends BaseController
             ];
         }
 
-        if($filter == 1) $where['unit.id_unit NOT IN'] = $subQuery; 
+        if ($filter == 1) $where['unit.id_unit NOT IN'] = $filter1;
+        if ($filter == 0 && $filter2 != []) $where['unit.id_unit IN'] = $filter2;
 
         $sideDatatable = new SideServerDatatables($table, $primaryKey);
 
