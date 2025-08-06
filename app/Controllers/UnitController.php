@@ -88,7 +88,7 @@ class UnitController extends BaseController
             // save status unit // id diambil dari id unit
             $saveStatus = $this->_getDataStatus($id);
             if ($saveStatus !== true) {
-                return ResponseJSONCollection::error($saveStatus, 'Terjadi kesalahan.', ResponseInterface::HTTP_BAD_REQUEST);
+                return ResponseJSONCollection::error($saveStatus, 'Upah mekanik belum di setting.', ResponseInterface::HTTP_BAD_REQUEST);
             }
             $this->db->transComplete();
             return ResponseJSONCollection::success(['redirect' => base_url('unit')], 'Data berhasil disimpan.', ResponseInterface::HTTP_OK);
