@@ -43,7 +43,7 @@ class MaterialMasukDetailModel extends Model
         ],
         'stok_masuk' => [
             'label' => 'Stok',
-            'rules' => 'integer',
+            'rules' => 'numeric',
         ],
     ];
     protected $validationMessages   = [

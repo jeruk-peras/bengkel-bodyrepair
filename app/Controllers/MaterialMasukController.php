@@ -135,17 +135,12 @@ class MaterialMasukController extends BaseController
             $data[] = [
                 'id_material_masuk_detail' => $value,
                 'harga_masuk' => $dataPost['harga_masuk'][$value],
-                'stok_masuk' => $dataPost['stok_masuk'][$value],
+                'stok_masuk' => $dataPost['stok_masuk'][$value] ?: 0,
             ];
         }
 
         try {
-            $update = $this->modelMaterialMasukDetail->updateBatch($data, 'id_material_masuk_detail'); // update data
-            // jika update gagal maka
-            if (!$update) {
-                $errors = $this->modelMaterialMasuk->errors(); // mengambil data error
-                return ResponseJSONCollection::error($errors, 'Data tidak valid.', ResponseInterface::HTTP_BAD_REQUEST);
-            }
+            $this->modelMaterialMasukDetail->updateBatch($data, 'id_material_masuk_detail'); // update data
 
             return ResponseJSONCollection::success([], 'Data berhasil diubah.', ResponseInterface::HTTP_OK);
         } catch (DatabaseException $e) {
