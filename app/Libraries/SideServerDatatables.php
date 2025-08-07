@@ -138,10 +138,15 @@ class SideServerDatatables
         return $query->getNumRows();
     }
 
-    public function countAllData()
+    public function countAllData(array $join = [], $where = null)
     {
         $db = \Config\Database::connect(); // koneksi ke database
         $builder = $db->table($this->table);
+        // hendle join
+        $this->_hendleJoin($builder, $join);
+
+        // hendle where
+        $this->_hendleWhere($builder, $where);
         return $builder->countAllResults();
     }
 }

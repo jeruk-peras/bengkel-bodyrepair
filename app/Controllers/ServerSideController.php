@@ -286,7 +286,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -342,7 +342,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -398,7 +398,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -466,7 +466,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -526,7 +526,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -678,7 +678,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -1050,7 +1050,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -1120,7 +1120,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -1225,7 +1225,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -1308,7 +1308,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -1377,7 +1377,7 @@ class ServerSideController extends BaseController
 
         $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
-        $countAllData = $sideDatatable->countAllData();
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
