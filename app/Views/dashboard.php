@@ -123,8 +123,8 @@
         <div class="col-12 col-lg-12 mx-auto">
             <h6>Panduan Filter Dashboard</h6>
             <ul>
-                <li>*Filter tanggal akan mempengaruhi data Total Panel, Unit Dalam Proses, Unit Selesi, Total Pendapatan, Grafik Penggunaan Material, Dan Closing Mekanik.</li>
-                <li>*Filter Tahun Hanya mempengaruhi data Data Grafik Bulanan.</li>
+                <li>*Filter Tahun Hanya mempengaruhi data Data Grafik Closingan Bulanan.</li>
+                <li>*Data Total Panel, Unit Dalam Proses, Unit Selesi, Total Pendapatan, Grafik Penggunaan Material, Dan Closing Mekanik didapat dari unit yang belum dimasukan closing.</li>
             </ul>
         </div>
     </div>
