@@ -952,7 +952,7 @@ class ServerSideController extends BaseController
                     'tanggal' => $unit['updated_at'],
                     'nama_riwayat' => 'Unit selesai',
                     'catatan' => 'Unit telah selesai',
-                    'by' => $unit['nama_customer'],
+                    'by' => '-',
                     'data' => 'material',
                 ];
             }

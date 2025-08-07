@@ -399,4 +399,13 @@
         hitungPanel();
         hitungUpahMekanik();
     });
+
+     $('.btn-filter').click(function() {
+        var f = $(this).attr('data-f');
+        $('#datatable').attr('data-filter', f);
+        table.ajax.reload();
+
+        $('.btn-filter').removeClass('active');
+        $(this).addClass('active');
+    })
 </script>
