@@ -56,7 +56,7 @@
 
                     <div class="col-sm-12 col-md-12 col-12">
                         <label for="asuransi_id" class="form-label required">Asuransi</label>
-                        <select name="asuransi_id" class="form-select" id="asuransi_id" data-placeholder="Asuransi"  autocomplete="off"></select>
+                        <select name="asuransi_id" class="form-select" id="asuransi_id" data-placeholder="Asuransi" autocomplete="off"></select>
                         <div class="invalid-feedback" id="invalid_asuransi_id"></div>
                     </div>
 
@@ -104,7 +104,7 @@
                     <div class="col-12 col-md-6">
                         <label for="harga_spp" class="form-label required">Harga SPP</label>
                         <div class="position-relative input-icon">
-                            <input type="text" inputmode="numeric" name="harga_spp" class="form-control" id="harga_spp" placeholder="Harga SPP">
+                            <input type="text" inputmode="numeric" name="harga_spp" class="form-control rupiah" id="harga_spp" placeholder="Harga SPP">
                             <span class="position-absolute top-50 translate-middle-y">Rp </span>
                         </div>
                         <div class="invalid-feedback" id="invalid_harga_spp"></div>
@@ -128,7 +128,7 @@
                     <div class="col-9 col-sm-8 col-md-4">
                         <label for="harga_panel" class="form-label">Harga Panel</label>
                         <div class="position-relative input-icon">
-                            <input type="text" inputmode="numeric" name="harga_panel" class="form-control" id="harga_panel" value="<?= biayaCabang(session('selected_akses'), 'harga_panel'); ?>" readonly placeholder="Harga Panel">
+                            <input type="text" inputmode="numeric" name="harga_panel" class="form-control" id="harga_panel" value="<?= number_format(biayaCabang(session('selected_akses'), 'harga_panel'), 0, '', '.'); ?>" readonly placeholder="Harga Panel">
                             <span class="position-absolute top-50 translate-middle-y">Rp </span>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                     <div class="col-6 col-sm-6 col-md-3">
                         <label for="upah_mekanik" class="form-label">Upah Mekanik</label>
                         <div class="position-relative input-icon">
-                            <input type="text" inputmode="numeric" name="upah_mekanik" class="form-control" id="upah_mekanik" value="<?= biayaCabang(session('selected_akses'), 'upah_mekanik'); ?>" placeholder="Upah Mekanik" readonly>
+                            <input type="text" inputmode="numeric" name="upah_mekanik" class="form-control" id="upah_mekanik" value="<?= number_format(biayaCabang(session('selected_akses'), 'upah_mekanik'), 0, '', '.'); ?>" placeholder="Upah Mekanik" readonly>
                             <span class="position-absolute top-50 translate-middle-y">Rp </span>
                         </div>
                     </div>
@@ -228,16 +228,21 @@
 
     // hendle perhitungan 
     function hitungDiskon() {
-        var harga = parseInt($('#harga_spp').val());
+        var harga = $('#harga_spp').val();
+        harga = resetRupiah(harga);
+
         var diskon = parseInt($('#diskon').val()) || 0;
         var total = harga - (harga * diskon / 100);
         total = Math.round(total);
-        $('#jumlah_diskon').val(harga ? total : '');
+        // pastikan total dikonversi ke string sebelum formatRupiah
+        $('#jumlah_diskon').val(harga ? formatRupiah(total) : '');
     }
 
     function hitungPanel() {
-        var jumlah_diskon = parseInt($('#jumlah_diskon').val());
-        var harga_panel = parseInt($('#harga_panel').val());
+        var jumlah_diskon = resetRupiah($('#jumlah_diskon').val());
+        
+        var harga_panel = resetRupiah($('#harga_panel').val());
+
         var jumlah_panel = 0;
         if (jumlah_diskon && harga_panel && harga_panel > 0) {
             jumlah_panel = jumlah_diskon / harga_panel;
@@ -249,7 +254,7 @@
     }
 
     function hitungUpahMekanik() {
-        var upah_mekanik = parseInt($('#upah_mekanik').val());
+        var upah_mekanik = resetRupiah($('#upah_mekanik').val());
         var jumlah_panel = parseFloat($('#jumlah_panel_act').val());
 
         var total_upah = 0;
@@ -258,7 +263,7 @@
             total_upah = Math.round(total_upah);
             // total_upah = total_upah;
         }
-        $('#total_upah_mekanik').val((total_upah > 0) ? total_upah : '');
+        $('#total_upah_mekanik').val((total_upah > 0) ? formatRupiah(total_upah) : '');
     }
     $('#harga_spp, #diskon, #harga_panel, #upah_mekanik').on('keyup change', function() {
         hitungDiskon();

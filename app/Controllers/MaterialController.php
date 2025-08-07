@@ -32,13 +32,13 @@ class MaterialController extends BaseController
         $data = [
             'nama_material'  => $data['nama_material'],
             'merek'          => $data['merek'],
-            'harga'          => $data['harga'],
+            'harga'          => str_replace('.', '', $data['harga']),
             'stok'           => $data['stok'],
             'satuan_id'      => $data['satuan_id'],
             'jenis_id'       => $data['jenis_id'],
             'cabang_id'      => $this->id_cabang,
         ];
-        
+
         try {
             $save = $this->modelMaterial->save($data); // save data
             // jika save gagal maka
@@ -75,7 +75,7 @@ class MaterialController extends BaseController
         $data = [
             'nama_material'  => $data['nama_material'],
             'merek'          => $data['merek'],
-            'harga'          => $data['harga'],
+            'harga'          => str_replace('.', '', $data['harga']),
             'stok'           => $data['stok'],
             'satuan_id'      => $data['satuan_id'],
             'jenis_id'       => $data['jenis_id'],

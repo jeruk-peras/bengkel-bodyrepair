@@ -19,7 +19,7 @@
                     '<a href="/biaya/' + data + '/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-id-produk="' + data + '" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
                 return btn;
             }
-        }, <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?> ],
+        }, <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>],
         pageLength: 25,
         lengthMenu: [25, 50, 100, 'All'],
         scrollX: true,
@@ -89,6 +89,8 @@
                 $.each(response.data, function(key, value) {
                     $('#' + key).val(value);
                 });
+                $('#harga_panel').val(formatRupiah(response.data.harga_panel));
+                $('#upah_mekanik').val(formatRupiah(response.data.upah_mekanik));
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);

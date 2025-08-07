@@ -103,6 +103,7 @@
                 $.each(response.data, function(key, value) {
                     $('#' + key).val(value);
                 });
+                $('#harga_status').val(formatRupiah(response.data.harga_status));
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);

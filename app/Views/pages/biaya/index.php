@@ -65,12 +65,18 @@
                         </div>
                         <div class="col-md-3">
                             <label for="harga_panel" class="form-label required">Harga /panel</label>
-                            <input type="text" name="harga_panel" class="form-control" id="harga_panel" placeholder="Harga /panel">
+                            <div class="position-relative input-icon">
+                                <input type="text" name="harga_panel" class="form-control" id="harga_panel" placeholder="Harga /panel">
+                                <span class="position-absolute top-50 translate-middle-y">Rp </span>
+                            </div>
                             <div class="invalid-feedback" id="invalid_harga_panel"></div>
                         </div>
                         <div class="col-md-3">
                             <label for="upah_mekanik" class="form-label required">Upah Mekanik</label>
-                            <input type="text" name="upah_mekanik" class="form-control" id="upah_mekanik" placeholder="Upah Mekanik">
+                            <div class="position-relative input-icon">
+                                <input type="text" name="upah_mekanik" class="form-control" id="upah_mekanik" placeholder="Upah Mekanik">
+                                <span class="position-absolute top-50 translate-middle-y">Rp </span>
+                            </div>
                             <div class="invalid-feedback" id="invalid_upah_mekanik"></div>
                         </div>
                         <div class="col-md-3">

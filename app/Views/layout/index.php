@@ -102,13 +102,39 @@
 	<!--app JS-->
 	<script src="<?= base_url(); ?>assets/js/app.js"></script>
 	<script>
-		$(document).ready(function() {
-			$('#example').DataTable({
-				language: {
-					url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/id.json',
-				},
+		var rupiah = document.getElementsByClassName("rupiah");
+		for (let i = 0; i < rupiah.length; i++) {
+			rupiah[i]?.addEventListener("keyup", function(e) {
+				console.log(rupiah[i].value)
+				// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+				rupiah[i].value = formatRupiah(rupiah[i].value);
 			});
-		});
+		}
+
+		function formatRupiah(angka) {
+			// Pastikan input bertipe string
+			if (typeof angka !== 'string') {
+				angka = angka !== undefined && angka !== null ? angka.toString() : '';
+			}
+			var number_string = angka.replace(/[^,\d]/g, "").toString(),
+				split = number_string.split("."),
+				sisa = split[0].length % 3,
+				rupiah = split[0].substr(0, sisa),
+				ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if (ribuan) {
+				separator = sisa ? "." : "";
+				rupiah += separator + ribuan.join(".");
+			}
+
+			rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+			return rupiah;
+		}
+
+		function resetRupiah(angka) {
+			return parseInt(angka.replace(/[.,]/g, ''));
+		}
 
 		$(function() {
 			$('[data-bs-toggle="tooltip"]').tooltip();

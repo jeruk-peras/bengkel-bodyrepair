@@ -89,7 +89,10 @@
                         </div>
                         <div class="col-md-6">
                             <label for="harga_status" class="form-label required">Harga Status</label>
-                            <input type="text" name="harga_status" class="form-control" id="harga_status" placeholder="Harga Status">
+                            <div class="position-relative input-icon">
+                                <input type="text" name="harga_status" class="form-control rupiah" id="harga_status" placeholder="Harga Status">
+                                <span class="position-absolute top-50 translate-middle-y">Rp </span>
+                            </div>
                             <div class="invalid-feedback" id="invalid_harga_status"></div>
                         </div>
                     </div>

@@ -63,13 +63,13 @@ class UnitController extends BaseController
             'tanggal_masuk'     => $data['tanggal_masuk'],
             'estimasi_selesai'  => $data['estimasi_selesai'],
             'detail_pengerjaan' => $data['detail_pengerjaan'],
-            'harga_spp'         => $data['harga_spp'],
+            'harga_spp'         => str_replace('.', '', $data['harga_spp']),
             'diskon'            => $data['diskon'],
-            'jumlah_diskon'     => $data['jumlah_diskon'],
-            'harga_panel'       => $data['harga_panel'],
+            'jumlah_diskon'     => str_replace('.', '', $data['jumlah_diskon']),
+            'harga_panel'       => str_replace('.', '', $data['harga_panel']),
             'jumlah_panel'      => $data['jumlah_panel'],
-            'upah_mekanik'      => $data['upah_mekanik'],
-            'total_upah_mekanik' => $data['total_upah_mekanik'],
+            'upah_mekanik'      => str_replace('.', '', $data['upah_mekanik']),
+            'total_upah_mekanik' => str_replace('.', '', $data['total_upah_mekanik']),
             'status'            => 0,
             'cabang_id'         => $this->id_cabang,
         ];
@@ -156,13 +156,13 @@ class UnitController extends BaseController
             'tanggal_masuk'     => $data['tanggal_masuk'],
             'estimasi_selesai'  => $data['estimasi_selesai'],
             'detail_pengerjaan' => $data['detail_pengerjaan'],
-            'harga_spp'         => $data['harga_spp'],
+            'harga_spp'         => str_replace('.', '', $data['harga_spp']),
             'diskon'            => $data['diskon'],
-            'jumlah_diskon'     => $data['jumlah_diskon'],
-            'harga_panel'       => $data['harga_panel'],
+            'jumlah_diskon'     => str_replace('.', '', $data['jumlah_diskon']),
+            'harga_panel'       => str_replace('.', '', $data['harga_panel']),
             'jumlah_panel'      => $data['jumlah_panel'],
-            'upah_mekanik'      => $data['upah_mekanik'],
-            'total_upah_mekanik' => $data['total_upah_mekanik'],
+            'upah_mekanik'      => str_replace('.', '', $data['upah_mekanik']),
+            'total_upah_mekanik' => str_replace('.', '', $data['total_upah_mekanik']),
             'status'            => 0,
             'cabang_id'         => $this->id_cabang,
         ];
@@ -341,7 +341,7 @@ class UnitController extends BaseController
             foreach ($statusData as $status) {
                 $this->_deleteGambarStatus($status['gambar_status']);
             }
-            
+
             $delete = $this->modelUnit->delete($id); // delete data
             // jika delete gagal maka
             if (!$delete) {
@@ -361,7 +361,7 @@ class UnitController extends BaseController
         // define('EXT', '.' . pathinfo(__FILE__, PATHINFO_EXTENSION));
         // define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
         // define('PUBPATH', str_replace(SELF, '', FCPATH)); 
-        
+
         if ($gambar && file_exists('./assets/images/status/' . $gambar)) {
             unlink('assets/images/status/' . $gambar); // hapus gambar
         }

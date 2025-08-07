@@ -90,7 +90,7 @@ class StatusController extends BaseController
 
         $data = [
             'nama_status'     => strtoupper($data['nama_status']),
-            'harga_status'   => $data['harga_status'],
+            'harga_status'   => str_replace('.', '', $data['harga_status']),
             'cabang_id'     => $this->id_cabang
         ];
 
@@ -129,7 +129,7 @@ class StatusController extends BaseController
 
         $data = [
             'nama_status'     => strtoupper($data['nama_status']),
-            'harga_status'   => $data['harga_status'],
+            'harga_status'   => str_replace('.', '', $data['harga_status']),
             'cabang_id'     => $this->id_cabang
         ];
 

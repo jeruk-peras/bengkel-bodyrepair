@@ -141,7 +141,7 @@
                         <div class="col-12 col-md-6">
                             <label for="harga_spp" class="form-label required">Harga SPP</label>
                             <div class="position-relative input-icon">
-                                <input type="text" inputmode="numeric" name="harga_spp" class="form-control" id="harga_spp" placeholder="Harga SPP">
+                                <input type="text" inputmode="numeric" name="harga_spp" class="form-control rupiah" id="harga_spp" placeholder="Harga SPP">
                                 <span class="position-absolute top-50 translate-middle-y">Rp </span>
                             </div>
                             <div class="invalid-feedback" id="invalid_harga_spp"></div>

@@ -32,8 +32,8 @@ class SettingBiayaController extends BaseController
         $data = [
             'id_setting_biaya' => '',
             'diskon' => $data['diskon'],
-            'harga_panel' => $data['harga_panel'],
-            'upah_mekanik' => $data['upah_mekanik'],
+            'harga_panel' => str_replace('.', '', $data['harga_panel']),
+            'upah_mekanik' => str_replace('.', '', $data['upah_mekanik']),
             'sharing' => $data['sharing'],
             'cabang_id'     => $this->id_cabang
         ];
@@ -74,8 +74,8 @@ class SettingBiayaController extends BaseController
         $data = [
             'id_setting_biaya' => "$id",
             'diskon' => $data['diskon'],
-            'harga_panel' => $data['harga_panel'],
-            'upah_mekanik' => $data['upah_mekanik'],
+            'harga_panel' => str_replace('.', '', $data['harga_panel']),
+            'upah_mekanik' => str_replace('.', '', $data['upah_mekanik']),
             'sharing' => $data['sharing'],
             'cabang_id'     => $this->id_cabang
         ];
