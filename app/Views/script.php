@@ -1,25 +1,12 @@
 <script>
     $(document).ready(function() {
 
-        var filterTanggal = localStorage.getItem('filterTanggal');
-        if (filterTanggal) {
-            const data = JSON.parse(filterTanggal);
-
-            // Isi ulang field berdasarkan name
-            $('input[name="tanggal_awal"]').val(data.tanggal_awal);
-            $('input[name="tanggal_akhir"]').val(data.tanggal_akhir);
-        }
-
-        filterTanggal = JSON.parse(filterTanggal);
-
         var filterTahun = localStorage.getItem('filterTahun');
         if (filterTahun) {
             const data = JSON.parse(filterTahun);
-
             // Isi ulang field berdasarkan name
             $('#filtertahun').val(data.tahun)
         }
-
         filterTahun = JSON.parse(filterTahun);
 
         // Render grafik dengan nilai itu
@@ -27,9 +14,9 @@
             grafikPendapatan(filterTahun);
         <?php endif; ?>
         grafikPendapatanBulanan(filterTahun);
-        grafikPemakaianBahan(filterTanggal);
-        widgetData(filterTanggal);
-        widgetClosing(filterTanggal);
+        grafikPemakaianBahan();
+        widgetData();
+        widgetClosing();
 
         var series, title, categories;
         let chart4, chart5, chart8 = null;
@@ -37,27 +24,15 @@
         $('#filter-form').submit(function(e) {
             e.preventDefault();
 
-            localStorage.removeItem('filterTahun')
-            localStorage.removeItem('filterTanggal')
-
             var formData = $(this).serializeArray();
-            const tanggal = {};
             const tahun = {};
             formData.forEach(item => {
                 if (item.name == 'tahun') tahun[item.name] = item.value;
-                if (item.name !== 'tahun') tanggal[item.name] = item.value;
             });
 
             // Simpan ke localStorage (harus diubah ke string)
-            localStorage.setItem('filterTanggal', JSON.stringify(tanggal));
             localStorage.setItem('filterTahun', JSON.stringify(tahun));
-
-            var filterTanggal = localStorage.getItem('filterTanggal');
-
-            filterTanggal = JSON.parse(filterTanggal);
-
             var filterTahun = localStorage.getItem('filterTahun');
-
             filterTahun = JSON.parse(filterTahun);
 
             // Render grafik dengan nilai 
@@ -65,9 +40,9 @@
                 grafikPendapatan(filterTahun);
             <?php endif; ?>
             grafikPendapatanBulanan(filterTahun);
-            grafikPemakaianBahan(filterTanggal);
-            widgetData(filterTanggal);
-            widgetClosing(filterTanggal);
+            grafikPemakaianBahan();
+            widgetData();
+            widgetClosing();
         })
 
         <?php if (is_array(session('selected_akses'))): ?>
@@ -233,7 +208,7 @@
         }
 
         // grafik material
-        function grafikPemakaianBahan(filterTanggal) {
+        function grafikPemakaianBahan() {
             var series, title, categories;
             $('#chart8').html('<div class="text-center p-5"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
             $.ajax({
@@ -242,12 +217,9 @@
                 dataType: 'json',
                 data: {
                     '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
-                    filterTanggal
                 },
                 success: function(response) {
                     if (response.status === 200) {
-
-                        console.log(response.data.tanggal_awal);
                         title = response.data.title;
                         series = response.data.data;
                         categories = response.data.name;
@@ -297,20 +269,16 @@
         }
 
         // widget data
-        function widgetData(filterTanggal) {
+        function widgetData() {
             $.ajax({
                 url: '<?= base_url('dashboard/widget-data'); ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
                     '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
-                    filterTanggal
                 },
                 success: function(response) {
                     if (response.status === 200) {
-                        $('input[name="tanggal_awal"]').val(response.data.tanggal_awal);
-                        $('input[name="tanggal_akhir"]').val(response.data.tanggal_akhir);
-
                         $.each(response.data, function(key, value) {
                             $('#' + key).text(value);
                         });
@@ -325,14 +293,13 @@
         }
 
         // widget closing
-        function widgetClosing(filterTanggal) {
+        function widgetClosing() {
             $.ajax({
                 url: '<?= base_url('dashboard/widget-closing'); ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
                     '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
-                    filterTanggal
                 },
                 success: function(response) {
                     if (response.status === 200) {

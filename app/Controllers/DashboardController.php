@@ -6,18 +6,16 @@ use App\Controllers\BaseController;
 use App\Libraries\ResponseJSONCollection;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\HTTP\ResponseInterface;
+use DateTime;
 
 class DashboardController extends BaseController
 {
 
-    protected $_tanggal_awal;
-    protected $_tanggal_akhir;
     protected $_tahun;
+    protected $_periode;
 
     public function __construct()
     {
-        $this->_tanggal_awal = date("Y-m-") . "01";
-        $this->_tanggal_akhir = date("Y-m-d");
         $this->_tahun = date("Y");
     }
 
@@ -29,18 +27,32 @@ class DashboardController extends BaseController
         return view('dashboard', $data);
     }
 
+    private function _periode($tahun)
+    {
+        $periode = [];
+        $start = new DateTime("$tahun-01-01");
+        $end = new DateTime("$tahun-12-01");
+        $i = 1;
+        while ($start <= $end) {
+            $periode[$i++] = $start->format("F") . ' - ' . $start->format("Y");
+            $start->modify("+1 month");
+        }
+        return $periode;
+    }
+
     public function widgetClosing()
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
-            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'] ?? $this->_tanggal_awal;
-            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'] ?? $this->_tanggal_akhir;
+
+            // agar tidak menghitung unit yang closing
+            $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
 
             $statusData = $this->db->table('unit_status_harga ush')
                 ->select('ush.*')
                 ->join('unit u', 'u.id_unit = ush.unit_id', 'LEFT')
                 ->whereIn('cabang_id', $id_cabang)
-                ->where('u.tanggal_masuk BETWEEN "' . $tanggal_awal . '" AND "' . $tanggal_akhir . '"')
+                ->where("u.id_unit NOT IN ($subQuery)")
                 ->groupBy('ush.nama_status')
                 ->orderBy('ush.urutan', 'ASC')
                 ->get()->getResultArray();
@@ -62,7 +74,7 @@ class DashboardController extends BaseController
                 ->select('unit.*, cabang.nama_cabang')
                 ->join('cabang', 'cabang.id_cabang = unit.cabang_id', 'left')
                 ->whereIn('unit.cabang_id', $id_cabang)
-                ->where('unit.tanggal_masuk BETWEEN "' . $tanggal_awal . '" AND "' . $tanggal_akhir . '"')
+                ->where("unit.id_unit NOT IN ($subQuery)")
                 ->get()->getResultArray();
 
             foreach ($unitStatus as $u) {
@@ -96,11 +108,7 @@ class DashboardController extends BaseController
                 'status' => $statusData,
                 'total_panel' => $total_panel,
                 'total_upah' => $total_upah,
-                'tanggal_awal' => $tanggal_awal,
-                'tanggal_akhir' => $tanggal_akhir,
             ];
-
-            // return;
 
             return ResponseJSONCollection::success(['html' => view('side_dashboard_closing', $data)], 'Data ditemukan', ResponseInterface::HTTP_OK);
         } catch (\Exception $e) {
@@ -108,15 +116,15 @@ class DashboardController extends BaseController
         }
     }
 
-
     public function widgetData()
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
-            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'] ?? $this->_tanggal_awal;
-            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'] ?? $this->_tanggal_akhir;
 
-            $dataUnit = $this->db->table('unit')->whereIn('cabang_id', $id_cabang)->where('unit.tanggal_masuk BETWEEN "' . $tanggal_awal . '" AND "' . $tanggal_akhir . '"');
+            // agar tidak menghitung unit yang closing
+            $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+
+            $dataUnit = $this->db->table('unit')->whereIn('cabang_id', $id_cabang)->where("id_unit NOT IN ($subQuery)");
 
             $data = [
                 'total_panel' => 0,
@@ -139,15 +147,12 @@ class DashboardController extends BaseController
                 'unit_proses' => $data['unit_proses'],
                 'unit_selesai' => $data['unit_selesai'],
                 'total_nilai' => number_format($data['total_nilai']),
-                'tanggal_awal' => $tanggal_awal,
-                'tanggal_akhir' => $tanggal_akhir,
             ];
-
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
         } catch (\Exception $e) {
 
-            return ResponseJSONCollection::error([$e], 'Terjadi Keslahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Keslahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
         }
     }
 
@@ -163,16 +168,8 @@ class DashboardController extends BaseController
                 ->orderBy('nama_cabang', 'ASC')
                 ->get()->getResultArray();
 
-            $periode = $this->request->getGet('periode');
             // periode bulan
-            // $per1 = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun'];
-            // $per2 = [7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'];
-            // $periode = ($periode == 1) ? $per1 : $per2;
-
-            $periode = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'];
-
-            // data unit
-            $dataUnit = $this->db->table('unit')->whereIn('cabang_id', $id_cabang);
+            $periode = $this->_periode($tahun);
 
             $data = [];
             foreach ($dataCabang as $k => $cab) {
@@ -182,21 +179,31 @@ class DashboardController extends BaseController
 
                 // loping data sesuai dengan bulan
                 foreach ($periode as $key => $bulan) {
-                    $total_spp = $dataUnit->selectSum('harga_spp')->where('cabang_id', $cab['id_cabang'])
-                        ->where('MONTH(tanggal_masuk)', $key)->where('YEAR(tanggal_masuk)', $tahun)->get()->getRowArray();
+                    $dataClosingUnit = $this->db->table('closing c')
+                        ->select('c.id_closing, c.periode_closing, c.cabang_id, u.nomor_spp, u.jumlah_diskon')
+                        ->join('closing_detail cd', 'cd.closing_id = c.id_closing')
+                        ->join('unit u', 'u.id_unit = cd.unit_id')
+                        ->where('c.periode_closing', $bulan)
+                        ->where('c.cabang_id', $cab['id_cabang'])
+                        ->get()->getResultArray();
 
-                    $data[$k]['data'][] = $total_spp['harga_spp'] ?? 0;
+                    $total = 0;
+                    foreach ($dataClosingUnit as $unit) {
+                        $total += $unit['jumlah_diskon'] ?? 0;
+                    }
+
+                    $data[$k]['data'][] = $total ?? 0;
                 }
             }
 
             // looping bulan untuk kebutuhan grafik
             $per = [];
             foreach ($periode as $key => $bulan) {
-                $per[] = $bulan;
+                $per[] = substr($bulan, 0, 3);
             }
 
             $data = [
-                'title' => 'GRAFIK PENDAPATAN PER BULAN PER CABANG',
+                'title' => 'GRAFIK CLOSINGAN PER BULAN CABANG TAHUN ' . $tahun,
                 'data' => $data,
                 'periode' => $per,
                 'tahun' => $tahun
@@ -216,34 +223,39 @@ class DashboardController extends BaseController
             $tahun = $this->request->getPost('filterTahun')['tahun'] ?? $this->_tahun;
 
             // periode bulan
-            $periode = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'];
-
-            // data unit
-            $dataUnit = $this->db->table('unit');
+            $periode = $this->_periode($tahun);
 
             $data = [];
-            $total = 0;
             // loping data sesuai dengan bulan
             foreach ($periode as $key => $bulan) {
-                $total_spp = $dataUnit->selectSum('harga_spp')->whereIn('cabang_id', $id_cabang)
-                    ->where('MONTH(tanggal_masuk)', $key)->where('YEAR(tanggal_masuk)', $tahun)
-                    ->get()->getRowArray();
+                $dataClosingUnit = $this->db->table('closing c')
+                    ->select('c.id_closing, c.periode_closing, c.cabang_id, u.nomor_spp, u.jumlah_diskon')
+                    ->join('closing_detail cd', 'cd.closing_id = c.id_closing')
+                    ->join('unit u', 'u.id_unit = cd.unit_id')
+                    ->where('c.periode_closing', $bulan)
+                    ->whereIn('c.cabang_id', $id_cabang)
+                    ->get()->getResultArray();
 
-                $total = $total_spp['harga_spp'] ?? 0;
+                $total = 0;
+                foreach ($dataClosingUnit as $unit) {
+                    $total += $unit['jumlah_diskon'] ?? 0;
+                }
+
                 $data[] = $total ?? 0;
             }
 
             // looping bulan untuk kebutuhan grafik
             $per = [];
             foreach ($periode as $key => $bulan) {
-                $per[] = $bulan;
+                $per[] = substr($bulan, 0, 3);
             }
 
             $data = [
-                'title' => 'GRAFIK PENDAPATAN PER BULAN',
+                'title' => 'GRAFIK CLOSINGAN PER BULAN TAHUN ' . $tahun,
                 'data' => $data,
                 'periode' => $per,
-                'tahun' => $tahun
+                'tahun' => $tahun,
+                'test' => $periode
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
@@ -257,8 +269,8 @@ class DashboardController extends BaseController
     {
         try {
             $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
-            $tanggal_awal = $this->request->getPost('filterTanggal')['tanggal_awal'] ?? $this->_tanggal_awal;
-            $tanggal_akhir = $this->request->getPost('filterTanggal')['tanggal_akhir'] ?? $this->_tanggal_akhir;
+            // agar tidak menghitung unit yang closing
+            $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
 
             $dataJenis = $this->db->table('jenis')->get()->getResultArray();
 
@@ -272,7 +284,7 @@ class DashboardController extends BaseController
                 $dataUnit->join('unit_material um', 'um.unit_id = u.id_unit');
                 $dataUnit->join('material m', 'm.id_material = um.material_id');
                 $dataUnit->whereIn('u.cabang_id', $id_cabang);
-                $dataUnit->where('u.tanggal_masuk BETWEEN "' . $tanggal_awal . '" AND "' . $tanggal_akhir . '"');
+                $dataUnit->where("u.id_unit NOT IN ($subQuery)");
                 $totalPemakaian = $dataUnit->where('m.jenis_id', $row['id_jenis'])->get()->getRowArray();
 
                 $jenisName[] = $row['nama_jenis'];
@@ -291,8 +303,6 @@ class DashboardController extends BaseController
                 'title' => 'GRAFIK PENGGUNAAN MATERIAL',
                 'name' => $jenisName,
                 'data' => $persentaseData,
-                'tanggal_awal' => $tanggal_awal,
-                'tanggal_akhir' => $tanggal_akhir,
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);

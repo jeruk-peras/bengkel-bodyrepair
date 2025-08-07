@@ -13,10 +13,6 @@
                         <option value="<?= $year; ?>"><?= $year; ?></option>
                     <?php endfor; ?>
                 </select>
-                <label for="tanggal_awal" class="me-2 mb-0">Tanggal&nbsp;:</label>
-                <input type="date" id="tanggal_awal" name="tanggal_awal" class="form-control form-control-sm me-2" value="<?= esc($tanggal_awal ?? '') ?>">
-                <span class="me-2">s/d</span>
-                <input type="date" id="tanggal_akhir" name="tanggal_akhir" class="form-control form-control-sm me-2" value="<?= esc($tanggal_akhir ?? '') ?>">
                 <button type="submit" class="btn btn-sm btn-primary" id="btn-filter">Filter</button>
             </form>
         </div>
