@@ -649,7 +649,7 @@ class ServerSideController extends BaseController
                 'table' => 'asuransi',
                 'on' => 'asuransi.id_asuransi = unit.asuransi_id',
                 'type' => ''
-            ]
+            ],
         ];
 
         $filter = $this->request->getPost('filter');
@@ -684,6 +684,12 @@ class ServerSideController extends BaseController
         $No = $this->request->getPost('start') + 1;
         $rowData = [];
         foreach ($data as $row) {
+
+            $status = $this->db->table('unit_status us')
+                ->select('ush.nama_status')
+                ->join('unit_status_harga ush', 'ush.id_unit_status_harga = us.unit_status_harga_id', 'left')
+                ->where('ush.unit_id', $row['id_unit'])->orderBy('us.tanggal_update', 'DESC')->limit(1)->get()->getRowArray()['nama_status'] ?? '';
+
             $rowData[] = [
                 $No++,
                 htmlspecialchars($row['id_unit']),
@@ -695,7 +701,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
-                ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
+                ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses <br> ' . $status . ' </span>'),
             ];
         }
 
