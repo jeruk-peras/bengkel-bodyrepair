@@ -55,6 +55,9 @@
     // hendle save data
     $('#form-data').submit(function(e) {
         e.preventDefault();
+         if (typeof tinymce !== 'undefined') {
+            tinymce.triggerSave();
+        }
         var url, formData;
         url = $(this).attr('action');
         formData = $(this).serializeArray();
