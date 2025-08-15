@@ -1332,10 +1332,10 @@ class ServerSideController extends BaseController
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
                 ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
-                htmlspecialchars($row['jumlah_panel']),
-                htmlspecialchars('Rp' . $row['harga_spp']),
+                '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' . $row['jumlah_panel'] . '">' . round($row['jumlah_panel'], 2) . '</span>',
+                htmlspecialchars('Rp' . number_format($row['harga_spp'], 0, '', '.')),
                 htmlspecialchars($row['diskon'] . '%'),
-                htmlspecialchars('Rp' . $row['jumlah_diskon']),
+                htmlspecialchars('Rp' . number_format($row['jumlah_diskon'], 0, '', '.')),
             ];
         }
 

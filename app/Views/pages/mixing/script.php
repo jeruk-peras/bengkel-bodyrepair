@@ -65,7 +65,7 @@
         var material = $('#material_id').html();
         var $html =
             `<div class="row mt-2 row-material" id="row-material">
-                <div class="col-sm-12 col-md-12 col-lg-6 col-12" style="padding-right: 5px !important;">
+                <div class="col-sm-12 col-md-12 col-lg-5 col-12" style="padding-right: 5px !important;">
                     <select class="form-select form-select-sm select-material tom-select" name="material_id[]" required>${material}</select>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-2 col-6" style="padding: 0 5px 0 5px !important;"> 
@@ -75,16 +75,17 @@
                         <span class="position-absolute top-50 translate-middle-y satuan-material" style="right: 15px !important; left: unset;"></span>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3 col-lg-1 col-6" style="padding: 0 5px 0 5px !important;">
-                    <div class="position-relative input-icon">
-                        <span class="position-absolute top-50 translate-middle-y stok-material" style="left: 6px !important;"></span>
-                        <input type="text" inputmode="numeric" name="jumlah[]" class="form-control form-control-sm" id="jumlah" required>
+                <div class="col-sm-6 col-md-3 col-lg-2 col-6" style="padding: 0 5px 0 5px !important;">
+                   <div class="position-relative input-icon">
+                        <input type="text" inputmode="numeric" name="jumlah[]" class="form-control form-control-sm" id="jumlah" required style="padding-left: 0.5rem; padding-right: 3rem;">
+                        <span class="position-absolute top-50 translate-middle-y stok-material" style="right: 10px !important; left: unset;"></span>
                     </div>
                 </div>
                 <div class="col-sm-10 col-md-4 col-lg-2 col-10" style="padding: 0 5px 0 5px !important;">
-                    <div class="position-relative input-icon">
+                     <div class="position-relative input-icon">
                         <span class="position-absolute top-50 translate-middle-y">Rp</span>
-                        <input type="text" name="total_harga[]" class="form-control form-control-sm" id="total_harga" required readonly style="padding-left: 2.5rem;">
+                        <input type="text" class="form-control form-control-sm" id="display_total_harga" required readonly style="padding-left: 2.5rem;">
+                        <input type="hidden" name="total_harga[]" id="total_harga">
                     </div>
                 </div>
                 <div class="col align-self-end" style="padding-left: 5px !important;">
@@ -116,20 +117,21 @@
     // untuk mengisi filed harga, jumlah
     $(document).on('change', '.select-material', function() {
         var harga = $(this).find('option:selected').attr('data-harga');
-        $(this).closest('#row-material').find('.harga-material').val(harga);
+        $(this).closest('#row-material').find('.harga-material').val(formatRupiah(harga));
 
         var satuan = $(this).find('option:selected').attr('data-satuan');
         $(this).closest('#row-material').find('.satuan-material').text(satuan);
 
         var stok = $(this).find('option:selected').attr('data-stok');
-        $(this).closest('#row-material').find('.stok-material').text(stok + '/');
+        $(this).closest('#row-material').find('.stok-material').text('/' + stok);
     })
 
     // buat validasi sisa stok dengan jumlah
     $(document).on('keyup change', '.select-material, .harga-material, #jumlah', '.satuan-material', function() {
         var $row = $(this).closest('#row-material');
-        var stok = parseInt($row.find('.stok-material').text()) || 0;
-        var jumlah = parseInt($row.find('#jumlah').val()) || 0;
+        var stokText = $row.find('.stok-material').text().replace('/', '');
+        var stok = parseFloat(stokText) || 0;
+        var jumlah = parseFloat($row.find('#jumlah').val()) || 0;
 
         if (jumlah > stok) {
             $row.find('#jumlah').val(stok); // Reset jumlah ke stok maksimum
@@ -138,12 +140,18 @@
 
     $(document).on('keyup change', '#jumlah', function() {
         var $row = $(this).closest('#row-material');
-        var harga = parseInt($row.find('.harga-material').val()) || 0;
+        var harga = $row.find('.harga-material').val() || 0;
         var jumlah = parseFloat($row.find('#jumlah').val()) || 0;
+        harga = resetRupiah(harga)
 
         total_harga = harga * jumlah;
         console.log(jumlah, harga, total_harga)
 
+        $row.find('#display_total_harga').val(total_harga.toLocaleString('id-ID', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }));
         $row.find('#total_harga').val(total_harga);
     });
 

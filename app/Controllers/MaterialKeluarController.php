@@ -45,7 +45,7 @@ class MaterialKeluarController extends BaseController
                 $data[] = [
                     'material_id'   => $value,
                     'tanggal'       => date("Y-m-d H:i:s"),
-                    'harga'         => $dataPost['harga'][$key],
+                    'harga'         => str_replace('.', '', $dataPost['harga'][$key]),
                     'jumlah'        => $dataPost['jumlah'][$key],
                     'total_harga'   => $dataPost['total_harga'][$key],
                     'mekanik_id'    => $dataPost['mekanik_id'],
@@ -112,10 +112,10 @@ class MaterialKeluarController extends BaseController
                         <td>' . $i++ . '</td>
                         <td>' . $row['nama_jenis'] . '</td>
                         <td>' . $row['nama_material'] . '</td>
-                        <td>Rp' . $row['harga'] . '</td>
+                        <td>Rp' . number_format($row['harga'], 0, '', '.') . '</td>
                         <td>' . $row['jumlah'] . '</td>
                         <td>' . $row['nama_satuan'] . '</td>
-                        <td>Rp' . $row['total_harga'] . '</td>
+                        <td>Rp' . number_format($row['total_harga'], 0, '', '.') . '</td>
                         <td>' . $row['tanggal'] . '</td>
                         <td><a href="/material-keluar/' . $row['id_unit_material'] . '/delete" class="btn btn-danger btn-sm btn-del"><i class="bx bx-trash me-0"></i></a></td>
                     </tr>';
@@ -152,10 +152,10 @@ class MaterialKeluarController extends BaseController
                         <td>' . $i++ . '</td>
                         <td>' . $row['nama_jenis'] . '</td>
                         <td>' . $row['nama_material'] . '</td>
-                        <td>Rp' . $row['harga'] . '</td>
+                        <td>Rp' . number_format($row['harga'], 0, '', '.') . '</td>
                         <td>' . $row['jumlah'] . '</td>
                         <td>' . $row['nama_satuan'] . '</td>
-                        <td>Rp' . $row['total_harga'] . '</td>
+                        <td>Rp' . number_format($row['total_harga'], 0, '', '.') . '</td>
                         <td>' . $row['tanggal'] . '</td>
                         <td><a href="/material-keluar/' . $row['id_unit_material'] . '/delete" class="btn btn-danger btn-sm btn-del"><i class="bx bx-trash me-0"></i></a></td>
                     </tr>';

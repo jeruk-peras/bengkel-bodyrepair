@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="row row-material" id="row-material">
-                        <div class="col-sm-12 col-md-12 col-lg-6 col-12" style="padding-right: 5px !important;">
+                        <div class="col-sm-12 col-md-12 col-lg-5 col-12" style="padding-right: 5px !important;">
                             <label for="material_id" class="form-label required">Material</label>
                             <select class="form-select form-select-sm select-material" name="material_id[]" data-placeholder="Material" id="material_id" required></select>
                         </div>
@@ -89,11 +89,11 @@
                                 <span class="position-absolute top-50 translate-middle-y satuan-material" style="right: 15px !important; left: unset;"></span>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3 col-lg-1 col-6" style="padding: 0 5px 0 5px !important;">
+                        <div class="col-sm-6 col-md-3 col-lg-2 col-6" style="padding: 0 5px 0 5px !important;">
                             <label for="jumlah" class="form-label required">Jumlah</label>
                             <div class="position-relative input-icon">
-                                <span class="position-absolute top-50 translate-middle-y stok-material" style="left: 6px !important;"></span>
-                                <input type="text" inputmode="numeric" name="jumlah[]" class="form-control form-control-sm" id="jumlah" required>
+                                <input type="text" inputmode="numeric" name="jumlah[]" class="form-control form-control-sm" id="jumlah" required style="padding-left: 0.5rem; padding-right: 3rem;">
+                                <span class="position-absolute top-50 translate-middle-y stok-material" style="right: 10px !important; left: unset;"></span>
                             </div>
                             <div class="form-text text-danger" id="invalid_jumlah"></div>
                         </div>
@@ -101,7 +101,8 @@
                             <label class="form-label required">Total Jumlah</label>
                             <div class="position-relative input-icon">
                                 <span class="position-absolute top-50 translate-middle-y">Rp</span>
-                                <input type="text" name="total_harga[]" class="form-control form-control-sm" id="total_harga" required readonly style="padding-left: 2.5rem;">
+                                <input type="text" class="form-control form-control-sm" id="display_total_harga" required readonly style="padding-left: 2.5rem;">
+                                <input type="hidden" name="total_harga[]" id="total_harga">
                             </div>
                         </div>
                         <div class="col-sm-10 col-md-4 col-lg-1 col-1" style="padding-left: 5px !important;">
