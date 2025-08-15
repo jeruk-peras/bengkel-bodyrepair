@@ -5,13 +5,13 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Login dengan akun yang sudah di registrasi, untuk dapat masuk kedalam aplikasi.">
     <!--favicon-->
     <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
     <link href="assets/css/app.css" rel="stylesheet">
-    <link href="assets/css/icons.css" rel="stylesheet">
     <title>Login - Sistem Manajemen Bengkel Bodyrepair</title>
 </head>
 
@@ -96,7 +96,6 @@
         })
     </script>
     <!--app JS-->
-    <script src="<?= base_url(); ?>assets/js/app.js"></script>
     <script>
         $('#form-login').on('submit', function(e) {
             e.preventDefault(); // Mencegah form submit secara default

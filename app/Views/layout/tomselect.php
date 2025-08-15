@@ -1,0 +1,2 @@
+<link href="<?= base_url(); ?>assets/plugins/tom-select-2.4.3/package/dist/css/tom-select.bootstrap5.css" rel="stylesheet">
+	<script src="<?= base_url(); ?>assets/plugins/tom-select-2.4.3/package/dist/js/tom-select.complete.min.js"></script>

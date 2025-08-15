@@ -102,5 +102,6 @@
         </div>
     </div>
 </div>
+<?= $this->include('layout/tomselect'); ?>
 <?= $this->include('pages/material/script'); ?>
 <?= $this->endSection(); ?>

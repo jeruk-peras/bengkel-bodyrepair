@@ -1,3 +1,4 @@
+<script src="<?= base_url(); ?>assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
 <script>
     $(document).ready(function() {
 

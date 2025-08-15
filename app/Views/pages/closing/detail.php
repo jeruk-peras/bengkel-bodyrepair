@@ -358,6 +358,7 @@
 
 <script src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
 <script src="<?= base_url('/assets/js/jquery.PrintArea.js'); ?>"></script>
+<?= $this->include('layout/tomselect'); ?>
 <script>
     // load data
     var table = $('#datatable').DataTable({

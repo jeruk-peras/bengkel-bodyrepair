@@ -394,5 +394,7 @@
     </div>
 </div>
 
+<?= $this->include('layout/tomselect'); ?>
+<?= $this->include('layout/tinymce'); ?>
 <?= $this->include('pages/unit/script'); ?>
 <?= $this->endSection(); ?>

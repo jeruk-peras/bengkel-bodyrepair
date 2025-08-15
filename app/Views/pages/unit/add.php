@@ -164,6 +164,8 @@
         </div>
     </div>
 </div>
+<?= $this->include('layout/tomselect'); ?>
+<?= $this->include('layout/tinymce'); ?>
 <script>
     // hendle save data
     $('#form-data').submit(function(e) {

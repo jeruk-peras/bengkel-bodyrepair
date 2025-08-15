@@ -151,5 +151,6 @@
         </div>
     </div>
 </div>
+<?= $this->include('layout/tomselect'); ?>
 <?= $this->include('pages/material_keluar/script'); ?>
 <?= $this->endSection(); ?>
