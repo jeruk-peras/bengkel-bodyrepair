@@ -701,7 +701,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
-                ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses <br> ' . $status . ' </span>'),
+                ($row['status'] ? '<span class="badge bg-success btn-selesai" data-id="' . $row['id_unit'] . '">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses <br> ' . $status . ' </span>'),
             ];
         }
 

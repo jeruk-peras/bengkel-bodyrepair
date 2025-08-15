@@ -333,6 +333,16 @@ class UnitController extends BaseController
         }
     }
 
+    public function updateStatusSelesai(int $id)
+    {
+        try {
+            $this->modelUnit->update($id, ['status' => 0]);
+            return ResponseJSONCollection::success([], 'Data Status diubah.', ResponseInterface::HTTP_OK);
+        } catch (DatabaseException $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function delete(int $id)
     {
         try {

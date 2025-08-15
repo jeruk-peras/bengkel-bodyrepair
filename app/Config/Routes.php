@@ -225,6 +225,7 @@ $routes->group('/unit', function ($routes) {
 
     $routes->post('(:num)/add-material', 'UnitController::saveMaterial/$1', ['filter' => ['selectCabang']]);
 
+    $routes->post('(:num)/update-status-selesai', 'UnitController::updateStatusSelesai/$1');
     $routes->post('(:num)/delete', 'UnitController::delete/$1');
 });
 

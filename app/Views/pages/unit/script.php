@@ -55,7 +55,7 @@
     // hendle save data
     $('#form-data').submit(function(e) {
         e.preventDefault();
-         if (typeof tinymce !== 'undefined') {
+        if (typeof tinymce !== 'undefined') {
             tinymce.triggerSave();
         }
         var url, formData;
@@ -324,6 +324,26 @@
         });
     })
 
+    // hendle update unit selesai
+    table.on('click', 'tbody tr td span.btn-selesai', function(e) {
+        var id = $(this).attr('data-id');
+        $.ajax({
+            url: '/unit/' + id + '/update-status-selesai',
+            type: 'POST',
+            data: {
+                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            },
+            success: function(response) {
+                table.ajax.reload(null, false); // Reload data tanpa reset pagination
+                alertMesage(response.status, response.message);
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                alertMesage(response.status, response.message);
+            }
+        });
+    })
+
     // hendle delete button
     table.on('click', 'tbody tr td a.btn-delete', function(e) {
         e.preventDefault();
@@ -372,7 +392,7 @@
 
     function hitungPanel() {
         var jumlah_diskon = resetRupiah($('#jumlah_diskon').val());
-        
+
         var harga_panel = resetRupiah($('#harga_panel').val());
 
         var jumlah_panel = 0;
@@ -403,7 +423,7 @@
         hitungUpahMekanik();
     });
 
-     $('.btn-filter').click(function() {
+    $('.btn-filter').click(function() {
         var f = $(this).attr('data-f');
         $('#datatable').attr('data-filter', f);
         table.ajax.reload();
