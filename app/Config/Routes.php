@@ -41,6 +41,7 @@ $routes->post('/dashboard/grafik-bulanan', 'DashboardController::grafikPendapata
 $routes->post('/dashboard/grafik-material', 'DashboardController::grafikMaterial');
 $routes->post('/dashboard/widget-data', 'DashboardController::widgetData');
 $routes->post('/dashboard/widget-closing', 'DashboardController::widgetClosing');
+$routes->get('/dashboard/widget-material', 'DashboardController::summaryPemakaianBahan');
 
 
 // routes side server

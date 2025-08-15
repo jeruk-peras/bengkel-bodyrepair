@@ -17,6 +17,7 @@
         grafikPendapatanBulanan(filterTahun);
         grafikPemakaianBahan();
         widgetData();
+        widgetMaterial()
         widgetClosing();
 
         var series, title, categories;
@@ -43,6 +44,7 @@
             grafikPendapatanBulanan(filterTahun);
             grafikPemakaianBahan();
             widgetData();
+            widgetMaterial()
             widgetClosing();
         })
 
@@ -309,6 +311,24 @@
                     } else {
                         console.error('Error fetching data:', response.message);
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                }
+            })
+        }
+
+        // widget closing
+        function widgetMaterial() {
+            $.ajax({
+                url: '<?= base_url('dashboard/widget-material'); ?>',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
+                },
+                success: function(response) {
+                    $('#pemakaian-material').html(response.data.html);
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error:', status, error);

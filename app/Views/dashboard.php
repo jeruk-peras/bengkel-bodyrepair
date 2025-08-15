@@ -76,6 +76,20 @@
         </div>
     </div>
 
+    <div class="row" id="pemakaian-material">
+        <div class="col">
+            <div class="card radius-10">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="spinner-grow text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-12 col-lg-7 mx-auto">
             <div class="card">

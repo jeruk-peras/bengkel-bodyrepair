@@ -146,7 +146,7 @@ class DashboardController extends BaseController
                 'total_panel' => round($data['total_panel'], 2),
                 'unit_proses' => $data['unit_proses'],
                 'unit_selesai' => $data['unit_selesai'],
-                'total_nilai' => number_format($data['total_nilai']),
+                'total_nilai' => 'Rp' . number_format($data['total_nilai']),
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
@@ -306,6 +306,46 @@ class DashboardController extends BaseController
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
+        } catch (DatabaseException $e) {
+
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Keslahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function summaryPemakaianBahan()
+    {
+        try {
+            $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
+            // agar tidak menghitung unit yang closing
+            $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+
+            $dataJenis = $this->db->table('jenis')->get()->getResultArray();
+
+            $data = [];
+            $total = 0;
+            foreach ($dataJenis as $row) {
+                // Jumlakan data jenis / penggunaan material
+                $dataUnit = $this->db->table('unit_material');
+                $dataUnit->select('material.jenis_id, unit_material.material_id, unit_material.harga, unit_material.jumlah, unit_material.unit_id, unit.cabang_id');
+                $dataUnit->join('unit', 'unit.id_unit = unit_material.unit_id');
+                $dataUnit->join('material', 'material.id_material = unit_material.material_id');
+                $dataUnit->whereIn('unit.cabang_id', $id_cabang);
+                $dataUnit->where("unit.id_unit NOT IN ($subQuery)");
+                $pemakaianMaterial = $dataUnit->where('material.jenis_id', $row['id_jenis'])->get()->getResultArray();
+
+                // jumlahkan
+                $total_pemakaian = 0;
+                foreach($pemakaianMaterial as $pemakaian){
+                    $total_pemakaian += ($pemakaian['harga'] * $pemakaian['jumlah']);
+                }
+
+                $data['data'][$row['id_jenis']]['nama'] = $row['nama_jenis'];
+                $data['data'][$row['id_jenis']]['total'] = $total_pemakaian;
+            }
+
+            $html = view('side_dashboard_material', $data);
+
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $data], 'Data berhasil diambil', ResponseInterface::HTTP_OK);
         } catch (DatabaseException $e) {
 
             return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Keslahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
