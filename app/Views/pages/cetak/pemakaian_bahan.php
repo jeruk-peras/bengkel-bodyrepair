@@ -34,7 +34,7 @@
                             <th>#</th>
                             <th>Cabang</th>
                             <th>Nomor SPP</th>
-                            <th>Nama SO</th>
+                            <th>Nama SA</th>
                             <th>Nomor Polisi</th>
                             <th>Model/Warna</th>
                             <th>Asuransi</th>
@@ -114,39 +114,6 @@
     </div>
 </div>
 
-<!-- modal detail -->
-<div class="modal fade" id="modal-material" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-sm-down modal-fullscreen-lg-down modal-fullscreen-md-down">
-        <div class="modal-content" style="height: 100vh;">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Form Penggunaan Material</h1>
-                <button type="button" id="close-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="p-2">
-                    <div class="table-responsive p-0">
-                        <table class="table align-middle rounded mb-0" id="data-material-unit">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Jenis</th>
-                                    <th>Material</th>
-                                    <th>Harga</th>
-                                    <th>Jumlah</th>
-                                    <th>Satuan</th>
-                                    <th>Total Harga</th>
-                                    <th>Tanggal</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody id="material-unit"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     // load data
     var table = $('#datatable').DataTable({

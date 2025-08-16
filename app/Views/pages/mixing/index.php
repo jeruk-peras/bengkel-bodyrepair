@@ -56,7 +56,7 @@
                                     <th>#</th>
                                     <th>Cabang</th>
                                     <th>Nomor SPP</th>
-                                    <th>Nama SO</th>
+                                    <th>Nama SA</th>
                                     <th>Nomor Polisi</th>
                                     <th>Model/Warna</th>
                                     <th>Asuransi</th>
