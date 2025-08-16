@@ -6,8 +6,8 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="<?= base_url('dashboard'); ?>"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active">Cetak</li>
-                    <li class="breadcrumb-item active" aria-current="page">Cetak Foto Gandeng</li>
+                    <li class="breadcrumb-item active">Closingan</li>
+                    <li class="breadcrumb-item active" aria-current="page">Data Closing</li>
                 </ol>
             </nav>
         </div>
@@ -18,7 +18,7 @@
         <div class="card-header border-0 bg-transparent">
             <div class="d-flex align-items-center">
                 <div>
-                    <h6 class="mb-0">Daftar Cetak Foto Gandeng</h6>
+                    <h6 class="mb-0">Daftar Closing</h6>
                 </div>
                 <div class="ms-auto">
                     <a href="<?= base_url('closing/add'); ?>" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Tambah</a>
