@@ -236,9 +236,11 @@ class LaporanController extends BaseController
             foreach ($dataJenis as $jenis) {
                 $html .= '
                 <tr style="background-color: darkgrey;">
-                    <th  colspan="5" >' . strtoupper($jenis['nama_jenis']) . '</th>
+                    <th  colspan="7" >' . strtoupper($jenis['nama_jenis']) . '</th>
                 </tr>
                 <tr>
+                    <th>Nomor SPP</th>
+                    <th>Nomor POL</th>
                     <th>Nama Material</th>
                     <th>Harga</th>
                     <th>jml</th>
@@ -248,13 +250,11 @@ class LaporanController extends BaseController
 
                 // get data material sesuai dengan jenisnya
                 $dataMaterial = $modelMaterial
-                    ->select('unit_material.*, material.nama_material, material.merek, material.harga, satuan.nama_satuan, mekanik.nama_mekanik')
-                    ->selectSum('unit_material.jumlah')
-                    ->selectSum('unit_material.total_harga')
+                    ->select('unit_material.*, unit.nomor_spp, unit.nomor_polisi, material.nama_material, material.merek, material.harga, satuan.nama_satuan, mekanik.nama_mekanik')
+                    ->join('unit', 'unit.id_unit = unit_material.unit_id', 'left')
                     ->join('mekanik', 'mekanik.id_mekanik = unit_material.mekanik_id', 'left')
                     ->join('material', 'material.id_material = unit_material.material_id', 'left')
                     ->join('satuan', 'satuan.id_satuan = material.satuan_id', 'left')
-                    ->groupBy('material.nama_material')
                     ->where("unit_material.unit_id IN ($subQuery)")
                     ->where('material.jenis_id', $jenis['id_jenis'])->orderBy('unit_material.tanggal', 'DESC')
                     ->findAll();
@@ -266,6 +266,8 @@ class LaporanController extends BaseController
                 foreach ($dataMaterial as $row) {
                     $html .=
                         '<tr>
+                            <td class="text-center">' . $row['nomor_spp'] . '</td>
+                            <td class="text-center">' . $row['nomor_polisi'] . '</td>
                             <td>' . $row['nama_material'] . '</td>
                             <td class="text-end">Rp' . number_format($row['harga']) . '</td>
                             <td class="text-center">' . $row['jumlah'] . '</td>
@@ -279,7 +281,7 @@ class LaporanController extends BaseController
 
                 $html .= '
                  <tr>
-                    <th colspan="2" class="text-end">Total&nbsp;</th>
+                    <th colspan="4" class="text-end">Total&nbsp;</th>
                     <th class="text-center">' . $total_jumlah . '</th>
                     <th class="text-end">Rp' . number_format($total_harga) . '</th>
                     <th></th>
