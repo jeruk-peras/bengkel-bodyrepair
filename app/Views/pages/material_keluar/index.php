@@ -14,8 +14,8 @@
         </div>
         <div class="ms-auto">
             <label>Filter : </label>
-            <button class="btn btn-sm btn-outline-primary btn-filter active" data-f="1" >Data Unit Berjalan</button>
-            <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0" >Data Unit Closing</button>
+            <button class="btn btn-sm btn-outline-primary btn-filter active" data-f="1">Data Unit Berjalan</button>
+            <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0">Data Unit Closing</button>
         </div>
     </div>
 
@@ -26,29 +26,52 @@
                     <h6 class="mb-0">Daftar Unit</h6>
                 </div>
                 <div class="ms-auto">
+                    <ul class="nav nav-pills" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link px-5 py-1 active" data-bs-toggle="pill" href="#daftar-unit" role="tab" aria-selected="false" tabindex="-1">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-title">Daftar Unit</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link px-5 py-1" data-bs-toggle="pill" href="#daftar-material" id="tab-material" role="tab" aria-selected="false" tabindex="-1">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-title">Daftar Material</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table align-middle mb-0" data-filter="1" id="datatable" style="width: 100%;">
-                    <thead class="table-light">
-                        <tr>
-                            <th>No</th>
-                            <th>#</th>
-                            <th>Cabang</th>
-                            <th>Nomor SPP</th>
-                            <th>Nama SO</th>
-                            <th>Nomor Polisi</th>
-                            <th>Model/Warna</th>
-                            <th>Asuransi</th>
-                            <th>Taggal Masuk</th>
-                            <th>Tanggal Selesai</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade active show" id="daftar-unit" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0" data-filter="1" id="datatable" style="width: 100%;">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>Cabang</th>
+                                    <th>Nomor SPP</th>
+                                    <th>Nama SO</th>
+                                    <th>Nomor Polisi</th>
+                                    <th>Model/Warna</th>
+                                    <th>Asuransi</th>
+                                    <th>Taggal Masuk</th>
+                                    <th>Tanggal Selesai</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="daftar-material" role="tabpanel">
+                    <div class="table-responsive" id="data-material"></div>
+                </div>
             </div>
         </div>
     </div>

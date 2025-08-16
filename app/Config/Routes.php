@@ -62,6 +62,8 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('closing', 'ServerSideController::closing');
     $routes->post('(:num)/closing', 'ServerSideController::closingUnit/$1   ');
     $routes->post('(:num)/fetchunitkolektif', 'ServerSideController::fetchUnitKolektif/$1');
+    $routes->get('(:num)/data-material-keluar', 'ServerSideController::dataMaterialKeluar/$1');
+    $routes->get('(:num)/data-material-mixing', 'ServerSideController::dataMaterialMixing/$1');
 });
 
 

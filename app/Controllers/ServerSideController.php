@@ -1417,4 +1417,78 @@ class ServerSideController extends BaseController
 
         return $this->response->setJSON($outputdata);
     }
+
+    public function dataMaterialKeluar($filter)
+    {
+        try {
+            $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
+            // agar tidak menghitung unit yang closing
+            if($filter == 1){
+                $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+                $where = "u.id_unit NOT IN ($subQuery)";
+            } else { 
+                $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+                $where = "u.id_unit IN ($subQuery)";
+            }
+
+            // get data pemakaian material
+            $dataPemakaian = $this->db->table('unit u')
+                ->select('um.tanggal, c.nama_cabang, u.nomor_spp, u.nomor_polisi, u.model_unit, u.warna_unit, j.nama_jenis, m.nama_material, s.nama_satuan, um.harga, um.jumlah, um.total_harga, mk.nama_mekanik')
+                ->join('cabang c', 'c.id_cabang = u.cabang_id')
+                ->join('unit_material um', 'um.unit_id = u.id_unit')
+                ->join('mekanik mk', 'mk.id_mekanik = um.mekanik_id')
+                ->join('material m', 'm.id_material = um.material_id')
+                ->join('jenis j', 'j.id_jenis = m.jenis_id')
+                ->join('satuan s', 's.id_satuan = m.satuan_id')
+                ->whereNotIn('j.nama_jenis', ['Paint'])
+                ->whereIn('u.cabang_id', $id_cabang)
+                ->where($where)
+                ->orderBy('um.tanggal', 'DESC')
+                ->get()->getResultArray();
+
+            $data['data'] = $dataPemakaian;
+            $html = view('pages/material_keluar/side-render', $data);
+
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $data], 'Data berhasil diambil', ResponseInterface::HTTP_OK);
+        } catch (DatabaseException $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Keslahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function dataMaterialMixing($filter)
+    {
+        try {
+            $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
+            // agar tidak menghitung unit yang closing
+            if($filter == 1){
+                $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+                $where = "u.id_unit NOT IN ($subQuery)";
+            } else { 
+                $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+                $where = "u.id_unit IN ($subQuery)";
+            }
+
+            // get data pemakaian material
+            $dataPemakaian = $this->db->table('unit u')
+                ->select('um.tanggal, c.nama_cabang, u.nomor_spp, u.nomor_polisi, u.model_unit, u.warna_unit, j.nama_jenis, m.nama_material, s.nama_satuan, um.harga, um.jumlah, um.total_harga, mk.nama_mekanik')
+                ->join('cabang c', 'c.id_cabang = u.cabang_id')
+                ->join('unit_material um', 'um.unit_id = u.id_unit')
+                ->join('mekanik mk', 'mk.id_mekanik = um.mekanik_id')
+                ->join('material m', 'm.id_material = um.material_id')
+                ->join('jenis j', 'j.id_jenis = m.jenis_id')
+                ->join('satuan s', 's.id_satuan = m.satuan_id')
+                ->whereIn('j.nama_jenis', ['Paint'])
+                ->whereIn('u.cabang_id', $id_cabang)
+                ->where($where)
+                ->orderBy('um.tanggal', 'DESC')
+                ->get()->getResultArray();
+
+            $data['data'] = $dataPemakaian;
+            $html = view('pages/material_keluar/side-render', $data);
+
+            return ResponseJSONCollection::success(['html' => $html, 'data' => $data], 'Data berhasil diambil', ResponseInterface::HTTP_OK);
+        } catch (DatabaseException $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Keslahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
 }

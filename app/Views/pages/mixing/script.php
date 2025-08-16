@@ -323,5 +323,24 @@
 
         $('.btn-filter').removeClass('active');
         $(this).addClass('active');
+        fetchDataMaterial(f);
     })
+
+    // handle data material
+    $('#tab-material').click(function() {
+        var filter = $('#datatable').attr('data-filter');
+        console.log(filter);
+        fetchDataMaterial(filter);
+    })
+
+    function fetchDataMaterial(filter) {
+        $.ajax({
+            url: '/datatable-server-side/' + filter + '/data-material-mixing',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $('#data-material').html(response.data.html)
+            }
+        });
+    }
 </script>
