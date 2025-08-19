@@ -387,7 +387,7 @@
         var total = harga - (harga * diskon / 100);
         total = Math.round(total);
         // pastikan total dikonversi ke string sebelum formatRupiah
-        $('#jumlah_diskon').val(harga ? formatRupiah(total) : '');
+        $('#jumlah_diskon').val(harga ? formatRupiah(total) : 0);
     }
 
     function hitungPanel() {
@@ -401,13 +401,15 @@
             jumlah_panel_act = jumlah_panel
             jumlah_panel = Math.round(jumlah_panel * 100) / 100;
         }
-        $('#jumlah_panel_act').val(jumlah_panel_act);
-        $('#jumlah_panel').val(jumlah_panel > 0 ? jumlah_panel.toFixed(2) : '');
+        $('#jumlah_panel_act').val(jumlah_panel_act || 0);
+        $('#jumlah_panel').val(jumlah_panel > 0 ? jumlah_panel.toFixed(2) : 0);
     }
 
     function hitungUpahMekanik() {
         var upah_mekanik = resetRupiah($('#upah_mekanik').val());
         var jumlah_panel = parseFloat($('#jumlah_panel_act').val());
+
+        jumlah_panel = jumlah_panel || parseFloat($('#jumlah_panel').val());
 
         var total_upah = 0;
         if (!isNaN(upah_mekanik) && !isNaN(jumlah_panel)) {
@@ -415,7 +417,7 @@
             total_upah = Math.round(total_upah);
             // total_upah = total_upah;
         }
-        $('#total_upah_mekanik').val((total_upah > 0) ? formatRupiah(total_upah) : '');
+        $('#total_upah_mekanik').val((total_upah > 0) ? formatRupiah(total_upah) : 0);
     }
     $('#harga_spp, #diskon, #harga_panel, #upah_mekanik').on('keyup change', function() {
         hitungDiskon();

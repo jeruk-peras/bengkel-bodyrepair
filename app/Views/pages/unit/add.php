@@ -134,8 +134,8 @@
                     </div>
                     <div class="col-3 col-sm-4 col-md-1">
                         <label for="jumlah_panel" class="form-label">Panel</label>
-                        <input type="text" class="form-control" readonly id="jumlah_panel">
-                        <input type="hidden" name="jumlah_panel" id="jumlah_panel_act">
+                        <input type="text" name="jumlah_panel" class="form-control" id="jumlah_panel">
+                        <input type="hidden" name="jumlah_panel_act" id="jumlah_panel_act">
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
@@ -149,7 +149,7 @@
                     <div class="col-6 col-sm-6 col-md-4">
                         <label for="total_upah_mekanik" class="form-label">Total Upah Mekanik</label>
                         <div class="position-relative input-icon">
-                            <input type="text" inputmode="numeric" name="total_upah_mekanik" class="form-control" id="total_upah_mekanik" readonly placeholder="Total Upah Mekanik">
+                            <input type="text" inputmode="numeric" name="total_upah_mekanik" class="form-control rupiah" id="total_upah_mekanik" placeholder="Total Upah Mekanik">
                             <span class="position-absolute top-50 translate-middle-y">Rp </span>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
         var total = harga - (harga * diskon / 100);
         total = Math.round(total);
         // pastikan total dikonversi ke string sebelum formatRupiah
-        $('#jumlah_diskon').val(harga ? formatRupiah(total) : '');
+        $('#jumlah_diskon').val(harga ? formatRupiah(total) : 0);
     }
 
     function hitungPanel() {
@@ -251,8 +251,8 @@
             jumlah_panel_act = jumlah_panel
             jumlah_panel = Math.round(jumlah_panel * 100) / 100;
         }
-        $('#jumlah_panel_act').val(jumlah_panel_act);
-        $('#jumlah_panel').val(jumlah_panel > 0 ? jumlah_panel.toFixed(2) : '');
+        $('#jumlah_panel_act').val(jumlah_panel_act || 0);
+        $('#jumlah_panel').val(jumlah_panel > 0 ? jumlah_panel.toFixed(2) : 0);
     }
 
     function hitungUpahMekanik() {
@@ -265,7 +265,7 @@
             total_upah = Math.round(total_upah);
             // total_upah = total_upah;
         }
-        $('#total_upah_mekanik').val((total_upah > 0) ? formatRupiah(total_upah) : '');
+        $('#total_upah_mekanik').val((total_upah > 0) ? formatRupiah(total_upah) : 0);
     }
     $('#harga_spp, #diskon, #harga_panel, #upah_mekanik').on('keyup change', function() {
         hitungDiskon();

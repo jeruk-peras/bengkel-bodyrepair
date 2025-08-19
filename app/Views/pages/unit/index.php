@@ -12,8 +12,8 @@
         </div>
         <div class="ms-auto">
             <label>Filter : </label>
-            <button class="btn btn-sm btn-outline-primary btn-filter active" data-f="1" >Data Unit Berjalan</button>
-            <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0" >Data Unit Closing</button>
+            <button class="btn btn-sm btn-outline-primary btn-filter active" data-f="1">Data Unit Berjalan</button>
+            <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0">Data Unit Closing</button>
         </div>
     </div>
 
@@ -171,8 +171,8 @@
                         </div>
                         <div class="col-3 col-sm-4 col-md-1">
                             <label for="jumlah_panel" class="form-label">Panel</label>
-                            <input type="text" class="form-control" readonly id="jumlah_panel">
-                            <input type="hidden" name="jumlah_panel" id="jumlah_panel_act">
+                            <input type="text" name="jumlah_panel" class="form-control" id="jumlah_panel">
+                            <input type="hidden" name="jumlah_panel_act" id="jumlah_panel_act">
                         </div>
 
                         <div class="col-6 col-sm-6 col-md-3">
@@ -186,7 +186,7 @@
                         <div class="col-6 col-sm-6 col-md-4">
                             <label for="total_upah_mekanik" class="form-label">Total Upah Mekanik</label>
                             <div class="position-relative input-icon">
-                                <input type="text" inputmode="numeric" name="total_upah_mekanik" class="form-control" id="total_upah_mekanik" readonly placeholder="Total Upah Mekanik">
+                                <input type="text" inputmode="numeric" name="total_upah_mekanik" class="form-control" id="total_upah_mekanik" placeholder="Total Upah Mekanik">
                                 <span class="position-absolute top-50 translate-middle-y">Rp </span>
                             </div>
                         </div>

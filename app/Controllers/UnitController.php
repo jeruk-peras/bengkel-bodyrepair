@@ -67,7 +67,7 @@ class UnitController extends BaseController
             'diskon'            => $data['diskon'],
             'jumlah_diskon'     => str_replace('.', '', $data['jumlah_diskon']),
             'harga_panel'       => str_replace('.', '', $data['harga_panel']),
-            'jumlah_panel'      => $data['jumlah_panel'],
+            'jumlah_panel'      => $data['jumlah_panel'] ?? $data['jumlah_panel_act'],
             'upah_mekanik'      => str_replace('.', '', $data['upah_mekanik']),
             'total_upah_mekanik' => str_replace('.', '', $data['total_upah_mekanik']),
             'status'            => 0,
