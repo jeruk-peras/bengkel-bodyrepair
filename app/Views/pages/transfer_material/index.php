@@ -45,6 +45,7 @@
 
     <div class="table-responsive" id="preview-data"></div>
 </div>
+<?= $this->include('layout/tomselect'); ?>
 <script>
     var form, to;
     form = $('#form');
