@@ -148,7 +148,6 @@
                                     <th>Nama SA</th>
                                     <th>Nomor Polisi</th>
                                     <th>Model/Warna</th>
-                                    <th>Asuransi</th>
                                     <th>Taggal Masuk</th>
                                     <th>Tanggal Selesai</th>
                                     <th>Status</th>
@@ -156,6 +155,7 @@
                                     <th>Harga SPP</th>
                                     <th>Diskon</th>
                                     <th>Total Harga SPP</th>
+                                    <th>Asuransi</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -326,7 +326,7 @@
                     <?= csrf_field(); ?>
                     <input type="hidden" name="closing_id" id="closing_id" value="<?= $data['id_closing']; ?>">
                 </form>
-                <table class="table align-middle mb-0 text-nowrap" id="datatableTambahUnit" style="width: 100%;">
+                <table class="table align-middle mb-0 text-nowrap table-hover" id="datatableTambahUnit" style="width: 100%;">
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
@@ -336,7 +336,6 @@
                             <th>Nama SA</th>
                             <th>Nomor Polisi</th>
                             <th>Model/Warna</th>
-                            <th>Asuransi</th>
                             <th>Taggal Masuk</th>
                             <th>Tanggal Selesai</th>
                             <th>Status</th>
@@ -344,6 +343,7 @@
                             <th>Harga SPP</th>
                             <th>Diskon</th>
                             <th>Total Harga SPP</th>
+                            <th>Asuransi</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

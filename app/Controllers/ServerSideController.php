@@ -1329,7 +1329,6 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_sa']),
                 htmlspecialchars($row['nomor_polisi']),
                 htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
-                htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
                 ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
@@ -1337,6 +1336,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars('Rp' . number_format($row['harga_spp'], 0, '', '.')),
                 htmlspecialchars($row['diskon'] . '%'),
                 htmlspecialchars('Rp' . number_format($row['jumlah_diskon'], 0, '', '.')),
+                htmlspecialchars($row['nama_asuransi']),
             ];
         }
 
@@ -1398,7 +1398,6 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_sa']),
                 htmlspecialchars($row['nomor_polisi']),
                 htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
-                htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
                 ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
@@ -1406,6 +1405,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars('Rp' . number_format($row['harga_spp'], 0, '', '.')),
                 htmlspecialchars($row['diskon'] . '%'),
                 htmlspecialchars('Rp' . number_format($row['jumlah_diskon'], 0, '', '.')),
+                htmlspecialchars($row['nama_asuransi']),
             ];
         }
 
