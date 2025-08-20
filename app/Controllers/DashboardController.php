@@ -129,7 +129,9 @@ class DashboardController extends BaseController
             $data = [
                 'total_panel' => 0,
                 'unit_proses' => 0,
+                'panel_proses' => 0,
                 'unit_selesai' => 0,
+                'panel_selesai' => 0,
                 'total_nilai' => 0,
             ];
 
@@ -138,14 +140,20 @@ class DashboardController extends BaseController
 
                 $data['total_panel'] += $row['jumlah_panel'];
                 $data['total_nilai'] += $row['jumlah_diskon'];
+
                 $data['unit_proses'] += ($row['status'] == 0 ? 1 : 0);
+                $data['panel_proses'] += ($row['status'] == 0 ? $row['jumlah_panel'] : 0);
+
                 $data['unit_selesai'] += ($row['status'] == 1 ? 1 : 0);
+                $data['panel_selesai'] += ($row['status'] == 1 ? $row['jumlah_panel'] : 0);
             }
 
             $data = [
                 'total_panel' => round($data['total_panel'], 2),
                 'unit_proses' => $data['unit_proses'],
+                'panel_proses' => round($data['panel_proses'], 2),
                 'unit_selesai' => $data['unit_selesai'],
+                'panel_selesai' => round($data['panel_selesai'], 2),
                 'total_nilai' => 'Rp' . number_format($data['total_nilai']),
             ];
 
@@ -335,7 +343,7 @@ class DashboardController extends BaseController
 
                 // jumlahkan
                 $total_pemakaian = 0;
-                foreach($pemakaianMaterial as $pemakaian){
+                foreach ($pemakaianMaterial as $pemakaian) {
                     $total_pemakaian += ($pemakaian['harga'] * $pemakaian['jumlah']);
                 }
 

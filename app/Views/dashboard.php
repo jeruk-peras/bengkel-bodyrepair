@@ -18,26 +18,26 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6 col-sm-6 col-lg-6 col-xl-3">
+        <div class="col-6 col-sm-6 col-lg-6 col-xl-2">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Total Panel</p>
-                            <h4 class="my-1" id="total_panel"></h4>
+                            <p class="mb-0 text-secondary">Panel Proses</p>
+                            <h4 class="my-1" id="panel_proses"></h4>
                         </div>
-                        <div class="widgets-icons bg-light-success text-success ms-auto"><i class="bx bxs-wallet"></i>
+                        <div class="widgets-icons bg-light-success text-success ms-auto"><i class="bx bx-blanket"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-sm-6 col-lg-6 col-xl-3">
+        <div class="col-6 col-sm-6 col-lg-6 col-xl-2">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Unit Dalam Proses</p>
+                            <p class="mb-0 text-secondary">Unit Proses</p>
                             <h4 class="my-1" id="unit_proses"></h4>
                         </div>
                         <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class="bx bxs-binoculars"></i>
@@ -55,6 +55,20 @@
                             <h4 class="my-1" id="unit_selesai"></h4>
                         </div>
                         <div class="widgets-icons bg-light-info text-info ms-auto"><i class="bx bxs-group"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-6 col-lg-6 col-xl-2">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-secondary">Panel Selesai</p>
+                            <h4 class="my-1" id="panel_selesai"></h4>
+                        </div>
+                        <div class="widgets-icons bg-light-success text-success ms-auto"><i class="bx bxs-wallet"></i>
                         </div>
                     </div>
                 </div>
