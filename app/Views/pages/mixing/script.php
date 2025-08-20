@@ -243,15 +243,16 @@
             type: 'POST',
             data: formData,
             success: function(response) {
-                alertMesage(response.status, response.message);
+                $('#btn-material').attr('disabled', false).text('Simpan data');
                 $('#modal-material-data').modal('hide');
                 $('#form-add-material').removeClass('is-invalid');
-
+                
                 $('#form-add-material')[0].reset();
                 $('.row-material').not(':first').remove(); // Hapus semua baris kecuali yang pertama
-                $('.row-material').eq(0).find('input, select').val('').trigger('change'); // Kosongkan input dari baris pertama
+                $('.row-material').eq(0).find('input, select').val(''); // Kosongkan input dari baris pertama
                 $('.row-material .stok-material').text('');
-                $('#btn-material').attr('disabled', false).text('Simpan data');
+                $('.row-material .stok-material').text('');
+                alertMesage(response.status, response.message);
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
@@ -261,6 +262,7 @@
                     $('#' + key).addClass('is-invalid');
                     $('#invalid_' + key).text(value).show();
                 });
+                $('#btn-material').attr('disabled', false).text('Simpan data');
                 alertMesage(response.status, response.message);
             }
         })
