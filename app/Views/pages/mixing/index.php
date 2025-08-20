@@ -59,10 +59,10 @@
                                     <th>Nama SA</th>
                                     <th>Nomor Polisi</th>
                                     <th>Model/Warna</th>
-                                    <th>Asuransi</th>
                                     <th>Taggal Masuk</th>
                                     <th>Tanggal Selesai</th>
                                     <th>Status</th>
+                                    <th>Harga SPP</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

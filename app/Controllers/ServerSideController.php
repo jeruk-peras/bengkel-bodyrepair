@@ -634,7 +634,7 @@ class ServerSideController extends BaseController
     {
         $table = 'unit';
         $primaryKey = 'id_unit';
-        $columns = ['unit.id_unit', 'unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'cabang.nama_cabang'];
+        $columns = ['unit.id_unit', 'unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.harga_spp', 'unit.jumlah_diskon', 'cabang.nama_cabang'];
         $orderableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
         $searchableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
         $defaultOrder = ['unit.tanggal_masuk', 'DESC'];
@@ -698,10 +698,11 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_sa']),
                 htmlspecialchars($row['nomor_polisi']),
                 htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
-                htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
                 ($row['status'] ? '<span class="badge bg-success btn-selesai" data-id="' . $row['id_unit'] . '">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses <br> ' . $status . ' </span>'),
+                htmlspecialchars('Rp.' . number_format($row['harga_spp'], 0, '', '.')),
+                htmlspecialchars($row['nama_asuransi']),
             ];
         }
 
