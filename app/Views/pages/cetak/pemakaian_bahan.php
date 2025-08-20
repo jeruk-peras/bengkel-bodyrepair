@@ -12,7 +12,11 @@
                 </ol>
             </nav>
         </div>
-        <div class="ms-auto"></div>
+        <div class="ms-auto">
+             <label>Filter : </label>
+            <button class="btn btn-sm btn-outline-primary btn-filter active" data-f="1">Data Unit Berjalan</button>
+            <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0">Data Unit Closing</button>
+        </div>
     </div>
 
     <div class="card radius-10">
@@ -27,7 +31,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table align-middle mb-0" id="datatable" style="width: 100%;">
+                <table class="table align-middle mb-0" data-filter="1" id="datatable" style="width: 100%;">
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
@@ -123,8 +127,9 @@
         ajax: {
             url: '/datatable-server-side/unit', // URL file untuk proses select datanya
             type: 'POST',
-            data: {
-                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            data: function(d) {
+                d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';
+                d.filter = $('#datatable').attr('data-filter');
             } // Kirim token CSRF
         },
         columnDefs: [{
@@ -151,5 +156,15 @@
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
+
+      $('.btn-filter').click(function() {
+        var f = $(this).attr('data-f');
+        $('#datatable').attr('data-filter', f);
+        table.ajax.reload();
+
+        $('.btn-filter').removeClass('active');
+        $(this).addClass('active');
+        fetchDataMaterial(f);
+    })
 </script>
 <?= $this->endSection(); ?>
