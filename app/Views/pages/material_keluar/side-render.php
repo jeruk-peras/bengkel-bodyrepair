@@ -1,8 +1,7 @@
- <table class="table align-middle mb-0" style="width: 100%;">
+ <table class="table table-hover align-middle mb-0" id="material-table" style="width: 100%;">
      <thead class="table-light">
          <tr>
              <th>No</th>
-             <th>Tanggal</th>
              <?= is_array(session('selected_akses')) ? "<th>Cabang</th>" : "" ?>
              <th>Nomor SPP</th>
              <th>Nomor Polisi</th>
@@ -14,13 +13,13 @@
              <th>Jumlah</th>
              <th>Total</th>
              <th>Mekanik</th>
+             <th>Tanggal</th>
             </tr>
         </thead>
      <tbody>
         <?php $i=1; foreach($data as $row): ?>
-            <tr>
+            <tr class="row-material" data-id="<?= $row['id_unit_material']; ?>">
                 <td><?= $i++; ?></td>
-                <td><?= $row['tanggal']; ?></td>
                 <?= is_array(session('selected_akses')) ? "<td>{$row['nama_cabang']}</td>" : "" ?>
                 <td><?= $row['nomor_spp']; ?></td>
                 <td><?= $row['nomor_polisi']; ?></td>
@@ -32,6 +31,7 @@
                 <td><?= $row['jumlah']; ?></td>
                 <td>Rp<?= number_format($row['total_harga'], 0, '', '.'); ?></td>
                 <td><?= $row['nama_mekanik']; ?></td>
+                <td><?= $row['tanggal']; ?></td>
             </tr>
             <?php endforeach;  ?>
      </tbody>

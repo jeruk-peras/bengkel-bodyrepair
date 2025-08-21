@@ -175,6 +175,68 @@
         </div>
     </div>
 </div>
+
+<!-- modal edit pemakaian -->
+<div class="modal fade" id="modal-edit-material" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-sm-down modal-fullscreen-lg-down modal-fullscreen-md-down">
+        <div class="modal-content" style="height: 100vh;">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Form Penggunaan Material</h1>
+                <button type="button" id="close-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" id="form-edit-material">
+                    <?= csrf_field(); ?>
+                    <div class="row">
+                        <div class="mb-3 col-sm-4 col-md-4 col-4">
+                            <label for="tanggal" class="form-label required">Tanggal</label>
+                            <input type="datetime-local" name="tanggal" class="form-control form-control-sm" id="edit-tanggal" required>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-8 col-8">
+                            <label for="mekanik_id" class="form-label required">Mekanik</label>
+                            <select class="form-select form-select-sm" name="mekanik_id" id="mekanik_data" required></select>
+                        </div>
+                    </div>
+
+                    <div class="row edit row-material" id="row-material">
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-12" style="padding-right: 5px !important;">
+                            <label for="material_id" class="form-label required">Material</label>
+                            <select class="form-select form-select-sm select-material" name="material_id" data-placeholder="Material" id="material_data" required></select>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-2 col-6" style="padding: 0 5px 0 5px !important;">
+                            <label class="form-label required">Harga</label>
+                            <div class="position-relative input-icon">
+                                <span class="position-absolute top-50 translate-middle-y">Rp</span>
+                                <input type="text" name="harga" class="form-control form-control-sm harga-material" readonly placeholder="xxxxxx" style="padding-left: 2.5rem; padding-right: 1.90rem;">
+                                <span class="position-absolute top-50 translate-middle-y satuan-material" style="right: 15px !important; left: unset;"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3 col-lg-2 col-6" style="padding: 0 5px 0 5px !important;">
+                            <label for="jumlah" class="form-label required">Jumlah</label>
+                            <div class="position-relative input-icon">
+                                <input type="text" inputmode="numeric" name="jumlah" class="form-control form-control-sm" id="jumlah" required style="padding-left: 0.5rem; padding-right: 3rem;">
+                                <span class="position-absolute top-50 translate-middle-y stok-material" style="right: 10px !important; left: unset;"></span>
+                            </div>
+                            <div class="form-text text-danger" id="invalid_jumlah"></div>
+                        </div>
+                        <div class="col-sm-10 col-md-4 col-lg-2 col-10" style="padding: 0 5px 0 5px !important;">
+                            <label class="form-label required">Total Jumlah</label>
+                            <div class="position-relative input-icon">
+                                <span class="position-absolute top-50 translate-middle-y">Rp</span>
+                                <input type="text" class="form-control form-control-sm" id="display_total_harga" required readonly style="padding-left: 2.5rem;">
+                                <input type="hidden" name="total_harga" id="total_harga">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Batal</button>
+                <button class="btn btn-primary" id="btn-update-material">Simpan Data</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->include('layout/tomselect'); ?>
 <?= $this->include('pages/material_keluar/script'); ?>
 <?= $this->endSection(); ?>

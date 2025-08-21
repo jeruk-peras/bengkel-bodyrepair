@@ -56,8 +56,8 @@
 
     // penggunaan material
     $('#modal-material-data').on('show.bs.modal', function() {
-        dataMaterial();
-        dataMekanik();
+        dataMaterial('#material_id');
+        dataMekanik('#mekanik_id');
     });
 
     // add row
@@ -124,6 +124,10 @@
 
         var stok = $(this).find('option:selected').attr('data-stok');
         $(this).closest('#row-material').find('.stok-material').text('/' + stok);
+
+        $(this).closest('#row-material').find('#jumlah').val('');
+        $(this).closest('#row-material').find('#display_total_harga').val('');
+        $(this).closest('#row-material').find('#total_harga').val('');
     })
 
     // buat validasi sisa stok dengan jumlah
@@ -159,7 +163,7 @@
     let tomSelectMaterial = null;
     let tomSelectMekanik = null;
 
-    function dataMaterial() {
+    function dataMaterial(target, val = null) {
 
         if (tomSelectMaterial !== null) tomSelectMaterial.destroy();
 
@@ -168,13 +172,14 @@
             type: 'GET',
             dataType: 'json',
             success: function(response) {
-                var $select = $('#material_id');
+                var $select = $(target);
                 $select.empty().append('<option value="">Pilih opsi...</option>');
                 $.each(response.data, function(index, item) {
-                    $select.append('<option data-stok="' + item.stok + '" data-satuan="' + item.nama_satuan + '" data-harga="' + item.harga + '" value="' + item.id_material + '">' + item.nama_material + '</option>');
+                    var selected = (val !== null && val == item.id_material) ? ' selected' : '';
+                    $select.append('<option data-stok="' + item.stok + '" data-satuan="' + item.nama_satuan + '" data-harga="' + item.harga + '" value="' + item.id_material + '"' + selected + '>' + item.nama_material + '</option>');
                 });
 
-                tomSelectMaterial = new TomSelect("#material_id", {
+                tomSelectMaterial = new TomSelect(target, {
                     placeholder: 'Pilih opsi...',
                     sortField: {
                         field: "text",
@@ -193,7 +198,7 @@
         });
     }
 
-    function dataMekanik() {
+    function dataMekanik(target, val = null) {
         if (tomSelectMekanik !== null) tomSelectMekanik.destroy();
 
         $.ajax({
@@ -201,22 +206,25 @@
             type: 'GET',
             dataType: 'json',
             success: function(response) {
-                var $select = $('#mekanik_id');
+                var $select = $(target);
                 $select.empty().append('<option value="" hidden>-- Pilih Mekanik --</option>');
                 $.each(response.data, function(index, item) {
-                    $select.append('<option value="' + item.id_mekanik + '">' + item.nama_mekanik + '</option>');
+                    var selected = (val !== null && val == item.id_mekanik) ? ' selected' : '';
+                    $select.append('<option value="' + item.id_mekanik + '"' + selected + '>' + item.nama_mekanik + '</option>');
                 });
 
-                tomSelectMekanik = new TomSelect("#mekanik_id", {
+                tomSelectMekanik = new TomSelect(target, {
                     sortField: {
                         field: "text",
                         direction: "asc"
                     },
                     onInitialize: function() {
                         // Fokus ke input Tom Select setelah inisialisasi
-                        setTimeout(() => {
-                            this.control_input.focus();
-                        }, 10);
+                        if (val == null) {
+                            setTimeout(() => {
+                                this.control_input.focus();
+                            }, 10);
+                        }
                     }
                 });
             },
@@ -246,7 +254,7 @@
                 $('#btn-material').attr('disabled', false).text('Simpan data');
                 $('#modal-material-data').modal('hide');
                 $('#form-add-material').removeClass('is-invalid');
-                
+
                 $('#form-add-material')[0].reset();
                 $('.row-material').not(':first').remove(); // Hapus semua baris kecuali yang pertama
                 $('.row-material').eq(0).find('input, select').val(''); // Kosongkan input dari baris pertama
@@ -316,6 +324,77 @@
                 });
             }
         });
+    })
+
+    // hendle modal edit material
+    $(document).on('click', '#material-table tbody tr.row-material', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        $.ajax({
+            url: '/material-keluar/' + id + '/edit',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+
+                $('#form-edit-material').attr('action', '/material-keluar/' + id + '/edit')
+
+                $('#edit-tanggal').val(response.data.tanggal);
+                $('.edit').find('.harga-material').val(formatRupiah(response.data.harga));
+                $('.edit').find('.satuan-material').text(response.data.nama_satuan);
+                $('.edit').find('.stok-material').text('/' + response.data.stok);
+                $('.edit').find('#jumlah').val(response.data.jumlah);
+                $('.edit').find('#display_total_harga').val(formatRupiah(response.data.total_harga));
+                $('.edit').find('#total_harga').val(response.data.total_harga);
+
+                dataMaterial('#material_data', response.data.id_material);
+                dataMekanik('#mekanik_data', response.data.id_mekanik);
+                $('#modal-edit-material').modal('show');
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                alertMesage(response.status, response.message);
+            }
+        })
+    })
+
+    // hendle add material
+    $('#btn-update-material').click(function() {
+        var url, formData;
+        url = $('#form-edit-material').attr('action');
+        formData = $('#form-edit-material').serializeArray();
+        $('#btn-update-material').attr('disabled', true).text('Menyimpan...');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                $('#btn-update-material').attr('disabled', false).text('Simpan data');
+                $('#modal-edit-material').modal('hide');
+                $('#form-edit-material').removeClass('is-invalid');
+
+                $('#form-edit-material')[0].reset();
+                $('.row-material').eq(0).find('input, select').val(''); // Kosongkan input dari baris pertama
+                $('.row-material .stok-material').text('');
+                $('.row-material .satuan-material').text('');
+                alertMesage(response.status, response.message);
+
+                var filter = $('#datatable').attr('data-filter');
+                fetchDataMaterial(filter);
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                $('#form-edit-material .form-control').removeClass('is-invalid');
+                $('.invalid-feedback').text('');
+                $.each(response.data, function(key, value) {
+                    $('#' + key).addClass('is-invalid');
+                    $('#invalid_' + key).text(value).show();
+                });
+                $('#btn-update-material').attr('disabled', false).text('Simpan data');
+                alertMesage(response.status, response.message);
+            }
+        })
+
     })
 
     $('.btn-filter').click(function() {

@@ -1434,7 +1434,7 @@ class ServerSideController extends BaseController
 
             // get data pemakaian material
             $dataPemakaian = $this->db->table('unit u')
-                ->select('um.tanggal, c.nama_cabang, u.nomor_spp, u.nomor_polisi, u.model_unit, u.warna_unit, j.nama_jenis, m.nama_material, s.nama_satuan, um.harga, um.jumlah, um.total_harga, mk.nama_mekanik')
+                ->select('um.tanggal, c.nama_cabang, u.nomor_spp, u.nomor_polisi, u.model_unit, u.warna_unit, j.nama_jenis, m.nama_material, s.nama_satuan, um.id_unit_material, um.harga, um.jumlah, um.total_harga, mk.nama_mekanik')
                 ->join('cabang c', 'c.id_cabang = u.cabang_id')
                 ->join('unit_material um', 'um.unit_id = u.id_unit')
                 ->join('mekanik mk', 'mk.id_mekanik = um.mekanik_id')
@@ -1471,7 +1471,7 @@ class ServerSideController extends BaseController
 
             // get data pemakaian material
             $dataPemakaian = $this->db->table('unit u')
-                ->select('um.tanggal, c.nama_cabang, u.nomor_spp, u.nomor_polisi, u.model_unit, u.warna_unit, j.nama_jenis, m.nama_material, s.nama_satuan, um.harga, um.jumlah, um.total_harga, mk.nama_mekanik')
+                ->select('um.tanggal, c.nama_cabang, u.nomor_spp, u.nomor_polisi, u.model_unit, u.warna_unit, j.nama_jenis, m.nama_material, s.nama_satuan, um.id_unit_material, um.harga, um.jumlah, um.total_harga, mk.nama_mekanik')
                 ->join('cabang c', 'c.id_cabang = u.cabang_id')
                 ->join('unit_material um', 'um.unit_id = u.id_unit')
                 ->join('mekanik mk', 'mk.id_mekanik = um.mekanik_id')

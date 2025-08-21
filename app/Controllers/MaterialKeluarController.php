@@ -168,6 +168,67 @@ class MaterialKeluarController extends BaseController
         }
     }
 
+    public function editPenggunaanMaterial(int $id)
+    {
+        try {
+            // get data pemakaian material
+            $data = $this->db->table('unit_material um')
+                ->select('um.tanggal, m.id_material, m.nama_material, m.stok, s.nama_satuan, um.id_unit_material, um.harga, um.jumlah, um.total_harga, mk.id_mekanik, mk.nama_mekanik')
+                ->join('mekanik mk', 'mk.id_mekanik = um.mekanik_id')
+                ->join('material m', 'm.id_material = um.material_id')
+                ->join('satuan s', 's.id_satuan = m.satuan_id')
+                ->where('um.id_unit_material', $id)
+                ->get()->getRowArray();
+            
+            $data['total_harga'] = round($data['total_harga']);
+
+            return ResponseJSONCollection::success($data, 'Berhasil fetch data', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function updatePenggunaanMaterial(int $id)
+    {
+        $this->db->transStart();
+        try {
+            $post = $this->request->getPost();
+
+            // get data pemakaian material
+            $data = $this->db->table('unit_material um')->where('um.id_unit_material', $id)->get()->getRowArray();
+
+            $updateData = [
+                'id_unit_material'  => $id,
+                'mekanik_id'        => $post['mekanik_id'],
+                'tanggal'           => $post['tanggal'],
+                'harga'             => str_replace('.', '', $post['harga']),
+                'jumlah'            => $post['jumlah'],
+                'total_harga'       => $post['total_harga'],
+            ];
+
+            // cek apakah id materil berubah
+            if ($data['material_id'] !== $post['material_id']) $updateData['material_id'] = $post['material_id'];
+
+            // gunakan aritmatika langsung dari query untuk menhindari race condition
+            // kembalikan stok yang sebelumnya
+            $this->db->table('material')->where('id_material', $data['material_id'])
+                ->set('stok', 'stok + ' . $data['jumlah'], false)->update();
+
+            // kurangi stok material
+            $this->db->table('material')->where('id_material', $post['material_id'])
+                ->set('stok', 'stok - ' . $post['jumlah'], false)->update();
+
+            // update data
+            $this->db->table('unit_material')->update($updateData, ['id_unit_material' => $id]);
+
+            $this->db->transComplete();
+            return ResponseJSONCollection::success([], 'Berhasil update data', ResponseInterface::HTTP_OK);
+        } catch (DatabaseException $e) {
+            $this->db->transRollback();
+            return ResponseJSONCollection::error([], $e->getMessage(), ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
     public function delete(int $id)
     {
         try {

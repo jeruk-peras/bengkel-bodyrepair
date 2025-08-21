@@ -202,6 +202,9 @@ $routes->group('/material-keluar', function ($routes) {
     $routes->post('(:num)/add', 'MaterialKeluarController::save/$1');
     $routes->get('(:num)/detail', 'MaterialKeluarController::fetchMaterialUnit/$1');
 
+    $routes->get('(:num)/edit', 'MaterialKeluarController::editPenggunaanMaterial/$1');
+    $routes->post('(:num)/edit', 'MaterialKeluarController::updatePenggunaanMaterial/$1');
+
     $routes->post('(:num)/delete', 'MaterialKeluarController::delete/$1');
 });
 
@@ -209,6 +212,8 @@ $routes->group('/material-mixing', function ($routes) {
     $routes->get('/', 'MaterialKeluarController::mixing');
     $routes->post('(:num)/add', 'MaterialKeluarController::save/$1');
     $routes->get('(:num)/detail', 'MaterialKeluarController::fetchMaterialMixing/$1');
+
+    $routes->get('(:num)/edit', 'MaterialKeluarController::editPenggunaanMaterial/$1');
 
     $routes->post('(:num)/delete', 'MaterialKeluarController::delete/$1');
 });
