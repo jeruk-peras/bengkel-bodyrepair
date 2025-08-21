@@ -27,7 +27,8 @@
         </tr>
     </thead>
     <tbody>
-        <?php $total_panel = 0; $jumlah_diskon = 0; ?>
+        <?php $total_panel = 0;
+        $jumlah_diskon = 0; ?>
         <?php foreach ($units as $row):  ?>
             <tr>
                 <td><?= $row['no']; ?></td>
@@ -41,7 +42,8 @@
                     <td class="text-end"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="<?= $s['harga_status'] ?> * jml panel">Rp<?= number_format($s['total_harga_status']); ?></span></td>
                 <?php endforeach  ?>
             </tr>
-            <?php $total_panel += $row['jumlah_panel']; $jumlah_diskon += $row['jumlah_diskon']; ?>
+            <?php $total_panel += $row['jumlah_panel'];
+            $jumlah_diskon += $row['jumlah_diskon']; ?>
         <?php endforeach; ?>
         <tr>
             <th class="text-end" colspan="4">TOTAL</th>
@@ -50,6 +52,15 @@
             <th class="text-center"><?= number_format($total_panel, 2) ?></th>
             <?php foreach ($status as $r):  ?>
                 <th class="text-end">Rp<?= number_format($harga_status_total[$r['nama_status']]); ?></th>
+            <?php endforeach;  ?>
+        </tr>
+        <tr>
+            <th class="text-end" colspan="4">TOTAL PANEL</th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <?php foreach ($status as $r):  ?>
+                <th class="text-end" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="<?= $r['nama_status'] ?>"><?= round($panel_total[$r['nama_status']], 2); ?></th>
             <?php endforeach;  ?>
         </tr>
     </tbody>

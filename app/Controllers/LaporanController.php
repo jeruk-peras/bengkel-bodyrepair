@@ -313,6 +313,12 @@ class LaporanController extends BaseController
                 $hargaStatusTotal[$row['nama_status']] = 0;
             }
 
+            // total pane;
+            $totalPanel = [];
+            foreach ($statusData as $row) {
+                $totalPanel[$row['nama_status']] = 0;
+            }
+
             // data unit    
             $unitStatus = $this->db->table('unit')
                 ->select('unit.*, cabang.nama_cabang')
@@ -341,6 +347,8 @@ class LaporanController extends BaseController
                         // jumlah panel * harga status
                         $totalUpah = ($u['jumlah_panel'] * $statusUnit['harga_status']);
                         ($hargaStatusTotal[$statusUnit['nama_status']] += $totalUpah);
+                        
+                        ($totalPanel[$statusUnit['nama_status']] += $u['jumlah_panel']);
 
                         $unitStatus[] = [
                             $row['nama_status'] => $row['nama_status'],
@@ -379,10 +387,11 @@ class LaporanController extends BaseController
                 'periode' => $this->db->table('closing')->where('id_closing', $id_closing)->get()->getRowArray()['periode_closing'],
                 'status' => $statusData,
                 'units' => $units,
-                'harga_status_total' => $hargaStatusTotal
+                'harga_status_total' => $hargaStatusTotal,
+                'panel_total' => $totalPanel
             ];
 
-            return ResponseJSONCollection::success(['html' => view('pages/laporan/side_closingan_mekanik', $data,)], 'Data ditemukan', ResponseInterface::HTTP_OK);
+            return ResponseJSONCollection::success(['html' => view('pages/laporan/side_closingan_mekanik', $data,), $data], 'Data ditemukan', ResponseInterface::HTTP_OK);
         } catch (\Exception $e) {
             return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Kesalahan Server', ResponseInterface::HTTP_BAD_GATEWAY);
         }
@@ -512,5 +521,9 @@ class LaporanController extends BaseController
         } catch (\Exception $e) {
             return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Kesalahan Server', ResponseInterface::HTTP_BAD_GATEWAY);
         }
+    }
+
+    public function panelMekanik(int $id_closing){
+
     }
 }
