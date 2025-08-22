@@ -366,6 +366,22 @@ class UnitController extends BaseController
         }
     }
 
+    public function saveMarkUnit(int $id)
+    {
+        try {
+            $color = $this->request->getPost('options');
+            $data = [
+                'color' => $color
+            ];
+
+            $update = $this->modelUnit->update($id, $data); // update data
+
+            return ResponseJSONCollection::success(['id_unit' => $id], 'Data barhasil ditandai.', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     private function _deleteGambarStatus($gambar)
     {
         // define('EXT', '.' . pathinfo(__FILE__, PATHINFO_EXTENSION));

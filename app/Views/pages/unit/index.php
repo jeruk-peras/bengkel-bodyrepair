@@ -30,7 +30,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table align-middle mb-0" data-filter="1" id="datatable" style="width: 100%;">
+                <table class="table table-hover align-middle mb-0" data-filter="1" id="datatable" style="width: 100%;">
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
@@ -391,6 +391,46 @@
                     <img src="" id="gambar-unit" class="img-fluid" alt="Gambar Unit" style="max-height: 500px; max-width: 100%;">
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal mark unit-->
+<div class="modal fade" id="modal-mark-unit" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Tandai Unit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST" id="form-mark-unit">
+                <?= csrf_field(); ?>
+                <div class="modal-body text-center">
+                    <input type="radio" class="btn-check" name="options" id="default" value="" autocomplete="off">
+                    <label class="btn p-4" style="border-color: black;" for="default"></label>
+
+                    <input type="radio" class="btn-check" name="options" id="primary" value="bg-primary text-white" autocomplete="off">
+                    <label class="btn btn-primary p-4" for="primary"></label>
+
+                    <input type="radio" class="btn-check" name="options" id="warning" value="bg-warning text-white" autocomplete="off">
+                    <label class="btn btn-warning p-4" for="warning"></label>
+
+                    <input type="radio" class="btn-check" name="options" id="danger" value="bg-danger text-white" autocomplete="off">
+                    <label class="btn btn-danger p-4" for="danger"></label>
+
+                    <input type="radio" class="btn-check" name="options" id="success" value="bg-success text-white" autocomplete="off">
+                    <label class="btn btn-success p-4" for="success"></label>
+
+                    <input type="radio" class="btn-check" name="options" id="info" value="bg-info text-white" autocomplete="off">
+                    <label class="btn btn-info p-4" for="info"></label>
+
+                    <input type="radio" class="btn-check" name="options" id="dark" value="bg-dark text-white" autocomplete="off">
+                    <label class="btn btn-dark p-4" for="dark"></label>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-mark-unit">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

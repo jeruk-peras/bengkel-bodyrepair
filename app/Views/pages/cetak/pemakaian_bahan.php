@@ -13,7 +13,7 @@
             </nav>
         </div>
         <div class="ms-auto">
-             <label>Filter : </label>
+            <label>Filter : </label>
             <button class="btn btn-sm btn-outline-primary btn-filter active" data-f="1">Data Unit Berjalan</button>
             <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0">Data Unit Closing</button>
         </div>
@@ -133,6 +133,11 @@
             } // Kirim token CSRF
         },
         columnDefs: [{
+                targets: 0, // Target kolom
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).addClass('mark-unit ' + rowData[12]).attr('data-id', rowData[1]);
+                }
+            }, {
                 targets: 1, // Target kolom
                 render: function(data, type, row, meta) {
                     var btn =
@@ -157,7 +162,7 @@
         });
     });
 
-      $('.btn-filter').click(function() {
+    $('.btn-filter').click(function() {
         var f = $(this).attr('data-f');
         $('#datatable').attr('data-filter', f);
         table.ajax.reload();

@@ -13,6 +13,12 @@
             } // Kirim token CSRF
         },
         columnDefs: [{
+                targets: 0, // Target kolom
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).addClass('mark-unit ' + rowData[12]).attr('data-id', rowData[1]);
+                }
+            },
+            {
                 targets: 1, // Target kolom
                 render: function(data, type, row, meta) {
                     var btn =
@@ -24,7 +30,7 @@
             },
             <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>
         ],
-        pageLength: 25,
+        pageLength: 50,
         lengthMenu: [25, 50, 100, 'All'],
         scrollX: true,
         language: {
@@ -374,6 +380,39 @@
                         alertMesage(response.status, response.message);
                     }
                 });
+            }
+        });
+    })
+
+    // hendle mark unit modal
+    table.on('dblclick', 'tbody tr td.mark-unit', function() {
+        var id = $(this).attr('data-id');
+        $('#form-mark-unit').attr('action', '/unit/' + id + '/mark');
+        $('#modal-mark-unit').modal('show');
+    })
+
+    // hendle save mark
+    $('#form-mark-unit').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serializeArray();
+        var url = $(this).attr('action');
+        $('#btn-mark-unit').attr('disabled', true).text('Menyimpan...');
+        
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                table.ajax.reload(null, false); // Reload data tanpa reset pagination
+                alertMesage(response.status, response.message);
+                $('#form-mark-unit').attr('action', '');
+                $('#modal-mark-unit').modal('hide');
+                $('#btn-mark-unit').attr('disabled', false).text('Simpan');
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                alertMesage(response.status, response.message);
+                $('#btn-mark-unit').attr('disabled', false).text('Simpan');
             }
         });
     })

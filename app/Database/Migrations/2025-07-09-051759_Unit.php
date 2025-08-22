@@ -87,6 +87,10 @@ class Unit extends Migration
                 'type'           => 'INT',
                 'constraint'     => 11,
             ],
+            'color' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => 100,
+            ],
             'cabang_id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,

@@ -373,6 +373,11 @@
             } // Kirim token CSRF
         },
         columnDefs: [{
+                targets: 0, // Target kolom
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).addClass('mark-unit ' + rowData[15]).attr('data-id', rowData[1]);
+                }
+            },{
             targets: 1, // Target kolom
             render: function(data, type, row, meta) {
                 var btn =
@@ -520,6 +525,11 @@
                 } // Kirim token CSRF
             },
             columnDefs: [{
+                targets: 0, // Target kolom
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).addClass('mark-unit ' + rowData[15]).attr('data-id', rowData[1]);
+                }
+            }, {
                 targets: 1, // Target kolom
                 checkboxes: {
                     selectRow: true

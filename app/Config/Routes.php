@@ -231,6 +231,8 @@ $routes->group('/unit', function ($routes) {
     $routes->post('(:num)/status-update', 'UnitController::statusUpdate/$1');
     $routes->get('(:num)/detail', 'UnitController::detail/$1');
 
+    $routes->post('(:num)/mark', 'UnitController::saveMarkUnit/$1');
+
     $routes->post('(:num)/add-material', 'UnitController::saveMaterial/$1', ['filter' => ['selectCabang']]);
 
     $routes->post('(:num)/update-status-selesai', 'UnitController::updateStatusSelesai/$1');

@@ -46,8 +46,9 @@ class UnitModel extends Model
         'harga_panel'       => 'required|numeric',
         'jumlah_panel'      => 'required|numeric',
         'upah_mekanik'      => 'required|numeric',
-        'total_upah_mekanik'=> 'required|numeric',
+        'total_upah_mekanik' => 'required|numeric',
         'status'            => 'required|integer',
+        'color'            => 'permit_empty',
         'cabang_id'         => 'required|integer',
     ];
     protected $validationMessages   = [
