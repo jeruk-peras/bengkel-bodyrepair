@@ -19,7 +19,7 @@
      <tbody>
         <?php $i=1; foreach($data as $row): ?>
             <tr class="row-material" data-id="<?= $row['id_unit_material']; ?>">
-                <td><?= $i++; ?></td>
+                <td class="<?= $row['color']; ?>"><?= $i++; ?></td>
                 <?= is_array(session('selected_akses')) ? "<td>{$row['nama_cabang']}</td>" : "" ?>
                 <td><?= $row['nomor_spp']; ?></td>
                 <td><?= $row['nomor_polisi']; ?></td>
