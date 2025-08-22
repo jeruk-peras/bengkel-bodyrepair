@@ -637,7 +637,7 @@ class ServerSideController extends BaseController
         $columns = ['unit.id_unit', 'unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.harga_spp', 'unit.jumlah_diskon', 'unit.color', 'cabang.nama_cabang'];
         $orderableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
         $searchableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
-        $defaultOrder = ['unit.tanggal_masuk', 'DESC'];
+        $defaultOrder = ['unit.id_unit', 'DESC'];
 
         $join = [
             [
