@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-7 col-sm-6 col-lg-6 col-xl-4">
+        <div class="col-12 col-sm-12 col-lg-12 col-xl-4">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-5 col-sm-6 col-lg-6 col-xl-2">
+        <div class="col-6 col-sm-6 col-lg-6 col-xl-2">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -79,7 +79,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Panel Selesai</p>
+                            <p class="mb-0 text-secondary">Panel&nbsp;Selesai</p>
                             <h4 class="my-1" id="panel_selesai"></h4>
                         </div>
                         <div class="widgets-icons bg-light-success text-success ms-auto"><i class="bx bxs-wallet"></i>
@@ -88,7 +88,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-7 col-sm-6 col-lg-6 col-xl-6">
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -102,7 +103,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-7 col-sm-6 col-lg-6 col-xl-6">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
