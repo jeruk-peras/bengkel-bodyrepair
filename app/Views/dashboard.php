@@ -18,15 +18,15 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6 col-sm-6 col-lg-6 col-xl-2">
+        <div class="col-7 col-sm-6 col-lg-6 col-xl-4">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary">Panel Proses</p>
-                            <h4 class="my-1" id="panel_proses"></h4>
+                            <p class="mb-0 text-secondary">Total Penel</p>
+                            <h4 class="my-1" id="total_panel"></h4>
                         </div>
-                        <div class="widgets-icons bg-light-success text-success ms-auto"><i class="bx bx-blanket"></i>
+                        <div class="widgets-icons bg-light-info text-info ms-auto"><i class="bx bx-bar-chart-alt-2"></i>
                         </div>
                     </div>
                 </div>
@@ -41,6 +41,20 @@
                             <h4 class="my-1" id="unit_proses"></h4>
                         </div>
                         <div class="widgets-icons bg-light-danger text-danger ms-auto"><i class="bx bxs-binoculars"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-6 col-lg-6 col-xl-2">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-secondary">Panel Proses</p>
+                            <h4 class="my-1" id="panel_proses"></h4>
+                        </div>
+                        <div class="widgets-icons bg-light-success text-success ms-auto"><i class="bx bx-blanket"></i>
                         </div>
                     </div>
                 </div>
@@ -74,7 +88,21 @@
                 </div>
             </div>
         </div>
-        <div class="col-7 col-sm-6 col-lg-6 col-xl-4">
+        <div class="col-7 col-sm-6 col-lg-6 col-xl-6">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-secondary">Total Upah</p>
+                            <h4 class="my-1" id="total_upah"></h4>
+                        </div>
+                        <div class="widgets-icons bg-light-warning text-warning ms-auto"><i class="bx bx-chalkboard"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-7 col-sm-6 col-lg-6 col-xl-6">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">

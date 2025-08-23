@@ -128,6 +128,7 @@ class DashboardController extends BaseController
 
             $data = [
                 'total_panel' => 0,
+                'total_upah' => 0,
                 'unit_proses' => 0,
                 'panel_proses' => 0,
                 'unit_selesai' => 0,
@@ -140,6 +141,7 @@ class DashboardController extends BaseController
 
                 $data['total_panel'] += $row['jumlah_panel'];
                 $data['total_nilai'] += $row['jumlah_diskon'];
+                $data['total_upah'] += $row['total_upah_mekanik'];
 
                 $data['unit_proses'] += ($row['status'] == 0 ? 1 : 0);
                 $data['panel_proses'] += ($row['status'] == 0 ? $row['jumlah_panel'] : 0);
@@ -155,6 +157,7 @@ class DashboardController extends BaseController
                 'unit_selesai' => $data['unit_selesai'],
                 'panel_selesai' => round($data['panel_selesai'], 2),
                 'total_nilai' => 'Rp' . number_format($data['total_nilai']),
+                'total_upah' => 'Rp' . number_format($data['total_upah']),
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
