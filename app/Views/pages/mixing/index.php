@@ -56,13 +56,13 @@
                                     <th>#</th>
                                     <th>Cabang</th>
                                     <th>Nomor SPP</th>
-                                    <th>Nama SA</th>
                                     <th>Nomor Polisi</th>
                                     <th>Model/Warna</th>
                                     <th>Taggal Masuk</th>
                                     <th>Tanggal Selesai</th>
                                     <th>Status</th>
                                     <th>Harga SPP</th>
+                                    <th>Nama SA</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

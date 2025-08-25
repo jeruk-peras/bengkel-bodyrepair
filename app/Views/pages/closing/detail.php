@@ -145,7 +145,6 @@
                                     <th>#</th>
                                     <th>Nama Cabang</th>
                                     <th>Nomor SPP</th>
-                                    <th>Nama SA</th>
                                     <th>Nomor Polisi</th>
                                     <th>Model/Warna</th>
                                     <th>Taggal Masuk</th>
@@ -155,6 +154,7 @@
                                     <th>Harga SPP</th>
                                     <th>Diskon</th>
                                     <th>Total Harga SPP</th>
+                                    <th>Nama SA</th>
                                     <th>Asuransi</th>
                                 </tr>
                             </thead>
@@ -333,7 +333,6 @@
                             <th>#</th>
                             <th>Nama Cabang</th>
                             <th>Nomor SPP</th>
-                            <th>Nama SA</th>
                             <th>Nomor Polisi</th>
                             <th>Model/Warna</th>
                             <th>Taggal Masuk</th>
@@ -343,6 +342,7 @@
                             <th>Harga SPP</th>
                             <th>Diskon</th>
                             <th>Total Harga SPP</th>
+                            <th>Nama SA</th>
                             <th>Asuransi</th>
                         </tr>
                     </thead>
