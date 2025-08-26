@@ -47,6 +47,141 @@ class UnitController extends BaseController
         return view('pages/unit/add', $data);
     }
 
+    public function statusUnit($filter)
+    {
+        try {
+            $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
+
+            // agar tidak menghitung unit yang closing
+            // $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+            if ($filter == 1) {
+                $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+                $where = "u.id_unit NOT IN ($subQuery)";
+            } else {
+                $subQuery = $this->db->table('closing_detail')->select('unit_id')->getCompiledSelect();
+                $where = "u.id_unit IN ($subQuery)";
+            }
+
+
+            $statusData = $this->db->table('unit_status_harga ush')
+                ->select('ush.*, u.cabang_id')
+                ->join('unit u', 'u.id_unit = ush.unit_id', 'LEFT')
+                ->where($where)->whereIn("u.cabang_id", $id_cabang)
+                ->groupBy('ush.nama_status')
+                ->orderBy('ush.urutan', 'ASC')
+                ->get()->getResultArray();
+
+            // total harga status
+            $hargaStatusTotal = [];
+            foreach ($statusData as $row) {
+                $hargaStatusTotal[$row['nama_status']] = 0;
+            }
+            $hargaStatusTotal['SELESAI'] = 0;
+
+            // total pane;
+            $totalPanel = [];
+            foreach ($statusData as $row) {
+                $totalPanel[$row['nama_status']] = 0;
+            }
+            $totalPanel['SELESAI'] = 0;
+
+            // data unit    
+            $unitStatus = $this->db->table('unit u')
+                ->select('u.*, cabang.nama_cabang')
+                ->join('cabang', 'cabang.id_cabang = u.cabang_id', 'left')
+                ->where($where)->whereIn("u.cabang_id", $id_cabang)
+                ->orderBy('u.id_unit', "DESC")
+                ->get()->getResultArray();
+
+            $units = [];
+            $i = 1;
+            foreach ($unitStatus as $u) {
+                //loop status unit
+                $unitStatus = [];
+
+                foreach ($statusData as $row) {
+
+                    $statusUnit = $this->db->table('unit_status_harga ush')
+                        ->select('ush.nama_status, ush.harga_status')
+                        ->join('unit_status s', 's.unit_status_harga_id = ush.id_unit_status_harga')
+                        ->where('ush.unit_id', $u['id_unit'])
+                        ->orderBy('ush.urutan', 'ASC')
+                        ->where('ush.nama_status', $row['nama_status'])->get()->getRowArray();
+
+                    $statusUnit['nama_status'] = $statusUnit['nama_status'] ?? null;
+                    if ($statusUnit['nama_status'] !== null && $row['nama_status'] == $statusUnit['nama_status']) {
+
+                        // jumlah panel * harga status
+                        $totalUpah = ($u['jumlah_panel'] * $statusUnit['harga_status']);
+                        ($hargaStatusTotal[$statusUnit['nama_status']] += $totalUpah);
+
+
+                        ($totalPanel[$statusUnit['nama_status']] += $u['jumlah_panel']);
+
+                        $unitStatus[] = [
+                            $row['nama_status'] => $row['nama_status'],
+                            'harga_status' => $statusUnit['harga_status'],
+                            'total_harga_status' => $totalUpah,
+                        ];
+                    } else {
+                        // jika status belum di set di unit
+                        $unitStatus[] = [
+                            $row['nama_status'] => '-',
+                            'harga_status' => '0',
+                            'total_harga_status' => '0',
+                        ];
+                    }
+                }
+
+                $hargaStatusTotal['SELESAI'] += $u['status'] == 1 ? $u['total_upah_mekanik'] : 0;
+                $totalPanel['SELESAI'] += $u['status'] == 1 ? $u['jumlah_panel'] : 0;
+
+                $unitStatus[] = [
+                    'SELESAI' => 'SELESAI',
+                    'harga_status' => $u['upah_mekanik'],
+                    'total_harga_status' => $u['status'] == 1 ? $u['total_upah_mekanik'] : 0,
+                ];
+
+                // array data unit
+                $units[] = [
+                    'no' => $i++,
+                    'cabang_id' => $u['nama_cabang'],
+                    'nomor_spp' => $u['nomor_spp'],
+                    'nomor_polisi' => $u['nomor_polisi'],
+                    'model_unit' => $u['model_unit'],
+                    'warna_unit' => $u['warna_unit'],
+                    'upah_mekanik' => $u['upah_mekanik'],
+                    'harga_spp' => $u['harga_spp'],
+                    'diskon' => $u['diskon'],
+                    'jumlah_diskon' => $u['jumlah_diskon'],
+                    'total_upah_mekanik' => $u['total_upah_mekanik'],
+                    'jumlah_panel' => $u['jumlah_panel'],
+                    'status' => $unitStatus
+                ];
+            }
+
+            $statusData[] = [
+                "id_unit_status_harga" => "0",
+                "nama_status" => "SELESAI",
+                "harga_status" => "0",
+                "urutan" => "100",
+                "unit_id" => "0",
+                "cabang_id" => "0"
+            ];
+
+            $data = [
+                'status' => $statusData,
+                'units' => $units,
+                'harga_status_total' => $hargaStatusTotal,
+                'panel_total' => $totalPanel
+            ];
+
+            return ResponseJSONCollection::success(['html' => view('pages/unit/side_status_unit', $data,), $data], 'Data ditemukan', ResponseInterface::HTTP_OK);
+        } catch (\Exception $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Kesalahan Server', ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
+
     public function save()
     {
         $data = $this->request->getPost(); // mengambil post data

@@ -223,9 +223,11 @@ $routes->group('/unit', function ($routes) {
     $routes->get('/', 'UnitController::index');
     $routes->get('add', 'UnitController::add');
     $routes->post('add', 'UnitController::save', ['filter' => ['selectCabang']]);
-
+    
     $routes->get('(:num)/edit', 'UnitController::edit/$1', ['filter' => ['selectCabang']]);
     $routes->post('(:num)/edit', 'UnitController::update/$1', ['filter' => ['selectCabang']]);
+
+    $routes->get('(:num)/status-unit', 'UnitController::statusUnit/$1');
 
     $routes->post('(:num)/update-status', 'UnitController::updateStatus/$1');
     $routes->post('(:num)/status-update', 'UnitController::statusUpdate/$1');

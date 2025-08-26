@@ -397,7 +397,7 @@
         var formData = $(this).serializeArray();
         var url = $(this).attr('action');
         $('#btn-mark-unit').attr('disabled', true).text('Menyimpan...');
-        
+
         $.ajax({
             url: url,
             type: 'POST',
@@ -471,5 +471,25 @@
 
         $('.btn-filter').removeClass('active');
         $(this).addClass('active');
+        fetchDataStatusUnit(f);
+    });
+
+    // closing mekanik data
+    $('#tab-status-unit').click(function() {
+        var filter = $('#datatable').attr('data-filter');
     })
+
+    function fetchDataStatusUnit(filter) {
+        $.ajax({
+            url: '/unit/' + filter + '/status-unit',
+            method: 'GET',
+            success: function(response) {
+                $('#data-status-unit').html(response.data.html);
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                alertMesage(response.status, response.message);
+            }
+        });
+    }
 </script>
