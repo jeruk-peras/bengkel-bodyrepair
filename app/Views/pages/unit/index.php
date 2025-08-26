@@ -360,7 +360,7 @@
                                 </div>
                                 <div class="mb-3 col-12">
                                     <label for="gambar_status" class="form-label">Upload Foto</label>
-                                    <input type="file" name="gambar_status" accept="image/*;capture=camera"" class=" form-control form-control-sm" id="gambar_status">
+                                    <input type="file" name="gambar_status" accept="image/*;capture=camera" class=" form-control form-control-sm" id="gambar_status">
                                     <div class="invalid-feedback" id="invalid_gambar_status"></div>
                                 </div>
                                 <div class="mb-2 col-12 text-end">
