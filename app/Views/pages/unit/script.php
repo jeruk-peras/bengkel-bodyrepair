@@ -473,10 +473,11 @@
         $(this).addClass('active');
         fetchDataStatusUnit(f);
     });
-
+    
     // closing mekanik data
     $('#tab-status-unit').click(function() {
         var filter = $('#datatable').attr('data-filter');
+        fetchDataStatusUnit(filter);
     })
 
     function fetchDataStatusUnit(filter) {
