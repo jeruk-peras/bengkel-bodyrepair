@@ -143,6 +143,7 @@
                             <li>*misal 1966 gram input jumlah menjadi 1.966 .</li>
                             <li>*misal 196 gram input jumlah menjadi 0.196 .</li>
                             <li>*misal 196,2 gram input jumlah menjadi 0.1962 .</li>
+                            <li>*misal 2,0 gram input jumlah menjadi 0.002 .</li>
                             <li>*misal 23 gram input jumlah menjadi 0.023 .</li>
                             <li>*misal 2,3 gram input jumlah menjadi 0.0023 .</li>
                             <li>*misal 0,3 gram input jumlah menjadi 0.0003 .</li>
