@@ -30,7 +30,7 @@
             }, {
                 targets: 8, // Target kolom
                 render: function(data, type, row, meta) {
-                    var btn = row[13] == 1 ? '<span class="badge bg-success btn-selesai px-3 w-100" data-id="">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                    var btn = row[13] == 1 ? '<span role="button" class="badge bg-success btn-selesai px-3 w-100" data-id="'+ row[1] +'">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
                     return btn;
                 }
             },
@@ -350,7 +350,7 @@
     })
 
     // hendle update unit selesai
-    table.on('click', 'tbody tr td span.btn-selesai', function(e) {
+    table.on('dblclick', 'tbody tr td span.btn-selesai', function(e) {
         var id = $(this).attr('data-id');
         $.ajax({
             url: '/unit/' + id + '/update-status-selesai',
