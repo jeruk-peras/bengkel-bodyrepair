@@ -26,6 +26,17 @@ class SideServerDatatables
         }
     }
 
+    private function _hendleSearchCol($builder, $searchableColumns, $searchCol)
+    {
+        $i = 0;
+        // $builder->groupStart();
+        foreach ($searchableColumns as $column) {
+            $val = $searchCol[$i++]['search']['value'];
+            if($val !== '') $builder->like($column, $val);
+        }
+        // $builder->groupEnd();
+    }   
+
     private function _hendleOrder($builder, $orderableColumns, $defaultOrder)
     {
         if (request()->getPost('order') && (request()->getPost('order')[0]['column'] < count($orderableColumns))) {
@@ -53,9 +64,8 @@ class SideServerDatatables
                 if (stripos($key, ' NOT IN') !== false && is_array($val) == false) {
 
                     $builder->where("$key ($val)");
-                    
                 } elseif (stripos($key, ' IN') !== false && is_array($val)) {
-                    
+
                     $field = trim(str_ireplace('IN', '', $key));
                     $builder->whereIn($field, $val);
                 } else {
@@ -94,6 +104,10 @@ class SideServerDatatables
         $searchValue = request()->getPost('search')['value'] ?? false;
         $this->_hendleSearch($builder, $searchableColumns, $searchValue);
 
+        // hendle search col
+        $searchCol = request()->getPost('columns') ?? false;
+        $this->_hendleSearchCol($builder, $searchableColumns, $searchCol);
+
         // hendle order
         $this->_hendleOrder($builder, $orderableColumns, $defaultOrder);
 
@@ -102,6 +116,7 @@ class SideServerDatatables
 
         // output
         $query = $builder->get();
+
         return $query->getResultArray();
     }
 
@@ -129,6 +144,10 @@ class SideServerDatatables
         // hendle where
         $this->_hendleWhere($builder, $where);
 
+        // hendle search col
+        $searchCol = request()->getPost('columns') ?? false;
+        $this->_hendleSearchCol($builder, $searchableColumns, $searchCol);
+
         // hendle search
         $searchValue = request()->getPost('search')['value'] ?? false;
         $this->_hendleSearch($builder, $searchableColumns, $searchValue);
@@ -147,6 +166,7 @@ class SideServerDatatables
 
         // hendle where
         $this->_hendleWhere($builder, $where);
+
         return $builder->countAllResults();
     }
 }

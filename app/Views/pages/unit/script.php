@@ -27,6 +27,12 @@
                         '<a href="/unit/' + data + '/delete" class="me-2 btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
                     return btn;
                 }
+            }, {
+                targets: 8, // Target kolom
+                render: function(data, type, row, meta) {
+                    var btn = row[13] == 1 ? '<span class="badge bg-success btn-selesai px-3 w-100" data-id="">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                    return btn;
+                }
             },
             <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>
         ],
@@ -36,6 +42,19 @@
         language: {
             url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/id.json',
         },
+        initComplete: function() {
+            var statusColumn = this.api().column(8); // 8 = index kolom Status
+            var $filterStatus = $('#filterstatus');
+            $filterStatus.empty().append('<option value="">Semua Status</option>');
+            statusColumn.data().unique().sort().each(function(d) {
+                $filterStatus.append('<option value="' + d + '">' + d + '</option>');
+            });
+            $filterStatus.on('change', function() {
+                statusColumn.search(this.value, {
+                    exact: true
+                }).draw();
+            });
+        }
     });
 
     table.on('draw.dt', function() {
@@ -473,7 +492,7 @@
         $(this).addClass('active');
         fetchDataStatusUnit(f);
     });
-    
+
     // closing mekanik data
     $('#tab-status-unit').click(function() {
         var filter = $('#datatable').attr('data-filter');
@@ -486,6 +505,9 @@
             method: 'GET',
             success: function(response) {
                 $('#data-status-unit').html(response.data.html);
+                $(function() {
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                })
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);

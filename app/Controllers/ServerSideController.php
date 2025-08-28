@@ -632,22 +632,22 @@ class ServerSideController extends BaseController
 
     public function unit()
     {
-        $table = 'unit';
+        $table = 'all_unit_status u';
         $primaryKey = 'id_unit';
-        $columns = ['unit.id_unit', 'unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.harga_spp', 'unit.jumlah_diskon', 'unit.color', 'cabang.nama_cabang'];
-        $orderableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
-        $searchableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status'];
-        $defaultOrder = ['unit.id_unit', 'DESC'];
+        $columns = ['u.id_unit', 'u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.harga_spp', 'u.jumlah_diskon', 'u.status', 'u.nama_status', 'u.color', 'cabang.nama_cabang'];
+        $orderableColumns = ['u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.nama_status'];
+        $searchableColumns = ['u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.nama_status'];
+        $defaultOrder = ['u.id_unit', 'DESC'];
 
         $join = [
             [
                 'table' => 'cabang',
-                'on' => 'cabang.id_cabang = unit.cabang_id',
+                'on' => 'cabang.id_cabang = u.cabang_id',
                 'type' => ''
             ],
             [
                 'table' => 'asuransi',
-                'on' => 'asuransi.id_asuransi = unit.asuransi_id',
+                'on' => 'asuransi.id_asuransi = u.asuransi_id',
                 'type' => ''
             ],
         ];
@@ -663,16 +663,16 @@ class ServerSideController extends BaseController
 
         if (is_array(session('selected_akses'))) {
             $where = [
-                'unit.cabang_id IN' => session('selected_akses'),
+                'u.cabang_id IN' => session('selected_akses'),
             ];
         } else {
             $where = [
-                'unit.cabang_id IN' => [session('selected_akses')],
+                'u.cabang_id IN' => [session('selected_akses')],
             ];
         }
 
-        if ($filter == 1) $where['unit.id_unit NOT IN'] = $filter1;
-        if ($filter == 0 && $filter2 != []) $where['unit.id_unit IN'] = $filter2;
+        if ($filter == 1) $where['u.id_unit NOT IN'] = $filter1;
+        if ($filter == 0 && $filter2 != []) $where['u.id_unit IN'] = $filter2;
 
         $sideDatatable = new SideServerDatatables($table, $primaryKey);
 
@@ -680,15 +680,9 @@ class ServerSideController extends BaseController
         $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
         $countAllData = $sideDatatable->countAllData($join, $where);
 
-        // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
         $rowData = [];
         foreach ($data as $row) {
-
-            $status = $this->db->table('unit_status us')
-                ->select('ush.nama_status')
-                ->join('unit_status_harga ush', 'ush.id_unit_status_harga = us.unit_status_harga_id', 'left')
-                ->where('ush.unit_id', $row['id_unit'])->orderBy('us.tanggal_update', 'DESC')->limit(1)->get()->getRowArray()['nama_status'] ?? '';
 
             $rowData[] = [
                 $No++,
@@ -699,11 +693,12 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
-                ($row['status'] ? '<span class="badge bg-success btn-selesai" data-id="' . $row['id_unit'] . '">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses <br> ' . $status . ' </span>'),
+                htmlspecialchars($row['nama_status']),
                 htmlspecialchars('Rp.' . number_format($row['harga_spp'], 0, '', '.')),
                 htmlspecialchars($row['nama_sa']),
                 htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars($row['color']),
+                htmlspecialchars($row['status']),
             ];
         }
 

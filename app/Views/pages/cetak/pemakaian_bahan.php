@@ -144,6 +144,12 @@
                         '<a href="/cetak/' + data + '/pemakaian-bahan" class="me-2 btn btn-sm btn-primary btn-detail" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Print Data"><i class="bx bx-printer me-0"></i></a>'
                     return btn;
                 }
+            }, {
+                targets: 8, // Target kolom
+                render: function(data, type, row, meta) {
+                    var btn = row[13] == 1 ? '<span class="badge bg-success btn-selesai px-3 w-100" data-id="">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                    return btn;
+                }
             },
             <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>
         ],

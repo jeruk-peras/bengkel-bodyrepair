@@ -10,10 +10,17 @@
                 </ol>
             </nav>
         </div>
-        <div class="ms-auto">
-            <label>Filter : </label>
-            <button class="btn btn-sm btn-outline-primary btn-filter active" data-f="1">Data Unit Berjalan</button>
-            <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0">Data Unit Closing</button>
+        <div class="ms-auto d-flex align-items-center gap-2">
+            <div>
+                <label class="mb-0">Filter : </label>
+            </div>
+            <div style="min-width: 200px;">
+                <select name="status" id="filterstatus" class="form-select form-select-sm"></select>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary btn-filter active" data-f="1">Data Unit Berjalan</button>
+                <button class="btn btn-sm btn-outline-primary btn-filter" data-f="0">Data Unit Closing</button>
+            </div>
         </div>
     </div>
 
