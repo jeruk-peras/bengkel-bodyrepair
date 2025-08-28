@@ -89,7 +89,7 @@
             </a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="pill" href="#pemakaian-bahan" role="tab" aria-selected="false" tabindex="-1">
+            <a class="nav-link" data-bs-toggle="pill" href="#pemakaian-bahan" id="tab-pemakaian-bahan" role="tab" aria-selected="false" tabindex="-1">
                 <div class="d-flex align-items-center">
                     <div class="tab-icon"><i class="bx bx-book font-18 me-1"></i>
                     </div>
@@ -98,7 +98,7 @@
             </a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="pill" href="#closing-mekanik" role="tab" aria-selected="false" tabindex="-1">
+            <a class="nav-link" data-bs-toggle="pill" href="#closing-mekanik" id="tab-closing-mekanik" role="tab" aria-selected="false" tabindex="-1">
                 <div class="d-flex align-items-center">
                     <div class="tab-icon"><i class="bx bx-briefcase font-18 me-1"></i>
                     </div>
@@ -107,7 +107,7 @@
             </a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="pill" href="#closingan" role="tab" aria-selected="false" tabindex="-1">
+            <a class="nav-link" data-bs-toggle="pill" href="#closingan" id="tab-closingan" role="tab" aria-selected="false" tabindex="-1">
                 <div class="d-flex align-items-center">
                     <div class="tab-icon"><i class="bx bx-bar-chart-alt font-18 me-1"></i>
                     </div>
@@ -373,11 +373,11 @@
             } // Kirim token CSRF
         },
         columnDefs: [{
-                targets: 0, // Target kolom
-                createdCell: function(td, cellData, rowData, row, col) {
-                    $(td).addClass('mark-unit ' + rowData[15]).attr('data-id', rowData[1]);
-                }
-            },{
+            targets: 0, // Target kolom
+            createdCell: function(td, cellData, rowData, row, col) {
+                $(td).addClass('mark-unit ' + rowData[15]).attr('data-id', rowData[1]);
+            }
+        }, {
             targets: 1, // Target kolom
             render: function(data, type, row, meta) {
                 var btn =
@@ -385,6 +385,12 @@
                 return btn;
             }
 
+        }, {
+            targets: 8, // Target kolom
+            render: function(data, type, row, meta) {
+                var btn = row[15] == 1 ? '<span class="badge bg-success btn-selesai px-3 w-100" data-id="">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                return btn;
+            }
         }, <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>],
         pageLength: 50,
         lengthMenu: [50, 100, 200],
@@ -424,10 +430,7 @@
                     },
                     success: function(response) {
                         dataUnit();
-                        fetchDataPemakaianMaterial();
                         fetchSummaryDataClosing();
-                        fetchDataClosingMekanik();
-                        fetchDataClosing();
                         table.ajax.reload(null, false); // Reload data tanpa reset pagination
                         alertMesage(response.status, response.message);
                     },
@@ -535,6 +538,12 @@
                     selectRow: true
                 },
 
+            }, {
+                targets: 8, // Target kolom
+                render: function(data, type, row, meta) {
+                    var btn = row[15] == 1 ? '<span class="badge bg-success btn-selesai px-3 w-100" data-id="">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                    return btn;
+                }
             }, <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>],
             pageLength: 50,
             lengthMenu: [50, 100, 200],
@@ -582,9 +591,12 @@
         })
     })
 
+    // hendle click tab
+    $('#tab-pemakaian-bahan').click(() => fetchDataPemakaianMaterial())
+    $('#tab-closing-mekanik').click(() => fetchDataClosingMekanik())
+    $('#tab-closingan').click(() => fetchDataClosing())
+    
     // hendle data pemekaian bahan
-    fetchDataPemakaianMaterial();
-
     function fetchDataPemakaianMaterial() {
         const id = $('#closing_id').val();
         $.ajax({
@@ -623,8 +635,6 @@
     }
 
     // closing mekanik data
-    fetchDataClosingMekanik();
-
     function fetchDataClosingMekanik() {
         const id = $('#closing_id').val();
         $.ajax({
@@ -641,8 +651,6 @@
     }
 
     // closing data
-    fetchDataClosing();
-
     function fetchDataClosing() {
         const id = $('#closing_id').val();
         $.ajax({

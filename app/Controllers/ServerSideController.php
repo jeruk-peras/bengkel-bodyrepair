@@ -1273,25 +1273,25 @@ class ServerSideController extends BaseController
     {
         $table = 'closing_detail';
         $primaryKey = 'id_closing_detail';
-        $columns = ['closing_detail.id_closing_detail', 'unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon', 'unit.color', 'cabang.nama_cabang'];
-        $orderableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon'];
-        $searchableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon'];
-        $defaultOrder = ['unit.tanggal_masuk', 'DESC'];
+        $columns = ['closing_detail.id_closing_detail', 'u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.status', 'u.nama_status', 'u.jumlah_panel', 'u.harga_spp', 'u.diskon', 'u.jumlah_diskon', 'u.color', 'cabang.nama_cabang'];
+        $orderableColumns = ['u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.nama_status', 'u.jumlah_panel', 'u.harga_spp', 'u.diskon', 'u.jumlah_diskon'];
+        $searchableColumns = ['u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.nama_status', 'u.jumlah_panel', 'u.harga_spp', 'u.diskon', 'u.jumlah_diskon'];
+        $defaultOrder = ['u.tanggal_masuk', 'DESC'];
 
         $join = [
             [
-                'table' => 'unit',
-                'on' => 'unit.id_unit = closing_detail.unit_id',
+                'table' => 'all_unit_status u',
+                'on' => 'u.id_unit = closing_detail.unit_id',
                 'type' => ''
             ],
             [
                 'table' => 'asuransi',
-                'on' => 'asuransi.id_asuransi = unit.asuransi_id',
+                'on' => 'asuransi.id_asuransi = u.asuransi_id',
                 'type' => ''
             ],
             [
                 'table' => 'cabang',
-                'on' => 'cabang.id_cabang = unit.cabang_id',
+                'on' => 'cabang.id_cabang = u.cabang_id',
                 'type' => ''
             ]
         ];
@@ -1326,7 +1326,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
-                ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
+                htmlspecialchars($row['nama_status']),
                 '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' . $row['jumlah_panel'] . '">' . round($row['jumlah_panel'], 2) . '</span>',
                 htmlspecialchars('Rp' . number_format($row['harga_spp'], 0, '', '.')),
                 htmlspecialchars($row['diskon'] . '%'),
@@ -1334,6 +1334,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_sa']),
                 htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars($row['color']),
+                htmlspecialchars($row['status']),
             ];
         }
 
@@ -1349,22 +1350,22 @@ class ServerSideController extends BaseController
 
     public function fetchUnitKolektif(int $id_closing)
     {
-        $table = 'unit';
+        $table = 'all_unit_status u';
         $primaryKey = 'id_unit';
-        $columns = ['unit.id_unit', 'unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon', 'unit.color', 'cabang.nama_cabang'];
-        $orderableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon'];
-        $searchableColumns = ['unit.nama_sa', 'unit.nomor_spp', 'unit.nomor_polisi', 'unit.model_unit', 'unit.warna_unit', 'asuransi.nama_asuransi', 'unit.tanggal_masuk', 'unit.estimasi_selesai', 'unit.status', 'unit.jumlah_panel', 'unit.harga_spp', 'unit.diskon', 'unit.jumlah_diskon'];
-        $defaultOrder = ['unit.tanggal_masuk', 'DESC'];
+        $columns = ['u.id_unit', 'u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.nama_status', 'u.status', 'u.jumlah_panel', 'u.harga_spp', 'u.diskon', 'u.jumlah_diskon', 'u.color', 'cabang.nama_cabang'];
+        $orderableColumns = ['u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.nama_status', 'u.jumlah_panel', 'u.harga_spp', 'u.diskon', 'u.jumlah_diskon'];
+        $searchableColumns = ['u.nama_sa', 'u.nomor_spp', 'u.nomor_polisi', 'u.model_unit', 'u.warna_unit', 'asuransi.nama_asuransi', 'u.tanggal_masuk', 'u.estimasi_selesai', 'u.nama_status', 'u.jumlah_panel', 'u.harga_spp', 'u.diskon', 'u.jumlah_diskon'];
+        $defaultOrder = ['u.tanggal_masuk', 'DESC'];
 
         $join = [
             [
                 'table' => 'asuransi',
-                'on' => 'asuransi.id_asuransi = unit.asuransi_id',
+                'on' => 'asuransi.id_asuransi = u.asuransi_id',
                 'type' => ''
             ],
             [
                 'table' => 'cabang',
-                'on' => 'cabang.id_cabang = unit.cabang_id',
+                'on' => 'cabang.id_cabang = u.cabang_id',
                 'type' => ''
             ]
         ];
@@ -1374,7 +1375,7 @@ class ServerSideController extends BaseController
 
         $where = [
             'cabang.id_cabang' => $id_cabang,
-            'unit.id_unit NOT IN' => $subQuery
+            'u.id_unit NOT IN' => $subQuery
         ];
 
         $sideDatatable = new SideServerDatatables($table, $primaryKey);
@@ -1396,7 +1397,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['model_unit'] . '/' . $row['warna_unit']),
                 htmlspecialchars(date_format(date_create($row['tanggal_masuk']), "d M Y")),
                 htmlspecialchars(date_format(date_create($row['estimasi_selesai']), "d M Y")),
-                ($row['status'] ? '<span class="badge bg-success">Selesai</span>' : '<span class="badge bg-primary">Sedang Proses</span>'),
+                htmlspecialchars($row['nama_status']),
                 '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' . $row['jumlah_panel'] . '">' . round($row['jumlah_panel'], 2) . '</span>',
                 htmlspecialchars('Rp' . number_format($row['harga_spp'], 0, '', '.')),
                 htmlspecialchars($row['diskon'] . '%'),
@@ -1404,6 +1405,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_sa']),
                 htmlspecialchars($row['nama_asuransi']),
                 htmlspecialchars($row['color']),
+                htmlspecialchars($row['status']),
             ];
         }
 
