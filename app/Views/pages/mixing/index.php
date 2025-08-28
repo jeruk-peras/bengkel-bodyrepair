@@ -134,6 +134,21 @@
                         </div>
                     </div>
                 </form>
+
+                <div class="row mt-3">
+                    <div class="col-12 col-lg-12 mx-auto">
+                        <h6>Panduan</h6>
+                        <ul>
+                            <li>*untuk jumlah mixing gunakan konversi gram ke liter, input jumlah gunakan titik.</li>
+                            <li>*misal 1966 gram input jumlah menjadi 1.966 .</li>
+                            <li>*misal 196 gram input jumlah menjadi 0.196 .</li>
+                            <li>*misal 196,2 gram input jumlah menjadi 0.1962 .</li>
+                            <li>*misal 23 gram input jumlah menjadi 0.023 .</li>
+                            <li>*misal 2,3 gram input jumlah menjadi 0.0023 .</li>
+                            <li>*misal 0,3 gram input jumlah menjadi 0.0003 .</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" id="btn-material">Tambah Material</button>
