@@ -134,7 +134,7 @@ class MaterialMasukController extends BaseController
         foreach ($dataPost['id_material_masuk_detail'] as $key => $value) {
             $data[] = [
                 'id_material_masuk_detail' => $value,
-                'harga_masuk' => $dataPost['harga_masuk'][$value],
+                'harga_masuk' => str_replace('.', '', $dataPost['harga_masuk'][$value]),
                 'stok_masuk' => $dataPost['stok_masuk'][$value] ?: 0,
             ];
         }

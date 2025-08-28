@@ -581,10 +581,10 @@ class ServerSideController extends BaseController
                     <td>' . $row['nama_material'] . '</td>
                     <td class="text-center">' . $row['stok'] . '</td>
                     <td>' . $row['nama_satuan'] . '</td>
-                    <td>
-                        <div class="input-group" style="width: 160px;"> 
-                            <span class="input-group-text" id="basic-addon1">Rp</span>
-                            <input type="number" name="harga_masuk[' . $row['id_material_masuk_detail'] . ']" value="' . $row['harga_masuk'] . '" class="form-control input-change" aria-describedby="basic-addon1">
+                    <td style="width: 160px;">
+                        <div class="position-relative input-icon">
+                            <span class="position-absolute top-50 translate-middle-y">Rp</span>
+                            <input type="text" name="harga_masuk[' . $row['id_material_masuk_detail'] . ']" value="' . number_format($row['harga_masuk'], 0, '', '.') . '" class="form-control input-change rupiah" style="padding-left: 2.5rem; padding-right: 1.90rem;">
                         </div>
                     </td>
                     <td><input type="number" name="stok_masuk[' . $row['id_material_masuk_detail'] . ']" class="form-control input-change" value="' . $row['stok_masuk'] . '" style="width: 110px;"></td>

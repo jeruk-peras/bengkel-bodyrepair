@@ -27,23 +27,23 @@
         <div class="card-body">
             <div class="row g-1">
                 <div class="col-md-6">
-                    <label for="tanggal" class="form-label">Tanggal Masuk</label>
+                    <label class="form-label">Tanggal Masuk</label>
                     <input type="datetime-local" class="form-control" readonly disabled value="<?= $data['tanggal']; ?>">
                 </div>
                 <div class="col-md-6">
-                    <label for="no_delivery" class="form-label">Nomor Delivery</label>
+                    <label class="form-label">Nomor Delivery</label>
                     <input type="text" class="form-control" readonly disabled value="<?= $data['no_delivery']; ?>">
                 </div>
                 <div class="col-md-6">
-                    <label for="suplier" class="form-label">Suplier</label>
+                    <label class="form-label">Suplier</label>
                     <input type="text" class="form-control" readonly disabled value="<?= $data['suplier']; ?>">
                 </div>
                 <div class="col-md-6">
-                    <label for="total_harga" class="form-label">Total Harga</label>
+                    <label class="form-label">Total Harga</label>
                     <input type="tel" class="form-control" readonly disabled value="<?= $data['total_harga']; ?>">
                 </div>
                 <div class="col-md-12">
-                    <label for="catatan" class="form-label">Catatan</label>
+                    <label class="form-label">Catatan</label>
                     <textarea class="form-control" readonly disabled><?= $data['catatan']; ?></textarea>
                 </div>
             </div>
@@ -92,6 +92,18 @@
                     </table>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-12 mx-auto">
+            <h6>Panduan</h6>
+            <ul>
+                <li>*Tombol Batalkan Semua akan menenghapus semua data.</li>
+                <li>*Ubah harga jika di perlukan, jika memang tidak ada perubahan harga abaikan saja.</li>
+                <li>*ketika ingin singkron data kami merekomendasikan refresh halaman terlebih dahulu.</li>
+                <li>*cek kembali data ketika ingin singkron data.</li>
+            </ul>
         </div>
     </div>
 </div>
@@ -246,7 +258,7 @@
     })
 
     // ketika harga / stok di ubah
-    $(document).on('keyup', '.input-change', function() {
+    $(document).on('keyup click', '.input-change', function() {
         var formData = $('#form-item').serialize()
         $.ajax({
             url: '/material-masuk/item-temp-save',
