@@ -338,7 +338,7 @@
     })
 
     // hendle modal edit material
-    $(document).on('click', '#material-table tbody tr.row-material', function(e) {
+    $(document).on('dblclick', '#material-table tbody tr.row-material', function(e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
         $.ajax({
