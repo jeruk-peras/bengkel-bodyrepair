@@ -388,7 +388,7 @@
         }, {
             targets: 8, // Target kolom
             render: function(data, type, row, meta) {
-                var btn = row[15] == 1 ? '<span class="badge bg-success btn-selesai px-3 w-100" data-id="">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                var btn = row[16] == 1 ? '<span class="badge bg-success px-3 w-100">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
                 return btn;
             }
         }, <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>],
@@ -541,7 +541,7 @@
             }, {
                 targets: 8, // Target kolom
                 render: function(data, type, row, meta) {
-                    var btn = row[15] == 1 ? '<span class="badge bg-success btn-selesai px-3 w-100" data-id="">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                    var btn = row[16] == 1 ? '<span class="badge bg-success px-3 w-100">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
                     return btn;
                 }
             }, <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>],
@@ -595,7 +595,7 @@
     $('#tab-pemakaian-bahan').click(() => fetchDataPemakaianMaterial())
     $('#tab-closing-mekanik').click(() => fetchDataClosingMekanik())
     $('#tab-closingan').click(() => fetchDataClosing())
-    
+
     // hendle data pemekaian bahan
     function fetchDataPemakaianMaterial() {
         const id = $('#closing_id').val();
