@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\LockFilter;
 use App\Filters\LoginFilter;
 use App\Filters\SelectedCabangFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
@@ -37,7 +38,8 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'isLogin'       => LoginFilter::class,
-        'selectCabang'  => SelectedCabangFilter::class
+        'selectCabang'  => SelectedCabangFilter::class,
+        'lockunit'      => LockFilter::class
     ];
 
     /**

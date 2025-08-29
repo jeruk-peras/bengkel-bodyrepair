@@ -24,6 +24,10 @@ class Closing extends Migration
             'catatan' => [
                 'type'           => 'TEXT',
             ],
+            'status' => [
+                'type'           => 'INT',
+                'constraint'     => 11,
+            ],
             'cabang_id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,

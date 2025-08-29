@@ -1201,7 +1201,7 @@ class ServerSideController extends BaseController
     {
         $table = 'closing';
         $primaryKey = 'id_closing';
-        $columns = ['closing.id_closing', 'closing.periode_closing', 'closing.tanggal', 'closing.catatan', 'cabang.nama_cabang'];
+        $columns = ['closing.id_closing', 'closing.periode_closing', 'closing.tanggal', 'closing.catatan', 'closing.status', 'cabang.nama_cabang'];
         $orderableColumns = ['closing.id_closing', 'closing.periode_closing', 'closing.tanggal', 'closing.catatan'];
         $searchableColumns = ['closing.id_closing', 'closing.periode_closing', 'closing.tanggal', 'closing.catatan'];
         $defaultOrder = ['closing.tanggal', 'ASC'];
@@ -1241,6 +1241,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['tanggal']),
                 htmlspecialchars($row['periode_closing']),
                 htmlspecialchars($row['catatan']),
+                htmlspecialchars($row['status']),
             ];
         }
 

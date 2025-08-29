@@ -347,7 +347,7 @@ class LaporanController extends BaseController
                         // jumlah panel * harga status
                         $totalUpah = ($u['jumlah_panel'] * $statusUnit['harga_status']);
                         ($hargaStatusTotal[$statusUnit['nama_status']] += $totalUpah);
-                        
+
                         ($totalPanel[$statusUnit['nama_status']] += $u['jumlah_panel']);
 
                         $unitStatus[] = [
@@ -523,7 +523,37 @@ class LaporanController extends BaseController
         }
     }
 
-    public function panelMekanik(int $id_closing){
+    public function lockData(int $id_closing)
+    {
+        try {
+            // cek password super admin
+            $where = [
+                'id_user' => session()->get('user_id'),
+                'role' => 'Super Admin',
+            ];
+            $user_admin = $this->db->table('users')->where($where)->get()->getRowArray();
 
+            $password = $this->request->getPost('password');
+
+            // Jika tidak  data ditemukan
+            if (!$user_admin || !password_verify($password, $user_admin['password'])) {
+                return ResponseJSONCollection::error(['password' => 'Password salah, silahkan ulangi.'], 'Maaf password salah.', ResponseInterface::HTTP_UNAUTHORIZED);
+            }
+
+            // get data closing
+            $data = $this->modelClosing->find($id_closing);
+
+            // cek status closing
+            if ($data['status'] == 0) {
+                // ubah status ke lock
+                $this->modelClosing->update($id_closing, ['status' => 1]);
+            } else {
+                // ubah status ke lock
+                $this->modelClosing->update($id_closing, ['status' => 0]);
+            }
+            return ResponseJSONCollection::success([$data], 'Berhasil', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

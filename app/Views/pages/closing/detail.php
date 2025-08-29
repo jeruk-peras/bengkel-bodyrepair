@@ -11,7 +11,14 @@
                 </ol>
             </nav>
         </div>
-        <div class="ms-auto"><a href="<?= base_url('closing'); ?>" class="btn btn-sm btn-primary"><i class="bx bx-left-arrow-alt"></i> Kembali</a></div>
+        <div class="ms-auto">
+            <a href="<?= base_url('closing'); ?>" class="btn btn-sm btn-primary"><i class="bx bx-left-arrow-alt"></i> Kembali</a>
+            <?php if (session()->get('role') == 'Super Admin' && $data['status'] == 0): ?>
+                <a href="<?= base_url('closing'); ?>" class="btn btn-sm btn-primary btn-lock"><i class="bx bx-lock-open"></i> Lock Data</a>
+            <?php elseif (session()->get('role') == 'Super Admin' && $data['status'] == 1): ?>
+                <a href="<?= base_url('closing'); ?>" class="btn btn-sm btn-primary btn-lock"><i class="bx bx-lock"></i> Locked</a>
+            <?php endif;  ?>
+        </div>
     </div>
 
     <div class="card radius-10">
@@ -121,21 +128,23 @@
 
         <div class="tab-pane fade active show" id="data-unit" role="tabpanel">
             <div class="card radius-10">
-                <div class="card-header border-0 bg-transparent">
-                    <div class="d-flex align-items-center">
-                        <div class="col-8">
-                            <form class="d-flex align-items-center" method="POST" action="/closing/add-unit" id="add-unit-form">
-                                <?= csrf_field(); ?>
-                                <input type="hidden" name="closing_id" id="closing_id" value="<?= $data['id_closing']; ?>">
-                                <select name="unit_id" id="select-unit" class="form-select form-select-sm me-2" style="min-width: 100px;"></select>
-                                <button type="submit" class="btn btn-sm btn-primary text-nowrap"><i class="bx bx-plus"></i> Tambah Data Unit</button>
-                            </form>
-                        </div>
-                        <div class="ms-auto">
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-tambah-kolektif"><i class="bx bx-bracket"></i> Tambah Kolektif Data Unit</button>
+                <?php if ($data['status'] == 0):  ?>
+                    <div class="card-header border-0 bg-transparent">
+                        <div class="d-flex align-items-center">
+                            <div class="col-8">
+                                <form class="d-flex align-items-center" method="POST" action="/closing/add-unit" id="add-unit-form">
+                                    <?= csrf_field(); ?>
+                                    <input type="hidden" name="closing_id" id="closing_id" value="<?= $data['id_closing']; ?>">
+                                    <select name="unit_id" id="select-unit" class="form-select form-select-sm me-2" style="min-width: 100px;"></select>
+                                    <button type="submit" class="btn btn-sm btn-primary text-nowrap"><i class="bx bx-plus"></i> Tambah Data Unit</button>
+                                </form>
+                            </div>
+                            <div class="ms-auto">
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-tambah-kolektif"><i class="bx bx-bracket"></i> Tambah Kolektif Data Unit</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table align-middle mb-0" id="datatable" style="width: 100%;">
@@ -356,6 +365,36 @@
     </div>
 </div>
 
+<?php if (session()->get('role') == 'Super Admin'):  ?>
+    <div class="modal fade" id="lock-modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lock Data Closing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/closing/<?= $data['id_closing']; ?>/lock" method="post" id="form-lock-data">
+                    <?= csrf_field(); ?>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="password" class="form-label required">Password</label>
+                                <input type="password" name="password" class="form-control" id="password" placeholder="password">
+                                <div class="invalid-feedback" id="invalid_password"></div>
+                                <div class="form-text">* Untuk lock dan unlock data closing masukan password akun Super Admin</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-simpan">Simpan Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
 <script src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
 <script src="<?= base_url('/assets/js/jquery.PrintArea.js'); ?>"></script>
 <?= $this->include('layout/tomselect'); ?>
@@ -373,25 +412,27 @@
             } // Kirim token CSRF
         },
         columnDefs: [{
-            targets: 0, // Target kolom
-            createdCell: function(td, cellData, rowData, row, col) {
-                $(td).addClass('mark-unit ' + rowData[15]).attr('data-id', rowData[1]);
-            }
-        }, {
-            targets: 1, // Target kolom
-            render: function(data, type, row, meta) {
-                var btn =
-                    '<a href="/closing/' + data + '/del-unit" class="me-2 btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
-                return btn;
-            }
+                targets: 0, // Target kolom
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).addClass('mark-unit ' + rowData[15]).attr('data-id', rowData[1]);
+                }
+            }, <?php if ($data['status'] == 0): ?> {
+                    targets: 1, // Target kolom
+                    render: function(data, type, row, meta) {
+                        var btn =
+                            '<a href="/closing/' + data + '/del-unit" class="me-2 btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Hapus Data"><i class="bx bx-trash me-0"></i></a>'
+                        return btn;
+                    }
 
-        }, {
-            targets: 8, // Target kolom
-            render: function(data, type, row, meta) {
-                var btn = row[16] == 1 ? '<span class="badge bg-success px-3 w-100">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
-                return btn;
-            }
-        }, <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>],
+                }, <?php endif; ?> {
+                    targets: 8, // Target kolom
+                    render: function(data, type, row, meta) {
+                        var btn = row[16] == 1 ? '<span class="badge bg-success px-3 w-100">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                        return btn;
+                    }
+            }, <?= $data['status'] == 0 ? "" : "{ targets: 1, visible: false }," ?>
+            <?= is_array(session('selected_akses')) ? "" : "{ targets: 2, visible: false }," ?>
+        ],
         pageLength: 50,
         lengthMenu: [50, 100, 200],
         scrollX: true,
@@ -406,6 +447,47 @@
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
+
+    <?php if (session()->get('role') == 'Super Admin'): ?>
+        // hendle lock data
+        $('a.btn-lock').click(function(e) {
+            e.preventDefault();
+            $('#lock-modal').modal('show');
+        })
+
+        $('#form-lock-data').submit(function(e) {
+            e.preventDefault();
+            var url, formData;
+            url = $(this).attr('action');
+            formData = $(this).serializeArray();
+            $('#btn-simpan').attr('disabled', true).text('Menyimpan...');
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('#lock-modal').modal('hide');
+                    table.ajax.reload(null, false); // Reload data tanpa reset pagination
+                    alertMesage(response.status, response.message);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 300)
+                },
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    $('#form-lock-data .form-control').removeClass('is-invalid');
+                    $('.invalid-feedback').text('');
+                    $('#btn-simpan').attr('disabled', false).text('Simpan data');
+                    $.each(response.data, function(key, value) {
+                        $('#' + key).addClass('is-invalid');
+                        $('#invalid_' + key).text(value).show();
+                    });
+                    alertMesage(response.status, response.message);
+                }
+            })
+        })
+    <?php endif; ?>
 
     // hendle delete button
     table.on('click', 'tbody tr td a.btn-delete', function(e) {

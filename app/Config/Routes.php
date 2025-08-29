@@ -199,18 +199,18 @@ $routes->group('/material-masuk', function ($routes) {
 
 $routes->group('/material-keluar', function ($routes) {
     $routes->get('/', 'MaterialKeluarController::index');
-    $routes->post('(:num)/add', 'MaterialKeluarController::save/$1');
+    $routes->post('(:num)/add', 'MaterialKeluarController::save/$1', ['filter' => ['lockunit']]);
     $routes->get('(:num)/detail', 'MaterialKeluarController::fetchMaterialUnit/$1');
 
     $routes->get('(:num)/edit', 'MaterialKeluarController::editPenggunaanMaterial/$1');
-    $routes->post('(:num)/edit', 'MaterialKeluarController::updatePenggunaanMaterial/$1');
+    $routes->post('(:num)/edit', 'MaterialKeluarController::updatePenggunaanMaterial/$1', ['filter' => ['lockunit:material']]);
 
     $routes->post('(:num)/delete', 'MaterialKeluarController::delete/$1');
 });
 
 $routes->group('/material-mixing', function ($routes) {
     $routes->get('/', 'MaterialKeluarController::mixing');
-    $routes->post('(:num)/add', 'MaterialKeluarController::save/$1');
+    $routes->post('(:num)/add', 'MaterialKeluarController::save/$1', ['filter' => ['lockunit']]);
     $routes->get('(:num)/detail', 'MaterialKeluarController::fetchMaterialMixing/$1');
 
     $routes->get('(:num)/edit', 'MaterialKeluarController::editPenggunaanMaterial/$1');
@@ -225,20 +225,20 @@ $routes->group('/unit', function ($routes) {
     $routes->post('add', 'UnitController::save', ['filter' => ['selectCabang']]);
     
     $routes->get('(:num)/edit', 'UnitController::edit/$1', ['filter' => ['selectCabang']]);
-    $routes->post('(:num)/edit', 'UnitController::update/$1', ['filter' => ['selectCabang']]);
+    $routes->post('(:num)/edit', 'UnitController::update/$1', ['filter' => ['selectCabang', 'lockunit']]);
 
     $routes->get('(:num)/status-unit', 'UnitController::statusUnit/$1');
 
-    $routes->post('(:num)/update-status', 'UnitController::updateStatus/$1');
+    $routes->post('(:num)/update-status', 'UnitController::updateStatus/$1', ['filter' => ['lockunit']]);
     $routes->post('(:num)/status-update', 'UnitController::statusUpdate/$1');
     $routes->get('(:num)/detail', 'UnitController::detail/$1');
 
     $routes->post('(:num)/mark', 'UnitController::saveMarkUnit/$1');
 
-    $routes->post('(:num)/add-material', 'UnitController::saveMaterial/$1', ['filter' => ['selectCabang']]);
+    $routes->post('(:num)/add-material', 'UnitController::saveMaterial/$1', ['filter' => ['selectCabang', 'lockunit']]);
 
-    $routes->post('(:num)/update-status-selesai', 'UnitController::updateStatusSelesai/$1');
-    $routes->post('(:num)/delete', 'UnitController::delete/$1');
+    $routes->post('(:num)/update-status-selesai', 'UnitController::updateStatusSelesai/$1', ['filter' => ['lockunit']]);
+    $routes->post('(:num)/delete', 'UnitController::delete/$1', ['filter' => ['lockunit']]);
 });
 
 // route laporan
@@ -263,6 +263,8 @@ $routes->group('/closing', function ($routes) {
     $routes->post('add-unit', 'LaporanController::addUnit');
     $routes->post('(:num)/del-unit', 'LaporanController::deleteUnit/$1');
     $routes->post('savekolektifunit', 'LaporanController::saveKolektifUnit');
+
+    $routes->post('(:num)/lock', 'LaporanController::lockData/$1');
     
     $routes->get('(:num)/summary-closing', 'LaporanController::summaryClosing/$1');
     $routes->get('(:num)/pemakaian-bahan-detail', 'LaporanController::pemakaianBahanDetail/$1');
