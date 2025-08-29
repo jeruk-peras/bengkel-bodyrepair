@@ -9,6 +9,8 @@ use App\Models\UnitMaterialModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\HTTP\ResponseInterface;
 
+use function PHPUnit\Framework\returnSelf;
+
 class LaporanController extends BaseController
 {
     private $title = 'Laporan';
@@ -114,6 +116,8 @@ class LaporanController extends BaseController
     public function delete(int $id)
     {
         try {
+            if($this->modelClosing->find($id)['status'] == 1) return ResponseJSONCollection::error([],'Data unit sudah di lock.',ResponseInterface::HTTP_BAD_REQUEST);
+
             $this->modelClosing->delete($id);
             return ResponseJSONCollection::success([], 'Data berhasil dihapus.', ResponseInterface::HTTP_OK);
         } catch (\Throwable $e) {
