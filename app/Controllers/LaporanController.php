@@ -116,7 +116,7 @@ class LaporanController extends BaseController
     public function delete(int $id)
     {
         try {
-            if($this->modelClosing->find($id)['status'] == 1) return ResponseJSONCollection::error([],'Data unit sudah di lock.',ResponseInterface::HTTP_BAD_REQUEST);
+            if ($this->modelClosing->find($id)['status'] == 1) return ResponseJSONCollection::error([], 'Data unit sudah di lock.', ResponseInterface::HTTP_BAD_REQUEST);
 
             $this->modelClosing->delete($id);
             return ResponseJSONCollection::success([], 'Data berhasil dihapus.', ResponseInterface::HTTP_OK);
@@ -190,10 +190,13 @@ class LaporanController extends BaseController
                 'pemakaian_bahan' => 0,
                 'total_pendapatan' => 0
             ];
+            
+            $subQuery = $this->db->table('closing_detail')->select('unit_id')->where('closing_id', $id)->getCompiledSelect();
 
-            $dataDetailClosing = $this->db->table('closing_detail')
-                ->join('unit', 'unit.id_unit = closing_detail.unit_id')
-                ->where('closing_detail.closing_id', $id)
+            $dataDetailClosing = $this->db->table('unit')
+                ->select('unit.*, cabang.nama_cabang')
+                ->join('cabang', 'cabang.id_cabang = unit.cabang_id', 'left')
+                ->where("id_unit IN ($subQuery)")
                 ->get()->getResultArray();
 
             // loop untuk perhitungan total panel dan total pendapatan
@@ -213,8 +216,8 @@ class LaporanController extends BaseController
             }
 
             $data['total_panel'] = number_format($data['total_panel'], 2);
-            $data['pemakaian_bahan'] = 'Rp' . number_format($data['pemakaian_bahan'], 0);
-            $data['total_pendapatan'] = 'Rp' . number_format($data['total_pendapatan'], 0);
+            $data['pemakaian_bahan'] = 'Rp' . number_format($data['pemakaian_bahan'], 0, '', '.');
+            $data['total_pendapatan'] = 'Rp' . number_format($data['total_pendapatan'], 0, '', '.');
 
             return ResponseJSONCollection::success($data, 'Summary Data Closing', ResponseInterface::HTTP_OK);
         } catch (\Throwable $e) {
@@ -414,6 +417,7 @@ class LaporanController extends BaseController
             // spp
             $HargaSPP = [
                 'total_harga_spp' => 0,
+                'total_harga_spp_diskon' => 0,
                 'total_panel' => 0,
                 'total_upah_mekanik' => 0,
             ];
@@ -471,6 +475,7 @@ class LaporanController extends BaseController
             foreach ($unit as $u) {
                 // spp
                 $HargaSPP['total_harga_spp'] += $u['harga_spp'];
+                $HargaSPP['total_harga_spp_diskon'] += $u['jumlah_diskon'];
                 $HargaSPP['total_panel'] += $u['jumlah_panel'];
                 $HargaSPP['total_upah_mekanik'] += $u['total_upah_mekanik'];
 

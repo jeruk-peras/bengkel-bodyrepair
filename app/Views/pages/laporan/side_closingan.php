@@ -14,12 +14,12 @@
           </tr>
           <tr>
               <td style="width:40%;">NILAI SPP</td>
-              <td style="text-align:right;"> Rp<?= number_format($spp['total_harga_spp']); ?></td>
+              <td style="text-align:right;"> Rp<?= number_format($spp['total_harga_spp'], 0, '', '.'); ?></td>
           </tr>
           <tr>
-              <?php $diskon = ($spp['total_harga_spp'] * $percent_diskon);  ?>
+              <?php $diskon = $spp['total_harga_spp_diskon'];  ?>
               <td>SPP DISC <?= $diskon_percent; ?>%</td>
-              <td style="text-align:right;"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="(<?= $percent_diskon ?> x <?= number_format($spp['total_harga_spp']); ?>) - <?= number_format($spp['total_harga_spp']); ?>"> Rp<?= number_format($spp['total_harga_spp'] - $diskon); ?> </span></td>
+              <td style="text-align:right;">Rp<?= number_format($diskon, 0, '', '.'); ?></td>
           </tr>
           <tr>
               <?php $sharing = ($diskon * $percent_sharing);  ?>
