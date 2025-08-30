@@ -30,7 +30,8 @@ class LockFilter implements FilterInterface
         // get id unit
         $uri = $request->getUri();
         $id = $uri->getSegment(2);
-        if ($arguments[0] == 'material') {
+        $type = $arguments[0] ?? null;
+        if ($type === 'material') {
             $data = $db->table('closing c')->select('c.status')
                 ->join('closing_detail cd', 'cd.closing_id = c.id_closing')
                 ->join('unit_material um', 'um.unit_id = cd.unit_id')
