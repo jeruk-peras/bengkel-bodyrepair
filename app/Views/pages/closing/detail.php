@@ -442,10 +442,7 @@
     });
 
     table.on('draw.dt', function() {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=\"tooltip\"]'));
-        tooltipTriggerList.map(function(tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+      refreshTooltips();
     });
 
     <?php if (session()->get('role') == 'Super Admin'): ?>
@@ -724,6 +721,7 @@
             method: 'GET',
             success: function(response) {
                 $('#data-closingan-mekanik').html(response.data.html);
+                refreshTooltips();
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);

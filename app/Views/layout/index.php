@@ -111,9 +111,17 @@
 			return parseInt(angka.replace(/[.,]/g, ''));
 		}
 
-		$(function() {
-			$('[data-bs-toggle="tooltip"]').tooltip();
-		})
+		function refreshTooltips(scope = document) {
+			// Buang instance lama
+			scope.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+				const existing = bootstrap.Tooltip.getInstance(el);
+				if (existing) {
+					existing.dispose();
+				}
+				new bootstrap.Tooltip(el);
+			});
+		}
+		refreshTooltips();
 	</script>
 
 	<script src="<?= base_url(); ?>assets/plugins/sweetalert2/dist/sweetalert2.min.js"></script>

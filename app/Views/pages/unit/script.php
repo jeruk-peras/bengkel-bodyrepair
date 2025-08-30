@@ -30,7 +30,7 @@
             }, {
                 targets: 8, // Target kolom
                 render: function(data, type, row, meta) {
-                    var btn = row[13] == 1 ? '<span role="button" class="badge bg-success btn-selesai px-3 w-100" data-id="'+ row[1] +'">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
+                    var btn = row[13] == 1 ? '<span role="button" class="badge bg-success btn-selesai px-3 w-100" data-id="' + row[1] + '">' + data + '</span>' : '<span class="badge bg-primary w-100">' + data + ' </span>'
                     return btn;
                 }
             },
@@ -58,10 +58,7 @@
     });
 
     table.on('draw.dt', function() {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=\"tooltip\"]'));
-        tooltipTriggerList.map(function(tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+        refreshTooltips();
     });
 
     // katika modal di tutup
@@ -505,9 +502,7 @@
             method: 'GET',
             success: function(response) {
                 $('#data-status-unit').html(response.data.html);
-                $(function() {
-                    $('[data-bs-toggle="tooltip"]').tooltip();
-                })
+                refreshTooltips();
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
