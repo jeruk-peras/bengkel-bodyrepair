@@ -276,9 +276,9 @@ class LaporanController extends BaseController
                             <td class="text-center">' . $row['nomor_spp'] . '</td>
                             <td class="text-center">' . $row['nomor_polisi'] . '</td>
                             <td>' . $row['nama_material'] . '</td>
-                            <td class="text-end">Rp' . number_format($row['harga']) . '</td>
+                            <td class="text-end">Rp' . number_format($row['harga'], 0, ',', '.') . '</td>
                             <td class="text-center">' . $row['jumlah'] . '</td>
-                            <td class="text-end">Rp' . number_format($row['total_harga']) . '</td>
+                            <td class="text-end">Rp' . number_format($row['total_harga'], 0, ',', '.') . '</td>
                             <td>' . $row['nama_mekanik'] . '</td>
                         </tr>';
 
@@ -290,7 +290,7 @@ class LaporanController extends BaseController
                  <tr>
                     <th colspan="4" class="text-end">Total&nbsp;</th>
                     <th class="text-center">' . $total_jumlah . '</th>
-                    <th class="text-end">Rp' . number_format($total_harga) . '</th>
+                    <th class="text-end">Rp' . number_format($total_harga, 0, ',', '.') . '</th>
                     <th></th>
                 </tr>';
             }

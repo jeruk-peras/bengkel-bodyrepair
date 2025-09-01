@@ -479,7 +479,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nama_jenis']),
                 htmlspecialchars($row['nama_material']),
                 htmlspecialchars($row['merek']),
-                htmlspecialchars('Rp ' . number_format($row['harga'])),
+                htmlspecialchars('Rp' . number_format($row['harga'], 0, ',', '.')),
                 htmlspecialchars($row['stok']),
                 htmlspecialchars($row['nama_satuan']),
             ];
