@@ -37,7 +37,7 @@
                 <td><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="(<?= $row['diskon']; ?>/100 x <?= number_format($row['harga_spp'], 0, '', '.'); ?>) - <?= number_format($row['harga_spp'], 0, '', '.'); ?>">Rp<?= number_format($row['jumlah_diskon'], 0, '', '.'); ?></span></td>
                 <td><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="<?= $row['upah_mekanik']; ?> * jml panel">Rp<?= number_format($row['total_upah_mekanik'], 0, '', '.'); ?></span></td>
                 <td class="text-center"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="<?= $row['jumlah_panel']; ?>"><?= round($row['jumlah_panel'], 2) ?></span></td>
-                <?php foreach ($row['status'] as $s):  ?>
+                <?php foreach ($row['status'] as $s): ?>
                     <td class="text-end"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="<?= $s['harga_status'] ?> * jml panel">Rp<?= number_format($s['total_harga_status'], 0, '', '.'); ?></span></td>
                 <?php endforeach  ?>
             </tr>
@@ -47,8 +47,8 @@
         <tr>
             <th class="text-end" colspan="4">TOTAL</th>
             <th class="text-center">Rp<?= number_format($jumlah_diskon, 0, '', '.') ?></th>
-            <th class="text-center">Rp<?= number_format($total_upah, 0, '', '.') ?></th>
-            <th class="text-center"><?= number_format($total_panel, 2) ?></th>
+            <th class="text-center"></th>
+            <th class="text-center" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="<?= $total_panel ?>"><?= round($total_panel, 2) ?></th>
             <?php foreach ($status as $r):  ?>
                 <th class="text-end">Rp<?= number_format($harga_status_total[$r['nama_status']], 0, '', '.'); ?></th>
             <?php endforeach;  ?>

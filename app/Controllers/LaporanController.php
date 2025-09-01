@@ -190,7 +190,7 @@ class LaporanController extends BaseController
                 'pemakaian_bahan' => 0,
                 'total_pendapatan' => 0
             ];
-            
+
             $subQuery = $this->db->table('closing_detail')->select('unit_id')->where('closing_id', $id)->getCompiledSelect();
 
             $dataDetailClosing = $this->db->table('unit')
@@ -463,6 +463,12 @@ class LaporanController extends BaseController
             foreach ($statusData as $row) {
                 $hargaStatusTotal[$row['nama_status']] = 0;
             }
+
+            // total pane;
+            $totalPanel = [];
+            foreach ($statusData as $row) {
+                $totalPanel[$row['nama_status']] = 0;
+            }
             // ==================================================
 
             // data unit    
@@ -497,16 +503,22 @@ class LaporanController extends BaseController
                         $totalUpah = ($u['jumlah_panel'] * $statusUnit['harga_status']);
                         ($hargaStatusTotal[$statusUnit['nama_status']] += $totalUpah);
 
+                        ($totalPanel[$statusUnit['nama_status']] += $u['jumlah_panel']);
+
                         $unitStatus[] = [
                             'nama_status' => $row['nama_status'],
-                            'total_harga_status' => $hargaStatusTotal[$statusUnit['nama_status']]
+                            'harga_status' => $statusUnit['harga_status'],
+                            'total_harga_status' => $hargaStatusTotal[$statusUnit['nama_status']],
+                            'total_panel_status' => $totalPanel[$statusUnit['nama_status']]
                         ];
                     } else {
-
+                        
                         // jika status belum di set di unit
                         $unitStatus[] = [
                             'nama_status' => $row['nama_status'],
-                            'total_harga_status' => $hargaStatusTotal[$row['nama_status']]
+                            'harga_status' => $row['harga_status'],
+                            'total_harga_status' => $hargaStatusTotal[$row['nama_status']],
+                            'total_panel_status' => $totalPanel[$row['nama_status']]
                         ];
                     }
                 }
