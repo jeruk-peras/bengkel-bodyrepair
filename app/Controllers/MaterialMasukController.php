@@ -47,7 +47,7 @@ class MaterialMasukController extends BaseController
             'suplier'      => $data['suplier'],
             'total_harga'  => $data['total_harga'],
             'catatan'      => $data['catatan'],
-            'cabang_id'      => $this->id_cabang,
+            'cabang_id'      => $this->id_gudang ?? $this->id_cabang
         ];
 
         try {
@@ -294,7 +294,7 @@ class MaterialMasukController extends BaseController
             'suplier'      => $data['suplier'],
             'total_harga'  => $data['total_harga'],
             'catatan'      => $data['catatan'],
-            'cabang_id'      => $this->id_cabang,
+            'cabang_id'      => $this->id_gudang ?? $this->id_cabang
         ];
 
         try {

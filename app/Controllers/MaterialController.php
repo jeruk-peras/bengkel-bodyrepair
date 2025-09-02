@@ -36,7 +36,7 @@ class MaterialController extends BaseController
             'stok'           => $data['stok'],
             'satuan_id'      => $data['satuan_id'],
             'jenis_id'       => $data['jenis_id'],
-            'cabang_id'      => $this->id_cabang,
+            'cabang_id'      => $this->id_gudang ?? $this->id_cabang
         ];
 
         try {
@@ -79,7 +79,7 @@ class MaterialController extends BaseController
             'stok'           => $data['stok'],
             'satuan_id'      => $data['satuan_id'],
             'jenis_id'       => $data['jenis_id'],
-            'cabang_id'      => $this->id_cabang,
+            'cabang_id'      => $this->id_gudang ?? $this->id_cabang
         ];
 
         try {

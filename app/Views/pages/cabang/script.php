@@ -29,8 +29,40 @@
     });
 
     table.on('draw.dt', function() {
-       refreshTooltips();
+        refreshTooltips();
     });
+
+    // instanse tom selest
+    let tomSelectCabang = null;
+
+    function dataCabang(id = null) {
+        if (tomSelectCabang !== null) tomSelectCabang.destroy();
+        $.ajax({
+            url: '/api/cabang',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var $select = $('#data_gudang');
+                $select.empty();
+                $select.append('<option value="">Pilih Cabang</option>');
+                $.each(response.data, function(index, item) {
+                    $select.append('<option value="' + item.id_cabang + '">' + item.nama_cabang + '</option>');
+                });
+
+                tomSelectCabang = new TomSelect("#data_gudang", {
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+                if (id !== null) tomSelectCabang.setValue(id)
+            }
+        })
+    }
+
+     $('#form-data-modal').on('show.bs.modal', function() {
+        // dataCabang();
+     })
 
     // katika modal di tutup
     $('#form-data-modal').on('hidden.bs.modal', function() {
@@ -86,6 +118,7 @@
                 $.each(response.data, function(key, value) {
                     $('#' + key).val(value);
                 });
+                dataCabang(response.data.data_gudang);
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);

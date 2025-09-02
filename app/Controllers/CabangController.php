@@ -33,6 +33,7 @@ class CabangController extends BaseController
             'nama_cabang'     => $data['nama_cabang'],
             'lokasi_cabang'   => $data['lokasi_cabang'],
             'alamat_lengkap'  => $data['alamat_lengkap'],
+            'data_gudang'  => $data['data_gudang'],
         ];
         
         try {
@@ -72,6 +73,7 @@ class CabangController extends BaseController
             'nama_cabang'     => $data['nama_cabang'],
             'lokasi_cabang'   => $data['lokasi_cabang'],
             'alamat_lengkap'    => $data['alamat_lengkap'],
+            'data_gudang'    => $data['data_gudang'],
         ];
 
         try {

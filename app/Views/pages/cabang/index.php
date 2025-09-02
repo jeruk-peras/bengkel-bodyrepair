@@ -66,6 +66,11 @@
                             <div class="invalid-feedback" id="invalid_lokasi_cabang"></div>
                         </div>
                         <div class="col-md-12">
+                            <label for="data_gudang" class="form-label">Lokasi Cabang</label>
+                             <select name="data_gudang" id="data_gudang" class="form-select cabang-select"></select>
+                            <div class="invalid-feedback" id="invalid_data_gudang"></div>
+                        </div>
+                        <div class="col-md-12">
                             <label for="alamat_lengkap" class="form-label required">Alamat Lengkap</label>
                             <textarea type="text" name="alamat_lengkap" class="form-control" id="alamat_lengkap"></textarea>
                             <div class="invalid-feedback" id="invalid_alamat_lengkap"></div>
@@ -80,5 +85,6 @@
         </div>
     </div>
 </div>
+<?= $this->include('layout/tomselect'); ?>
 <?= $this->include('pages/cabang/script'); ?>
 <?= $this->endSection(); ?>

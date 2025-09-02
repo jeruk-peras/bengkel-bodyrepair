@@ -32,6 +32,7 @@ class CabangModel extends Model
         'nama_cabang'     => 'required|string|max_length[200]',
         'lokasi_cabang'   => 'required|string|max_length[200]',
         'alamat_lengkap'  => 'required|string',
+        'data_gudang'     => 'permit_empty|numeric',
     ];
     protected $validationMessages   = [
         'nama_cabang' => [
@@ -44,6 +45,9 @@ class CabangModel extends Model
         ],
         'alamat_lengkap' => [
             'required' => 'Alamat lengkap wajib diisi.',
+        ],
+        'data_gudang' => [
+            'integer' => 'Jenis harus berupa angka bulat.',
         ],
     ];
     protected $skipValidation       = false;
