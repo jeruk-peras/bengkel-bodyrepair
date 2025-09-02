@@ -25,6 +25,10 @@ class Cabang extends Migration
             'alamat_lengkap' => [
                 'type'       => 'TEXT',
             ],
+            'data_gudang' => [
+                'type'           => 'INT',
+                'constraint'     => 11,
+            ],
 
             "created_at datetime default current_timestamp",
             "updated_at datetime NULL",

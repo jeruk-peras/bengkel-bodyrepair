@@ -33,9 +33,10 @@ abstract class BaseController extends Controller
      * Validation.
      */
     protected $validator;
-    
+
     protected $id_login;
     protected $id_cabang;
+    protected $id_gudang;
 
     /**
      * Instance of the main Request object.
@@ -78,18 +79,32 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = service('session');
 
 
-        if (session('user_type') == 'admin'){
+        if (session('user_type') == 'admin') {
             $akses = [];
             $builder = $this->db->table('users_cabang')->select('cabang.id_cabang, cabang.nama_cabang');
             $builder->join('cabang', 'cabang.id_cabang = users_cabang.cabang_id');
             $builder->where('users_cabang.user_id', $this->id_login);
             $results = $builder->get()->getResultArray();
 
-             foreach ($results as $row) {
+            foreach ($results as $row) {
                 $akses[] = $row['id_cabang'];
             }
 
             session()->set('akses_cabang', $akses);
+        }
+
+        // id gudang
+        $id_cabang = is_string($this->id_cabang) ? $this->id_cabang : 0;
+        $id_gudang = $this->db->table('cabang')
+            ->when($id_cabang, static function ($query, $value) {
+                $query->select('data_gudang');
+                $query->where('id_cabang', $value);
+            })->get()->getRowArray()['data_gudang'] ?? 0;
+
+        if (is_array(session('selected_akses')) == false && $id_gudang > 0) {
+            $this->id_gudang = $id_gudang;
+        } else {
+            $this->id_gudang = session('selected_akses');
         }
     }
 }

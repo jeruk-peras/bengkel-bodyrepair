@@ -452,13 +452,13 @@ class ServerSideController extends BaseController
             ],
         ];
 
-        if (is_array(session('selected_akses'))) {
+        if (is_array($this->id_gudang)) {
             $where = [
-                'material.cabang_id IN' => session('selected_akses')
+                'material.cabang_id IN' => $this->id_gudang
             ];
         } else {
             $where = [
-                'material.cabang_id IN' => [session('selected_akses')]
+                'material.cabang_id IN' => [$this->id_gudang]
             ];
         }
 
@@ -512,13 +512,13 @@ class ServerSideController extends BaseController
             ],
         ];
 
-        if (is_array(session('selected_akses'))) {
+        if (is_array($this->id_gudang)) {
             $where = [
-                'material_masuk.cabang_id IN' => session('selected_akses')
+                'material_masuk.cabang_id IN' => $this->id_gudang
             ];
         } else {
             $where = [
-                'material_masuk.cabang_id IN' => [session('selected_akses')]
+                'material_masuk.cabang_id IN' => [$this->id_gudang]
             ];
         }
 
@@ -715,7 +715,7 @@ class ServerSideController extends BaseController
     public function fetchMaterial(int $id_cabang = 0)
     {
         // set id cabang
-        $id_cabang = session('selected_akses');
+        $id_cabang = $this->id_gudang ?? $this->id_cabang;
 
         $modelMaterial = new MaterialModel();
         try {
