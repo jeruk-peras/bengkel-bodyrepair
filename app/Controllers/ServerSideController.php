@@ -502,7 +502,7 @@ class ServerSideController extends BaseController
         $columns = ['material_masuk.id_material_masuk', 'material_masuk.tanggal', 'material_masuk.no_delivery', 'material_masuk.suplier', 'material_masuk.total_harga', 'material_masuk.catatan', 'material_masuk.status', 'cabang.nama_cabang'];
         $orderableColumns = ['material_masuk.tanggal', 'material_masuk.no_delivery', 'material_masuk.suplier', 'material_masuk.total_harga', 'material_masuk.catatan'];
         $searchableColumns = ['material_masuk.tanggal', 'material_masuk.no_delivery', 'material_masuk.suplier', 'material_masuk.total_harga', 'material_masuk.catatan'];
-        $defaultOrder = ['material_masuk.tanggal', 'ASC'];
+        $defaultOrder = ['material_masuk.tanggal', 'DESC'];
 
         $join = [
             [
