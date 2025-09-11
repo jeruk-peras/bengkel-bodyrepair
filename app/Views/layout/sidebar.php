@@ -75,7 +75,12 @@
                 <div class="menu-title">Data Closing</div>
             </a>
         </li>
-
+        <li>
+            <a href="<?= base_url('inventory/assets'); ?>">
+                <div class="parent-icon"><i class='bx bx-cube'></i></div>
+                <div class="menu-title">Data Inventory</div>
+            </a>
+        </li>
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-box"></i></div>
@@ -96,6 +101,7 @@
             </a>
             <ul class="mm-collapse">
                 <?php if (session('user_type') == 'admin'):  ?>
+                    <li><a href="<?= base_url('inventory'); ?>"><i class='bx bx-radio-circle'></i>Inventory</a></li>
                     <li><a href="<?= base_url('asuransi'); ?>"><i class='bx bx-radio-circle'></i>Asuransi</a></li>
                     <li><a href="<?= base_url('satuan'); ?>"><i class='bx bx-radio-circle'></i>Satuan</a></li>
                     <li><a href="<?= base_url('jenis'); ?>"><i class='bx bx-radio-circle'></i>Jenis</a></li>
