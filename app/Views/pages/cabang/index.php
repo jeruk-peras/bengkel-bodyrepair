@@ -20,7 +20,7 @@
                     <h6 class="mb-0">Daftar Cabang</h6>
                 </div>
                 <div class="ms-auto">
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#form-data-modal"><i class="bx bx-plus"></i> Tambah</button>
+                    <button class="btn btn-sm btn-primary" id="open-modal"><i class="bx bx-plus"></i> Tambah</button>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
                             <div class="invalid-feedback" id="invalid_lokasi_cabang"></div>
                         </div>
                         <div class="col-md-12">
-                            <label for="data_gudang" class="form-label">Lokasi Cabang</label>
+                            <label for="data_gudang" class="form-label">Gudang Cabang</label>
                              <select name="data_gudang" id="data_gudang" class="form-select cabang-select"></select>
                             <div class="invalid-feedback" id="invalid_data_gudang"></div>
                         </div>

@@ -60,9 +60,10 @@
         })
     }
 
-     $('#form-data-modal').on('show.bs.modal', function() {
-        // dataCabang();
-     })
+    $('#open-modal').click(function() {
+        dataCabang();
+        $('#form-data-modal').modal('show');
+    })
 
     // katika modal di tutup
     $('#form-data-modal').on('hidden.bs.modal', function() {
