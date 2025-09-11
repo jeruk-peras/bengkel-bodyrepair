@@ -64,6 +64,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('(:num)/fetchunitkolektif', 'ServerSideController::fetchUnitKolektif/$1');
     $routes->get('(:num)/data-material-keluar', 'ServerSideController::dataMaterialKeluar/$1');
     $routes->get('(:num)/data-material-mixing', 'ServerSideController::dataMaterialMixing/$1');
+    $routes->post('inventory_cabang', 'ServerSideController::inventory_cabang');
 });
 
 
@@ -297,4 +298,22 @@ $routes->group('/transfer', function ($routes) {
     $routes->get('meterial', 'TransferController::index');
     $routes->post('preview-meterial', 'TransferController::previewMaterial');
     $routes->post('transfer-meterial', 'TransferController::transferMaterial');
+});
+
+$routes->group('/inventory', function ($routes) {
+    $routes->get('/', 'InventoryController::index');
+
+    $routes->get('assets', 'InventoryController::assets');
+    $routes->get('assets/(:num)/edit', 'InventoryController::assets_edit/$1', ['filter' => ['selectCabang']]);
+    $routes->post('assets/(:num)/edit', 'InventoryController::assets_save/$1', ['filter' => ['selectCabang']]);
+    $routes->get('assets/(:num)/image', 'InventoryController::assets_gambar_kondisi/$1', ['filter' => ['selectCabang']]);
+
+    $routes->get('/', 'InventoryController::index');
+    $routes->post('/', 'InventoryController::save');
+    $routes->get('data', 'InventoryController::data');
+
+    $routes->get('(:num)/edit', 'InventoryController::edit/$1');
+    $routes->post('(:num)/edit', 'InventoryController::update/$1');
+
+    $routes->post('(:num)/delete', 'InventoryController::delete/$1');
 });

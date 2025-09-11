@@ -1493,4 +1493,61 @@ class ServerSideController extends BaseController
             return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Keslahan sistem', ResponseInterface::HTTP_BAD_GATEWAY);
         }
     }
+
+    public function inventory_cabang()
+    {
+        $table = 'inventory i';
+        $primaryKey = 'id_inventory';
+        $columns = [ 'i.id_inventory', 'i.nama_barang', 'i.gambar', 'ic.id_inventory_cabang', 'ic.jumlah', 'ic.rusak', 'ic.gambar_kondisi', 'ic.catatan', 'c.nama_cabang'];
+        $orderableColumns = [ 'i.nama_barang', 'i.gambar'];
+        $searchableColumns = [ 'i.nama_barang', 'i.gambar'];
+        $defaultOrder = [ 'i.nama_barang', 'ASC'];
+
+        $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
+        $subQuery = $this->db->table('cabang')->select('id_cabang')->whereIn('id_cabang', $id_cabang)->getCompiledSelect();
+
+        $join = [
+            [
+                'table' => 'inventory_cabang ic',
+                'on' => "ic.inventory_id = i.id_inventory AND ic.cabang_id IN ($subQuery)",
+                'type' => 'LEFT'
+            ],
+            [
+                'table' => 'cabang c',
+                'on' => 'c.id_cabang = ic.cabang_id',
+                'type' => 'LEFT'
+            ]
+        ];
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join);
+        $countAllData = $sideDatatable->countAllData($join);
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_inventory']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['nama_barang']),
+                htmlspecialchars($row['jumlah']),
+                htmlspecialchars($row['rusak']),
+                htmlspecialchars($row['gambar_kondisi']),
+                htmlspecialchars($row['catatan']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
 }
