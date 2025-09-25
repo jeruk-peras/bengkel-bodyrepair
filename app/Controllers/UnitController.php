@@ -547,6 +547,10 @@ class UnitController extends BaseController
                 ->Where('unit.nomor_spp', $dataPost['nomor_spp'])
                 ->first();
 
+            if (!$data['unit']) {
+                return ResponseJSONCollection::error([], 'Data unit tidak ditemukan', ResponseInterface::HTTP_BAD_REQUEST);
+            }
+
             // progress status unit
             $modelStatus = new UnitStatusHargaModel();
             $unit = $this->db->table('unit')
