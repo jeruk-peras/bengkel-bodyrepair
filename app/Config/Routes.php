@@ -14,6 +14,9 @@ $routes->get('/login', 'AccountController::loginPage');
 $routes->post('/login', 'AccountController::validLogin');
 $routes->get('/logout', 'AccountController::logout');
 
+// tracking unit
+$routes->get('/tracking-unit', 'UnitController::trackingUnit');
+
 $routes->get('/dashboard', 'DashboardController::index');
 $routes->get('/dashboard/test', 'DashboardController::test');
 
@@ -33,6 +36,7 @@ $routes->group('/api', function ($routes) {
     $routes->get('(:num)/cetak-foto', 'ServerSideController::fetchCetakFoto/$1');
     $routes->post('(:num)/cetak-foto/delete', 'ServerSideController::deleteCetakFoto/$1');
     $routes->get('(:num)/fetchunit', 'ServerSideController::fetchUnit/$1');
+    $routes->post('tracking-unit', 'UnitController::getTrackingUnit');
 });
 
 // routes dashboard

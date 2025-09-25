@@ -527,4 +527,88 @@ class UnitController extends BaseController
             unlink('assets/images/status/' . $gambar); // hapus gambar
         }
     }
+
+    public function getTrackingUnit()
+    {
+        try {
+            $dataPost = $this->request->getJSON(true);
+
+            $data = [
+                'unit' => '',
+                'progres' => '',
+                'aktivitas' => '',
+            ];
+
+            // data unit
+            $data['unit'] = $this->modelUnit
+                ->select('unit.id_unit, unit.nomor_polisi, unit.nomor_spp, unit.model_unit, unit.warna_unit, unit.status, unit.tanggal_masuk, unit.estimasi_selesai, unit.detail_pengerjaan, cabang.nama_cabang')
+                ->join('cabang', 'cabang.id_cabang = unit.cabang_id', 'left')
+                ->where('unit.nomor_polisi', $dataPost['nomor_polisi'])
+                ->Where('unit.nomor_spp', $dataPost['nomor_spp'])
+                ->first();
+
+            // progress status unit
+            $modelStatus = new UnitStatusHargaModel();
+            $unit = $this->db->table('unit')
+                ->where('unit.nomor_polisi', $dataPost['nomor_polisi'])
+                ->Where('unit.nomor_spp', $dataPost['nomor_spp'])->get()->getRowArray();
+
+            $progress = $modelStatus->select('unit_status_harga.id_unit_status_harga, unit_status_harga.nama_status, unit_status.*')
+                ->join('unit_status', 'unit_status.unit_status_harga_id = unit_status_harga.id_unit_status_harga', 'LEFT')
+                ->where('unit_status_harga.unit_id', $unit['id_unit'])
+                ->orderBy('unit_status_harga.id_unit_status_harga', 'ASC')
+                ->findAll();
+
+            $status = [
+                [
+                    'nama_status' => 'MASUK',
+                    'tanggal_update' => $unit['tanggal_masuk'] ? date_format(date_create($unit['tanggal_masuk']), "d M Y H:i") : '',
+                    'gambar_status' => null,
+                ]
+            ];
+
+            $aktifitas = [
+                [
+                    'aktifitas' => "Unit masuk bengkel - {$unit['model_unit']} - {$unit['warna_unit']} - No. Polisi: {$unit['nomor_polisi']} - No. SPP: {$unit['nomor_spp']}",
+                    'tanggal' => $unit['created_at'] ? date_format(date_create($unit['created_at']), "d M Y H:i") : '-',
+                ]
+            ];
+
+            foreach ($progress as $row) {
+                $status[] = [
+                    'nama_status' => $row['nama_status'],
+                    'tanggal_update' => $row['tanggal_update'] ? date_format(date_create($row['tanggal_update']), "d M Y H:i") : '',
+                    'gambar_status' => $row['gambar_status'] ? base_url('assets/images/status/' . $row['gambar_status']) : null,
+                ];
+
+                if ($row['tanggal_update']) {
+                    $aktifitas[] = [
+                        'aktifitas' => "Unit masuk ke pos {$row['nama_status']}" . ($row['catatan'] ? " - Catatan: {$row['catatan']}" : ''),
+                        'tanggal' => $row['tanggal_update'] ? date_format(date_create($row['tanggal_update']), "d M Y H:i") : '-',
+                    ];
+                }
+            }
+
+            $status[] = [
+                'nama_status' => 'SELESAI',
+                'tanggal_update' => $unit['status'] == 1 ? date_format(date_create($unit['updated_at']), "d M Y H:i") : '',
+                'gambar_status' => null,
+            ];
+            if ($unit['status'] == 1) {
+                $aktifitas[] = [
+                    'aktifitas' => "Unit Selesai",
+                    'tanggal' => $unit['updated_at'] ? date_format(date_create($unit['updated_at']), "d M Y H:i") : '-',
+                ];
+            }
+
+            $data['progres'] = $status;
+
+            // aktivitas material
+            $data['aktivitas'] = $aktifitas;
+
+            return ResponseJSONCollection::success($data, 'Data ditemukan', ResponseInterface::HTTP_OK);
+        } catch (\Exception $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi Kesalahan Server', ResponseInterface::HTTP_BAD_GATEWAY);
+        }
+    }
 }

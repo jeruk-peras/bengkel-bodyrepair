@@ -84,10 +84,10 @@ class MaterialMasukController extends BaseController
     public function itemAdd(int $id)
     {
         // check selected akses cabang
-        $checkSelectedAkses = $this->db->table('material_masuk')
-            ->where(['id_material_masuk' => $id, 'cabang_id' => session('selected_akses')])
-            ->countAllResults();
-        if ($checkSelectedAkses == 0) return ResponseJSONCollection::error([], 'Pilih akses yang sesuai.', ResponseInterface::HTTP_BAD_REQUEST);
+        // $checkSelectedAkses = $this->db->table('material_masuk')
+        //     ->where(['id_material_masuk' => $id, 'cabang_id' => session('selected_akses')])
+        //     ->countAllResults();
+        // if ($checkSelectedAkses == 0) return ResponseJSONCollection::error([], 'Pilih akses yang sesuai.', ResponseInterface::HTTP_BAD_REQUEST);
 
         $data = $this->request->getPost(); // mengambil data post id
 
