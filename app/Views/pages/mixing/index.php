@@ -70,6 +70,13 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="daftar-material" role="tabpanel">
+                    <form action="" method="post">
+                        <div class="row justify-content-end">
+                            <div class="col-6 mb-2 mt-1">
+                                <input type="search" name="" class="form-control form-control-sm" id="search-input-keluar" placeholder="Cari berdasarkan nomor SPP, nomor polisi, model, warna, material">
+                            </div>
+                        </div>
+                    </form>
                     <div class="table-responsive" id="data-material"></div>
                 </div>
             </div>

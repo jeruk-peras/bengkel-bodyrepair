@@ -423,9 +423,24 @@
         fetchDataMaterial(filter);
     })
 
-    function fetchDataMaterial(filter) {
+    
+    // search material keluar
+    $('#search-input-keluar').on('keyup', function() {
+        var filter = $('#datatable').attr('data-filter');
+        var query = $(this).val().trim();
+
+        if (query.length === 0) {
+            // Jika input kosong, muat ulang data tanpa pencarian
+            fetchDataMaterial(filter);
+        } else if (query.length >= 3 || query.length === 0) {
+            // Hanya lakukan pencarian jika panjang input >= 3 karakter atau input kosong
+            fetchDataMaterial(filter, query);
+        }
+    });
+
+    function fetchDataMaterial(filter, search = '') {
         $.ajax({
-            url: '/datatable-server-side/' + filter + '/data-material-mixing',
+            url: '/datatable-server-side/' + filter + '/data-material-mixing?search=' + encodeURIComponent(search),
             type: 'GET',
             dataType: 'json',
             success: function(response) {

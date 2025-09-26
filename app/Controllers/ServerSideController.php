@@ -1433,6 +1433,9 @@ class ServerSideController extends BaseController
                 $where = "u.id_unit IN ($subQuery)";
             }
 
+            // search req get
+            $search = $this->request->getGet('search');
+
             // get data pemakaian material
             $dataPemakaian = $this->db->table('unit u')
                 ->select('um.tanggal, c.nama_cabang, u.color, u.nomor_spp, u.nomor_polisi, u.model_unit, u.warna_unit, j.nama_jenis, m.nama_material, s.nama_satuan, um.id_unit_material, um.harga, um.jumlah, um.total_harga, mk.nama_mekanik')
@@ -1445,6 +1448,18 @@ class ServerSideController extends BaseController
                 ->whereNotIn('j.nama_jenis', ['Paint'])
                 ->whereIn('u.cabang_id', $id_cabang)
                 ->where($where)
+                ->when($search, function ($query) use ($search) {
+                    $query->groupStart()
+                        ->like('u.nomor_spp', $search)
+                        ->orLike('u.nomor_polisi', $search)
+                        ->orLike('u.model_unit', $search)
+                        ->orLike('u.warna_unit', $search)
+                        ->orLike('j.nama_jenis', $search)
+                        ->orLike('m.nama_material', $search)
+                        ->orLike('s.nama_satuan', $search)
+                        ->orLike('mk.nama_mekanik', $search)
+                        ->groupEnd();
+                })
                 ->orderBy('um.tanggal', 'DESC')
                 ->get()->getResultArray();
 
@@ -1470,6 +1485,9 @@ class ServerSideController extends BaseController
                 $where = "u.id_unit IN ($subQuery)";
             }
 
+            // search req get
+            $search = $this->request->getGet('search');
+
             // get data pemakaian material
             $dataPemakaian = $this->db->table('unit u')
                 ->select('um.tanggal, c.nama_cabang, u.color, u.nomor_spp, u.nomor_polisi, u.model_unit, u.warna_unit, j.nama_jenis, m.nama_material, s.nama_satuan, um.id_unit_material, um.harga, um.jumlah, um.total_harga, mk.nama_mekanik')
@@ -1482,6 +1500,18 @@ class ServerSideController extends BaseController
                 ->whereIn('j.nama_jenis', ['Paint'])
                 ->whereIn('u.cabang_id', $id_cabang)
                 ->where($where)
+                ->when($search, function ($query) use ($search) {
+                    $query->groupStart()
+                        ->like('u.nomor_spp', $search)
+                        ->orLike('u.nomor_polisi', $search)
+                        ->orLike('u.model_unit', $search)
+                        ->orLike('u.warna_unit', $search)
+                        ->orLike('j.nama_jenis', $search)
+                        ->orLike('m.nama_material', $search)
+                        ->orLike('s.nama_satuan', $search)
+                        ->orLike('mk.nama_mekanik', $search)
+                        ->groupEnd();
+                })
                 ->orderBy('um.tanggal', 'DESC')
                 ->get()->getResultArray();
 
@@ -1498,10 +1528,10 @@ class ServerSideController extends BaseController
     {
         $table = 'inventory i';
         $primaryKey = 'id_inventory';
-        $columns = [ 'i.id_inventory', 'i.nama_barang', 'i.gambar', 'ic.id_inventory_cabang', 'ic.jumlah', 'ic.rusak', 'ic.gambar_kondisi', 'ic.catatan', 'c.nama_cabang'];
-        $orderableColumns = [ 'i.nama_barang', 'i.gambar'];
-        $searchableColumns = [ 'i.nama_barang', 'i.gambar'];
-        $defaultOrder = [ 'i.nama_barang', 'ASC'];
+        $columns = ['i.id_inventory', 'i.nama_barang', 'i.gambar', 'ic.id_inventory_cabang', 'ic.jumlah', 'ic.rusak', 'ic.gambar_kondisi', 'ic.catatan', 'c.nama_cabang'];
+        $orderableColumns = ['i.nama_barang', 'i.gambar'];
+        $searchableColumns = ['i.nama_barang', 'i.gambar'];
+        $defaultOrder = ['i.nama_barang', 'ASC'];
 
         $id_cabang = is_array($this->id_cabang) ? $this->id_cabang : [$this->id_cabang];
         $subQuery = $this->db->table('cabang')->select('id_cabang')->whereIn('id_cabang', $id_cabang)->getCompiledSelect();
