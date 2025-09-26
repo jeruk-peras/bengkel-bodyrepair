@@ -75,6 +75,7 @@
             formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
             formData.append('gambar', blob, 'cropped-image.png');
             formData.append('nama_barang', $('#nama_barang').val());
+            formData.append('deskripsi', $('#deskripsi').val());
 
             $.ajax({
                 url: url,
