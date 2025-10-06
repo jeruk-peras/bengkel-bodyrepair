@@ -126,6 +126,13 @@ class DashboardController extends BaseController
 
             $dataUnit = $this->db->table('unit')->whereIn('cabang_id', $id_cabang)->where("id_unit NOT IN ($subQuery)");
 
+            $getShating = $this->db->table('setting_biaya')
+            ->when(is_array($this->id_cabang), function ($query) {
+                $query->where('cabang_id', 1);
+            }, function ($query) {
+                $query->where('cabang_id', $this->id_cabang);
+            })->get()->getRowArray()['sharing'] ?? 0;
+
             $data = [
                 'total_panel' => 0,
                 'total_upah' => 0,
@@ -134,6 +141,7 @@ class DashboardController extends BaseController
                 'unit_selesai' => 0,
                 'panel_selesai' => 0,
                 'total_nilai' => 0,
+                'total_sharing' => 0,
             ];
 
             $result = $dataUnit->get()->getResultArray();
@@ -150,6 +158,8 @@ class DashboardController extends BaseController
                 $data['panel_selesai'] += ($row['status'] == 1 ? $row['jumlah_panel'] : 0);
             }
 
+            $percent = $getShating / 100;
+
             $data = [
                 'total_panel' => round($data['total_panel'], 2),
                 'unit_proses' => $data['unit_proses'],
@@ -158,6 +168,8 @@ class DashboardController extends BaseController
                 'panel_selesai' => round($data['panel_selesai'], 2),
                 'total_nilai' => 'Rp' . number_format($data['total_nilai']),
                 'total_upah' => 'Rp' . number_format($data['total_upah']),
+                'persent_sharing' => "Sharing Pendapatkan $getShating%",
+                'total_sharing' => 'Rp' . number_format(($percent * $data['total_nilai'])),
             ];
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);

@@ -89,7 +89,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+        <div class="col">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -103,13 +103,27 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+        <div class="col">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
                             <p class="mb-0 text-secondary">Total Pendapatkan</p>
                             <h4 class="my-1" id="total_nilai"></h4>
+                        </div>
+                        <div class="widgets-icons bg-light-warning text-warning ms-auto"><i class="bx bx-line-chart-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-secondary" id="persent_sharing">Sharing Pendapatkan %</p>
+                            <h4 class="my-1" id="total_sharing"></h4>
                         </div>
                         <div class="widgets-icons bg-light-warning text-warning ms-auto"><i class="bx bx-line-chart-down"></i>
                         </div>
