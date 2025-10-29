@@ -4,7 +4,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <p class="mb-0 text-secondary">Pemakaian <?= $row['nama']; ?></p>
+                        <p class="mb-0 text-secondary">Pemakaian <?= $row['nama']; ?> <?= $row['persentase']; ?>%</p>
                         <h5 class="my-1">Rp<?= number_format($row['total'], 0, '', '.'); ?></h5>
                     </div>
                 </div>

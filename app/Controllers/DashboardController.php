@@ -127,11 +127,11 @@ class DashboardController extends BaseController
             $dataUnit = $this->db->table('unit')->whereIn('cabang_id', $id_cabang)->where("id_unit NOT IN ($subQuery)");
 
             $getShating = $this->db->table('setting_biaya')
-            ->when(is_array($this->id_cabang), function ($query) {
-                $query->where('cabang_id', 1);
-            }, function ($query) {
-                $query->where('cabang_id', $this->id_cabang);
-            })->get()->getRowArray()['sharing'] ?? 0;
+                ->when(is_array($this->id_cabang), function ($query) {
+                    $query->where('cabang_id', 1);
+                }, function ($query) {
+                    $query->where('cabang_id', $this->id_cabang);
+                })->get()->getRowArray()['sharing'] ?? 0;
 
             $data = [
                 'total_panel' => 0,
@@ -303,17 +303,23 @@ class DashboardController extends BaseController
             foreach ($dataJenis as $row) {
                 // count data jenis / penggunaan material
                 $dataUnit = $this->db->table('unit u');
-                $dataUnit->selectCount('m.jenis_id');
+                $dataUnit->select('u.cabang_id, u.id_unit,  um.material_id, m.jenis_id, um.harga, um.jumlah');
                 $dataUnit->join('unit_material um', 'um.unit_id = u.id_unit');
                 $dataUnit->join('material m', 'm.id_material = um.material_id');
                 $dataUnit->whereIn('u.cabang_id', $id_cabang);
                 $dataUnit->where("u.id_unit NOT IN ($subQuery)");
-                $totalPemakaian = $dataUnit->where('m.jenis_id', $row['id_jenis'])->get()->getRowArray();
+                $pemakaianMaterial = $dataUnit->where('m.jenis_id', $row['id_jenis'])->get()->getResultArray();
+
+                // jumlahkan
+                $total_pemakaian = 0;
+                foreach ($pemakaianMaterial as $pemakaian) {
+                    $total_pemakaian += ($pemakaian['harga'] * $pemakaian['jumlah']);
+                }
 
                 $jenisName[] = $row['nama_jenis'];
-                $jenisData[] = $totalPemakaian['jenis_id'];
+                $jenisData[] = $total_pemakaian;
 
-                $total += (int) $totalPemakaian['jenis_id'] ?? 0;
+                $total += (int) $total_pemakaian ?? 0;
             }
 
             $persentaseData = [];
@@ -327,6 +333,8 @@ class DashboardController extends BaseController
                 'name' => $jenisName,
                 'data' => $persentaseData,
             ];
+
+            // return ResponseJSONCollection::success($data, 'ok', 200);
 
             return ResponseJSONCollection::success($data, 'Data berhasil diambil', ResponseInterface::HTTP_OK);
         } catch (DatabaseException $e) {
@@ -348,13 +356,13 @@ class DashboardController extends BaseController
             $total = 0;
             foreach ($dataJenis as $row) {
                 // Jumlakan data jenis / penggunaan material
-                $dataUnit = $this->db->table('unit_material');
-                $dataUnit->select('material.jenis_id, unit_material.material_id, unit_material.harga, unit_material.jumlah, unit_material.unit_id, unit.cabang_id');
-                $dataUnit->join('unit', 'unit.id_unit = unit_material.unit_id');
-                $dataUnit->join('material', 'material.id_material = unit_material.material_id');
-                $dataUnit->whereIn('unit.cabang_id', $id_cabang);
-                $dataUnit->where("unit.id_unit NOT IN ($subQuery)");
-                $pemakaianMaterial = $dataUnit->where('material.jenis_id', $row['id_jenis'])->get()->getResultArray();
+                $dataUnit = $this->db->table('unit u');
+                $dataUnit->select('u.cabang_id, u.id_unit,  um.material_id, m.jenis_id, um.harga, um.jumlah');
+                $dataUnit->join('unit_material um', 'um.unit_id = u.id_unit');
+                $dataUnit->join('material m', 'm.id_material = um.material_id');
+                $dataUnit->whereIn('u.cabang_id', $id_cabang);
+                $dataUnit->where("u.id_unit NOT IN ($subQuery)");
+                $pemakaianMaterial = $dataUnit->where('m.jenis_id', $row['id_jenis'])->get()->getResultArray();
 
                 // jumlahkan
                 $total_pemakaian = 0;
@@ -362,9 +370,21 @@ class DashboardController extends BaseController
                     $total_pemakaian += ($pemakaian['harga'] * $pemakaian['jumlah']);
                 }
 
+                $total += (int) $total_pemakaian ?? 0;
+
                 $data['data'][$row['id_jenis']]['nama'] = $row['nama_jenis'];
                 $data['data'][$row['id_jenis']]['total'] = $total_pemakaian;
             }
+
+            foreach ($data['data'] as $key => $value) {
+                // var_dump($value['total'], $key); //$value;
+                $persentase = $total > 0 ? round(($value['total'] / $total) * 100, 2) : 0;
+                $data['data'][$key]['persentase'] = $persentase;
+            }
+            // var_dump($data['data']);die;
+
+
+            // return ResponseJSONCollection::success($data, 'ok', 200);
 
             $html = view('side_dashboard_material', $data);
 
