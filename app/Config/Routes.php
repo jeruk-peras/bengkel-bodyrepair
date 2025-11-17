@@ -70,6 +70,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->get('(:num)/data-material-mixing', 'ServerSideController::dataMaterialMixing/$1');
     $routes->post('inventory_cabang', 'ServerSideController::inventory_cabang');
     $routes->post('karyawan', 'ServerSideController::karyawan');
+    $routes->post('komponen-gaji', 'ServerSideController::komponen_gaji');
 });
 
 
@@ -332,4 +333,15 @@ $routes->group('/karyawan', function ($routes) {
     $routes->post('(:num)/edit', 'KaryawanController::update/$1');
 
     $routes->post('(:num)/delete', 'KaryawanController::delete/$1');
+});
+
+// routes KomponenGaji 
+$routes->group('/komponen-gaji', function ($routes) {
+    $routes->get('/', 'KomponenGajiController::index');
+    $routes->post('/', 'KomponenGajiController::save');
+
+    $routes->get('(:num)/edit', 'KomponenGajiController::edit/$1');
+    $routes->post('(:num)/edit', 'KomponenGajiController::update/$1');
+
+    $routes->post('(:num)/delete', 'KomponenGajiController::delete/$1');
 });

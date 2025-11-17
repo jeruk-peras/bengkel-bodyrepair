@@ -1637,4 +1637,41 @@ class ServerSideController extends BaseController
 
         return $this->response->setJSON($outputdata);
     }
+
+    public function komponen_gaji()
+    {
+        $table = 'komponen_gaji';
+        $primaryKey = 'id_komponen_gaji';
+        $columns = ['id_komponen_gaji', 'nama_komponen_gaji', 'jenis'];
+        $orderableColumns = ['nama_komponen_gaji', 'jenis'];
+        $searchableColumns = ['nama_komponen_gaji', 'jenis'];
+        $defaultOrder = ['jenis', 'ASC'];
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_komponen_gaji']),
+                htmlspecialchars($row['nama_komponen_gaji']),
+                htmlspecialchars($row['jenis']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
 }
