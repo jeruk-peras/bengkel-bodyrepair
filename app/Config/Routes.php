@@ -69,6 +69,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->get('(:num)/data-material-keluar', 'ServerSideController::dataMaterialKeluar/$1');
     $routes->get('(:num)/data-material-mixing', 'ServerSideController::dataMaterialMixing/$1');
     $routes->post('inventory_cabang', 'ServerSideController::inventory_cabang');
+    $routes->post('karyawan', 'ServerSideController::karyawan');
 });
 
 
@@ -320,4 +321,15 @@ $routes->group('/inventory', function ($routes) {
     $routes->post('(:num)/edit', 'InventoryController::update/$1');
 
     $routes->post('(:num)/delete', 'InventoryController::delete/$1');
+});
+
+// routes Karyawan 
+$routes->group('/karyawan', function ($routes) {
+    $routes->get('/', 'KaryawanController::index');
+    $routes->post('/', 'KaryawanController::save');
+
+    $routes->get('(:num)/edit', 'KaryawanController::edit/$1');
+    $routes->post('(:num)/edit', 'KaryawanController::update/$1');
+
+    $routes->post('(:num)/delete', 'KaryawanController::delete/$1');
 });

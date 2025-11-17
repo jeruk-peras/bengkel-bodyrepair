@@ -1580,4 +1580,61 @@ class ServerSideController extends BaseController
 
         return $this->response->setJSON($outputdata);
     }
+
+    public function karyawan()
+    {
+        $table = 'karyawan';
+        $primaryKey = 'id_karyawan';
+        $columns = ['id_karyawan', 'nama_lengkap', 'no_ktp', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nama_cabang', 'nip', 'jabatan', 'dapartemen', 'tanggal_mulai_kerja', 'status', 'no_hp', 'email'];
+        $orderableColumns = ['nama_lengkap', 'no_ktp', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nama_cabang', 'nip', 'jabatan', 'dapartemen', 'tanggal_mulai_kerja', 'status', 'no_hp', 'email'];
+        $searchableColumns = ['nama_lengkap', 'no_ktp', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nama_cabang', 'nip', 'jabatan', 'dapartemen', 'tanggal_mulai_kerja', 'status', 'no_hp', 'email'];
+        $defaultOrder = ['nama_lengkap', 'ASC'];
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $join = [
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = karyawan.cabang_id',
+                'type' => ''
+            ],
+        ];
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join);
+        $countAllData = $sideDatatable->countAllData($join);
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_karyawan']),
+                htmlspecialchars($row['nip']),
+                htmlspecialchars($row['nama_lengkap']),
+                htmlspecialchars($row['no_ktp']),
+                htmlspecialchars($row['tempat_lahir']),
+                htmlspecialchars(date_format(date_create($row['tanggal_lahir']), 'd M Y')),
+                htmlspecialchars($row['jenis_kelamin']),
+                htmlspecialchars($row['alamat']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['jabatan']),
+                htmlspecialchars($row['dapartemen']),
+                htmlspecialchars(date_format(date_create($row['tanggal_mulai_kerja']), 'd M Y')),
+                htmlspecialchars($row['status'] ? 'Aktif' : 'Non Aktif'),
+                htmlspecialchars($row['no_hp']),
+                htmlspecialchars($row['email']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
 }
