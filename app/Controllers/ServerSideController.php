@@ -15,6 +15,7 @@ use App\Models\SatuanModel;
 use App\Models\UnitMaterialModel;
 use App\Models\UnitStatusHargaModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
+use CodeIgniter\Database\RawSql;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class ServerSideController extends BaseController
@@ -1700,6 +1701,96 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['tanggal']),
                 htmlspecialchars($row['periode']),
                 ($row['status'] ? '<span class="badge bg-primary px-3">PUBLISH</span>' : '<span class="badge bg-warning px-3">UNPUBLISH</span>'),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
+
+    public function slip_gaji()
+    {
+        $table = 'gaji_detail gd';
+        $primaryKey = 'gd.id_gaji_detail';
+        $columns = ['g.id_gaji', 'g.periode', 'c.nama_cabang', 'k.nip', 'k.nama_lengkap', 'k.jabatan', 'k.id_karyawan', 
+        "SUM(
+            CASE WHEN kg.jenis = 'Pendapatan' 
+                THEN gd.nilai
+                ELSE 0
+            END
+        ) AS total_pendapatan", 
+        "SUM(
+            CASE WHEN kg.jenis = 'Potongan' 
+                THEN gd.nilai
+                ELSE 0
+            END
+        ) AS total_potongan"];
+        $orderableColumns = ['g.periode', 'c.nama_cabang', 'k.nip', 'k.nama_lengkap', 'k.jabatan'];
+        $searchableColumns = ['g.id_gaji', 'g.id_gaji', 'c.nama_cabang', 'g.periode',  'c.nama_cabang', 'k.nip', 'k.nama_lengkap', 'k.jabatan'];
+        $defaultOrder = ['g.id_gaji', 'DESC'];
+        $groupby = "g.id_gaji, k.id_karyawan";
+
+        $join = [
+            [
+                'table' => 'gaji g',
+                'on'    => 'g.id_gaji = gd.gaji_id',
+                'type'  => ''
+            ],
+            [
+                'table' => 'komponen_gaji kg',
+                'on'    => 'kg.id_komponen_gaji = gd.komponen_gaji_id',
+                'type'  => ''
+            ],
+            [
+                'table' => 'karyawan k',
+                'on'    => 'k.id_karyawan = gd.karyawan_id',
+                'type'  => ''
+            ],
+            [
+                'table' => 'cabang c',
+                'on'    => 'c.id_cabang = k.cabang_id',
+                'type'  => ''
+            ],
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'c.id_cabang IN' => session('selected_akses'),
+            ];
+        } else {
+            $where = [
+                'c.id_cabang IN' => [session('selected_akses')],
+            ];
+        }
+
+        $where['g.status'] = 1;
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where, $groupby);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where, $groupby);
+        $countAllData = $sideDatatable->countAllData($join, $where);
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_gaji']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['periode']),
+                htmlspecialchars($row['nip']),
+                htmlspecialchars($row['nama_lengkap']),
+                htmlspecialchars($row['jabatan']),
+                htmlspecialchars("Rp".number_format(($row['total_pendapatan']-$row['total_potongan']))),
+                htmlspecialchars($row['id_karyawan']),
             ];
         }
 

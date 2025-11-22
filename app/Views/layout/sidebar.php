@@ -148,7 +148,7 @@
             </a>
             <ul class="mm-collapse">
                 <?php if (session('role') == 'Finance' || session('role') == 'Super Admin'):  ?>
-                <li><a href="<?= base_url('cetak/epoxy'); ?>"><i class='bx bx-radio-circle'></i>Slip Gaji</a></li>
+                <li><a href="<?= base_url('gaji-karyawan/slip-gaji'); ?>"><i class='bx bx-radio-circle'></i>Slip Gaji</a></li>
                 <?php endif; ?>
 
                 <?php if (session('role') != 'Finance'):  ?>

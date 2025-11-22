@@ -32,10 +32,10 @@ class SideServerDatatables
         // $builder->groupStart();
         foreach ($searchableColumns as $column) {
             $val = $searchCol[$i++]['search']['value'];
-            if($val !== '') $builder->like($column, $val);
+            if ($val !== '') $builder->like($column, $val);
         }
         // $builder->groupEnd();
-    }   
+    }
 
     private function _hendleOrder($builder, $orderableColumns, $defaultOrder)
     {
@@ -75,6 +75,13 @@ class SideServerDatatables
         }
     }
 
+    private function _hendleGrupBy($builder, $grupby)
+    {
+        if ($grupby) {
+            $builder->groupBy($grupby);
+        }
+    }
+
     /**
      * Get data untuk DataTables side server processing.
      *
@@ -87,7 +94,7 @@ class SideServerDatatables
      * 
      * @return array
      */
-    public function getData(array $columns, array $orderableColumns, array $searchableColumns, array $defaultOrder, array $join = [], $where = null)
+    public function getData(array $columns, array $orderableColumns, array $searchableColumns, array $defaultOrder, array $join = [], $where = null, $grupby = null)
     {
         $db = \Config\Database::connect(); // koneksi ke database
 
@@ -107,6 +114,9 @@ class SideServerDatatables
         // hendle search col
         $searchCol = request()->getPost('columns') ?? false;
         $this->_hendleSearchCol($builder, $searchableColumns, $searchCol);
+
+        // hendle Group By
+        $this->_hendleGrupBy($builder, $grupby);
 
         // hendle order
         $this->_hendleOrder($builder, $orderableColumns, $defaultOrder);
@@ -131,7 +141,7 @@ class SideServerDatatables
      * @return array
      */
 
-    public function getCountFilter(array $columns, array $searchableColumns, array $join = [], $where = null)
+    public function getCountFilter(array $columns, array $searchableColumns, array $join = [], $where = null, $grupby = null)
     {
         $db = \Config\Database::connect(); // koneksi ke database
 
@@ -151,6 +161,9 @@ class SideServerDatatables
         // hendle search
         $searchValue = request()->getPost('search')['value'] ?? false;
         $this->_hendleSearch($builder, $searchableColumns, $searchValue);
+
+        // hendle Group By
+        $this->_hendleGrupBy($builder, $grupby);
 
         // output
         $query = $builder->get();

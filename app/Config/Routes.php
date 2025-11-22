@@ -72,6 +72,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('karyawan', 'ServerSideController::karyawan');
     $routes->post('komponen-gaji', 'ServerSideController::komponen_gaji');
     $routes->post('gaji-karyawan', 'ServerSideController::gaji_karyawan');
+    $routes->post('slip-gaji', 'ServerSideController::slip_gaji');
 });
 
 
@@ -366,4 +367,6 @@ $routes->group('/gaji-karyawan', function ($routes) {
     
     $routes->get('(:num)/print', 'GajiController::printgaji/$1');
     $routes->get('(:num)/(:num)/printgaji', 'GajiController::printgaji/$1/$2');
+    
+    $routes->get('slip-gaji', 'GajiController::slipGaji');
 });

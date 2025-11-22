@@ -179,4 +179,12 @@ class GajiController extends BaseController
             return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function slipGaji()
+    {
+        $data = [
+            'title' => $this->title,
+        ];
+        return view('pages/cetak/slip_gaji', $data);
+    }
 }
