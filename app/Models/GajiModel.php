@@ -108,8 +108,13 @@ class GajiModel extends Model
             "potongan"    => []
         ];
 
+        $kid = 0;
         foreach ($rows as $row) {
 
+            if ($kid != $row['id_karyawan']) {
+                $pendapatan = 0;
+                $potongan = 0;
+            }
             $kid = $row['id_karyawan'];
 
             if (!isset($result[$kid])) {
@@ -131,19 +136,24 @@ class GajiModel extends Model
 
             if ($row['jenis'] == "Pendapatan") {
                 $result[$kid]["pendapatan"][$row['id_komponen_gaji']] = $row['nilai'];
-                // $result[$kid]["pendapatan"][] = $row['nilai'];
+                $pendapatan += $row['nilai'];
 
                 if (!in_array($row['nama_komponen_gaji'], $data['pendapatan'])) {
                     $data['pendapatan'][$row['id_komponen_gaji']] = $row['nama_komponen_gaji'];
                 }
             } else {
                 $result[$kid]["potongan"][$row['id_komponen_gaji']] = $row['nilai'];
-                // $result[$kid]["potongan"][] = $row['nilai'];
+                $potongan += $row['nilai'];
 
                 if (!in_array($row['nama_komponen_gaji'], $data['potongan'])) {
                     $data['potongan'][$row['id_komponen_gaji']] = $row['nama_komponen_gaji'];
                 }
             }
+
+            // total gaji
+            $result[$kid]['total_pendapatan'] = $pendapatan;
+            $result[$kid]['total_potongan'] = $potongan;
+            $result[$kid]['total_gaji'] = $pendapatan - $potongan;
         }
 
         return [

@@ -106,6 +106,20 @@ class GajiController extends BaseController
         return view('pages/gaji/detail', $data);
     }
 
+    public function sideDetailGaji(int $id)
+    {
+        try {
+            $data = [
+                'id_gaji' => $id,
+                ...$this->modelGaji->detailGaji($id)
+            ];
+            $html = view('pages/gaji/detail_side', $data);
+            return ResponseJSONCollection::success(['html' => $html], 'Fetch Data berhasil.', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Error', ResponseInterface::HTTP_BAD_REQUEST);
+        }
+    }
+
     public function export(int $id)
     {
         $data = $this->modelGaji->detailGaji($id);
@@ -137,7 +151,7 @@ class GajiController extends BaseController
         return redirect()->to("/gaji-karyawan/$id/detail");
     }
 
-    public function printgaji(int $id, int $id_karyawan = 0)
+    public function printgaji(int $id, $id_karyawan = '')
     {
         $data = [
             'gaji' => $this->modelGaji->detailGaji($id, $id_karyawan)

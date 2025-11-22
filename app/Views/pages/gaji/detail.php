@@ -47,46 +47,8 @@
                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#form-data-modal"><i class="bx bx-import"></i> Import Data</button>
                 </div>
             </div>
-            <div class="table-responsive">
-                <table class="table align-middle mb-0" id="datatable" style="width: 100%;">
-                    <thead class="table-light">
-                        <tr class="text-uppercase align-middle">
-                            <th rowspan="2">No</th>
-                            <th rowspan="2">#</th>
-                            <th rowspan="2">Cabang</th>
-                            <th rowspan="2">NIP</th>
-                            <th rowspan="2">Nama Lengkap</th>
-                            <th class="text-center" colspan="<?= count($komponen['pendapatan']); ?>">PENDAPATAN</th>
-                            <th class="text-center border-start" colspan="<?= count($komponen['potongan']); ?>">potongan</th>
-                        </tr>
-                        <tr>
-                            <?php foreach ($komponen['pendapatan'] as $k): ?>
-                                <th><?= $k; ?></th>
-                            <?php endforeach; ?>
-                            <?php foreach ($komponen['potongan'] as $k): ?>
-                                <th><?= $k; ?></th>
-                            <?php endforeach; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $i = '1';
-                        foreach ($karyawan as $k): ?>
-                            <tr>
-                                <td><?= $i++; ?></td>
-                                <td><a href="/gaji-karyawan/<?= $detailgaji['id_gaji']; ?>/<?= $k['id_karyawan']; ?>/printgaji" target="_blank" class="me-2 btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Print Data"><i class="bx bx-printer me-0"></i></a></td>
-                                <td><?= $k['cabang']; ?></td>
-                                <td><?= $k['nip']; ?></td>
-                                <td><?= $k['nama_lengkap']; ?><br><small><?= $k['jabatan']; ?></small></td>
-                                <?php foreach ($k['pendapatan'] as $pen): ?>
-                                    <td class="text-end"><?= $pen > 0 ? "Rp" . number_format($pen) : '-'; ?></td>
-                                <?php endforeach; ?>
-                                <?php foreach ($k['potongan'] as $pot): ?>
-                                    <td class="text-end"><?= $pot > 0 ? "Rp" . number_format($pot) : '-'; ?></td>
-                                <?php endforeach; ?>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+            <div class="table-responsive" id="detail-gaji">
+                <div class="text-center p-5"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>
             </div>
         </div>
     </div>
@@ -151,44 +113,68 @@
 <?php endif; ?>
 
 <script>
-     <?php if (session()->get('role') == 'Finance'): ?>
-        // hendle lock data
-        $('a.btn-lock').click(function(e) {
-            e.preventDefault();
-            $('#lock-modal').modal('show');
-        })
+    $(document).ready(function() {
 
-        $('#form-lock-data').submit(function(e) {
-            e.preventDefault();
-            var url, formData;
-            url = $(this).attr('action');
-            formData = $(this).serializeArray();
-            $('#btn-simpan').attr('disabled', true).text('Menyimpan...');
+        function load() {
 
             $.ajax({
-                url: url,
+                url: '/gaji-karyawan/<?= $detailgaji['id_gaji']; ?>/detail',
                 type: 'POST',
-                data: formData,
+                dataType: 'json',
+                data: {
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
+                },
                 success: function(response) {
-                    $('#lock-modal').modal('hide');
-                    alertMesage(response.status, response.message);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 300)
+                    console.log(response)
+                    $('#detail-gaji').html(response.data.html);
                 },
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
-                    $('#form-lock-data .form-control').removeClass('is-invalid');
-                    $('.invalid-feedback').text('');
-                    $('#btn-simpan').attr('disabled', false).text('Simpan data');
-                    $.each(response.data, function(key, value) {
-                        $('#' + key).addClass('is-invalid');
-                        $('#invalid_' + key).text(value).show();
-                    });
                     alertMesage(response.status, response.message);
                 }
             })
-        })
-    <?php endif; ?>
+        }
+        load();
+
+        <?php if (session()->get('role') == 'Finance'): ?>
+            // hendle lock data
+            $('a.btn-lock').click(function(e) {
+                e.preventDefault();
+                $('#lock-modal').modal('show');
+            })
+
+            $('#form-lock-data').submit(function(e) {
+                e.preventDefault();
+                var url, formData;
+                url = $(this).attr('action');
+                formData = $(this).serializeArray();
+                $('#btn-simpan').attr('disabled', true).text('Menyimpan...');
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $('#lock-modal').modal('hide');
+                        alertMesage(response.status, response.message);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 300)
+                    },
+                    error: function(xhr, status, error) {
+                        var response = JSON.parse(xhr.responseText);
+                        $('#form-lock-data .form-control').removeClass('is-invalid');
+                        $('.invalid-feedback').text('');
+                        $('#btn-simpan').attr('disabled', false).text('Simpan data');
+                        $.each(response.data, function(key, value) {
+                            $('#' + key).addClass('is-invalid');
+                            $('#invalid_' + key).text(value).show();
+                        });
+                        alertMesage(response.status, response.message);
+                    }
+                })
+            })
+        <?php endif; ?>
+    })
 </script>
 <?= $this->endSection(); ?>
