@@ -116,8 +116,14 @@
 
         <li>
             <a href="<?= base_url('karyawan'); ?>">
-                <div class="parent-icon"><i class='bx bx-food-menu'></i></div>
+                <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i></div>
                 <div class="menu-title">Data Karyawan</div>
+            </a>
+        </li>
+        <li>
+            <a href="<?= base_url('gaji-karyawan'); ?>">
+                <div class="parent-icon"><i class='bx bx-food-menu'></i></div>
+                <div class="menu-title">Gaji Karyawan</div>
             </a>
         </li>
 

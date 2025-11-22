@@ -1674,4 +1674,42 @@ class ServerSideController extends BaseController
 
         return $this->response->setJSON($outputdata);
     }
+
+    public function gaji_karyawan()
+    {
+        $table = 'gaji';
+        $primaryKey = 'id_gaji';
+        $columns = ['id_gaji', 'tanggal', 'periode', 'status'];
+        $orderableColumns = ['tanggal', 'periode', 'status'];
+        $searchableColumns = ['tanggal', 'periode', 'status'];
+        $defaultOrder = ['tanggal', 'DESC'];
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns);
+        $countAllData = $sideDatatable->countAllData();
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_gaji']),
+                htmlspecialchars($row['tanggal']),
+                htmlspecialchars($row['periode']),
+                ($row['status'] ? '<span class="badge bg-primary px-3">PUBLISH</span>' : '<span class="badge bg-warning px-3">UNPUBLISH</span>'),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
 }

@@ -71,6 +71,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('inventory_cabang', 'ServerSideController::inventory_cabang');
     $routes->post('karyawan', 'ServerSideController::karyawan');
     $routes->post('komponen-gaji', 'ServerSideController::komponen_gaji');
+    $routes->post('gaji-karyawan', 'ServerSideController::gaji_karyawan');
 });
 
 
@@ -344,4 +345,23 @@ $routes->group('/komponen-gaji', function ($routes) {
     $routes->post('(:num)/edit', 'KomponenGajiController::update/$1');
 
     $routes->post('(:num)/delete', 'KomponenGajiController::delete/$1');
+});
+
+
+// routes Gaji 
+$routes->group('/gaji-karyawan', function ($routes) {
+    $routes->get('/', 'GajiController::index');
+    $routes->post('/', 'GajiController::save');
+
+    $routes->get('(:num)/edit', 'GajiController::edit/$1');
+    $routes->post('(:num)/edit', 'GajiController::update/$1');
+    
+    $routes->post('(:num)/delete', 'GajiController::delete/$1');
+
+    $routes->get('(:num)/detail', 'GajiController::detail/$1');
+    $routes->get('(:num)/export', 'GajiController::export/$1');
+    $routes->post('(:num)/import', 'GajiController::import/$1');
+    
+    $routes->get('(:num)/print', 'GajiController::printgaji/$1');
+    $routes->get('(:num)/(:num)/printgaji', 'GajiController::printgaji/$1/$2');
 });
