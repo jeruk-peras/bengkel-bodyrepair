@@ -136,6 +136,63 @@
         }
         load();
 
+        // handle import file upload
+        $('#form-data').submit(function(e) {
+            e.preventDefault();
+            var $form = $(this);
+            var url = $form.attr('action');
+            var $btn = $form.find('#btn-simpan');
+            var formElement = $form[0];
+            var formData = new FormData(formElement);
+
+            $btn.prop('disabled', true).text('Menyimpan...');
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function(response) {
+                    $('#form-data-modal').modal('hide');
+                    $form[0].reset();
+                    $form.find('.form-control').removeClass('is-invalid');
+                    $form.find('.invalid-feedback').text('');
+                    $btn.prop('disabled', false).text('Simpan Data');
+                    alertMesage(response.status, response.message);
+                    // refresh detail table
+                    load();
+                },
+                error: function(xhr) {
+                    var response;
+                    try {
+                        response = JSON.parse(xhr.responseText);
+                    } catch (err) {
+                        response = { status: 'error', message: 'Terjadi kesalahan pada server' };
+                    }
+
+                    $form.find('.form-control').removeClass('is-invalid');
+                    $form.find('.invalid-feedback').text('');
+                    $btn.prop('disabled', false).text('Simpan Data');
+
+                    if (response.data) {
+                        $.each(response.data, function(key, value) {
+                            // prefer id selector, fallback to name selector
+                            var $field = $('#' + key);
+                            if (!$field.length) {
+                                $field = $form.find('[name="' + key + '"]');
+                            }
+                            $field.addClass('is-invalid');
+                            $form.find('#invalid_' + key).text(value).show();
+                        });
+                    }
+
+                    alertMesage(response.status, response.message);
+                }
+            });
+        });
+
         <?php if (session()->get('role') == 'Finance'): ?>
             // hendle lock data
             $('a.btn-lock').click(function(e) {

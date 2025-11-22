@@ -134,21 +134,27 @@ class GajiController extends BaseController
     {
         $file = $this->request->getFile('file_excel');
         if (!$file || !$file->isValid()) {
-            return redirect()->back()->with('error', 'File tidak valid');
+            return ResponseJSONCollection::error([], 'File tidak valid.', ResponseInterface::HTTP_BAD_REQUEST);
         }
 
-        // cek jika data di lock
-        $rowData = $this->modelGaji->find($id);
-        if ($rowData['status'] = 1) redirect()->to("/gaji-karyawan/$id/detail");
+        try {
+            // cek jika data di lock
+            $rowData = $this->modelGaji->find($id);
+            if ($rowData['status'] = 1) return ResponseJSONCollection::error([], 'Data sudah dilock.', ResponseInterface::HTTP_BAD_REQUEST);
+    
+            $tmpPath = $file->getTempName();
+            $excel = new ExcelGajiLibrary;
+            $rows = $excel->toArrayFromFile($id, $tmpPath, 0);
+    
+            $key = ['gaji_id', 'karyawan_id', 'komponen_gaji_id'];
+            $this->modelGaji->db->table('gaji_detail')->updateBatch($rows, $key);
+    
+            return redirect()->to("/gaji-karyawan/$id/detail");
+            return ResponseJSONCollection::success([], 'Import Data berhasil.', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Import Data gagal.', ResponseInterface::HTTP_BAD_REQUEST);
+        }
 
-        $tmpPath = $file->getTempName();
-        $excel = new ExcelGajiLibrary;
-        $rows = $excel->toArrayFromFile($id, $tmpPath, 0);
-
-        $key = ['gaji_id', 'karyawan_id', 'komponen_gaji_id'];
-        $this->modelGaji->db->table('gaji_detail')->updateBatch($rows, $key);
-
-        return redirect()->to("/gaji-karyawan/$id/detail");
     }
 
     public function printgaji(int $id, $id_karyawan = '')
