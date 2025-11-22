@@ -123,6 +123,10 @@ class GajiController extends BaseController
             return redirect()->back()->with('error', 'File tidak valid');
         }
 
+        // cek jika data di lock
+        $rowData = $this->modelGaji->find($id);
+        if ($rowData['status'] = 1) redirect()->to("/gaji-karyawan/$id/detail");
+
         $tmpPath = $file->getTempName();
         $excel = new ExcelGajiLibrary;
         $rows = $excel->toArrayFromFile($id, $tmpPath, 0);
@@ -140,5 +144,39 @@ class GajiController extends BaseController
         ];
 
         return view('pages/gaji/print', $data);
+    }
+
+    public function lockData($id_gaji)
+    {
+        try {
+            // cek password Finance
+            $where = [
+                'id_user' => session()->get('user_id'),
+                'role' => 'Finance',
+            ];
+            $user_admin = $this->db->table('users')->where($where)->get()->getRowArray();
+
+            $password = $this->request->getPost('password');
+
+            // Jika tidak  data ditemukan
+            if (!$user_admin || !password_verify($password, $user_admin['password'])) {
+                return ResponseJSONCollection::error(['password' => 'Password salah, silahkan ulangi.'], 'Maaf password salah.', ResponseInterface::HTTP_UNAUTHORIZED);
+            }
+
+            // get data
+            $data = $this->modelGaji->find($id_gaji);
+
+            // cek status closing
+            if ($data['status'] == 0) {
+                // ubah status ke lock
+                $this->modelGaji->update($id_gaji, ['status' => 1]);
+            } else {
+                // ubah status ke lock
+                $this->modelGaji->update($id_gaji, ['status' => 0]);
+            }
+            return ResponseJSONCollection::success([$data], 'Berhasil Dilock', ResponseInterface::HTTP_OK);
+        } catch (\Throwable $e) {
+            return ResponseJSONCollection::error([$e->getMessage()], 'Terjadi kesalahan server.', ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

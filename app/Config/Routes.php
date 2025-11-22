@@ -362,6 +362,8 @@ $routes->group('/gaji-karyawan', function ($routes) {
     $routes->get('(:num)/export', 'GajiController::export/$1');
     $routes->post('(:num)/import', 'GajiController::import/$1');
     
+    $routes->post('(:num)/lock', 'GajiController::lockData/$1');
+    
     $routes->get('(:num)/print', 'GajiController::printgaji/$1');
     $routes->get('(:num)/(:num)/printgaji', 'GajiController::printgaji/$1/$2');
 });

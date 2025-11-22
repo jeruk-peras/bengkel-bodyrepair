@@ -35,6 +35,11 @@
         <div class="card-body">
             <div class="d-flex align-items-center mb-3">
                 <div>
+                    <?php if (session()->get('role') == 'Finance' && $detailgaji['status'] == 0): ?>
+                        <a href="<?= base_url('closing'); ?>" class="btn btn-sm btn-primary btn-lock"><i class="bx bx-lock-open"></i> Lock Data</a>
+                    <?php elseif (session()->get('role') == 'Finance' && $detailgaji['status'] == 1): ?>
+                        <a href="<?= base_url('closing'); ?>" class="btn btn-sm btn-primary btn-lock"><i class="bx bx-lock"></i> Locked</a>
+                    <?php endif;  ?>
                 </div>
                 <div class="ms-auto">
                     <a href="/gaji-karyawan/<?= $detailgaji['id_gaji']; ?>/print" target="_blank" class="btn btn-sm btn-primary"><i class="bx bx-printer"></i> Print Data</a>
@@ -114,4 +119,76 @@
         </div>
     </div>
 </div>
+
+<?php if (session()->get('role') == 'Finance'):  ?>
+    <div class="modal fade" id="lock-modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lock Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/gaji-karyawan/<?= $detailgaji['id_gaji']; ?>/lock" method="post" id="form-lock-data">
+                    <?= csrf_field(); ?>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="password" class="form-label required">Password</label>
+                                <input type="password" name="password" class="form-control" id="password" placeholder="password">
+                                <div class="invalid-feedback" id="invalid_password"></div>
+                                <div class="form-text">* Untuk lock dan unlock data gaji masukan password akun Finance</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-simpan">Simpan Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<script>
+     <?php if (session()->get('role') == 'Finance'): ?>
+        // hendle lock data
+        $('a.btn-lock').click(function(e) {
+            e.preventDefault();
+            $('#lock-modal').modal('show');
+        })
+
+        $('#form-lock-data').submit(function(e) {
+            e.preventDefault();
+            var url, formData;
+            url = $(this).attr('action');
+            formData = $(this).serializeArray();
+            $('#btn-simpan').attr('disabled', true).text('Menyimpan...');
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('#lock-modal').modal('hide');
+                    alertMesage(response.status, response.message);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 300)
+                },
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    $('#form-lock-data .form-control').removeClass('is-invalid');
+                    $('.invalid-feedback').text('');
+                    $('#btn-simpan').attr('disabled', false).text('Simpan data');
+                    $.each(response.data, function(key, value) {
+                        $('#' + key).addClass('is-invalid');
+                        $('#invalid_' + key).text(value).show();
+                    });
+                    alertMesage(response.status, response.message);
+                }
+            })
+        })
+    <?php endif; ?>
+</script>
 <?= $this->endSection(); ?>
