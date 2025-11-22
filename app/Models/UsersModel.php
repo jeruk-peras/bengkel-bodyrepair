@@ -34,7 +34,7 @@ class UsersModel extends Model
         'no_handphone'     => 'required|max_length[20]',
         'alamat'           => 'required',
         'username'         => 'required|max_length[100]|is_unique[users.username,id_user,{id_user}]',
-        'role'             => 'required|in_list[Super Admin,Admin,Admin Cabang]',
+        'role'             => 'required|in_list[Super Admin,Admin,Admin Cabang, Finance]',
     ];
     protected $validationMessages   = [
         'nama_lengkap' => [

@@ -164,7 +164,7 @@ class UsersController extends BaseController
 
     public function akses()
     {
-        (session('user_type') == 'admin' && session('role') == 'Admin') ? $role = ['Admin Cabang'] : $role = ['Admin Cabang', 'Admin', 'Super Admin'];
+        (session('user_type') == 'admin' && session('role') == 'Admin') ? $role = ['Admin Cabang'] : $role = ['Admin Cabang', 'Admin', 'Super Admin', 'Finance'];
 
         $data = [
             'title' => 'User Akses',

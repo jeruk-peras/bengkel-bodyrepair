@@ -82,6 +82,7 @@
                                     <option value="Admin Cabang">Admin Cabang</option>
                                     <?php if (session('user_type') == 'admin' && session('role') == 'Super Admin'):  ?>
                                         <option value="Admin">Admin</option>
+                                        <option value="Finance">Finance</option>
                                         <option value="Super Admin">Super Admin</option>
                                     <?php endif;  ?>
                                 </select>

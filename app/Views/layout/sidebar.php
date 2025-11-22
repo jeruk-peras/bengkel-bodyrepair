@@ -47,52 +47,57 @@
             </a>
         </li>
 
-        <li class="btn btn-primary">
-            <a href="<?= base_url('unit/add'); ?>">
-                <div class="parent-icon text-light"><i class='bx bx-plus'></i></div>
-                <div class="menu-title text-light">Unit Baru</div>
-            </a>
-        </li>
-
-        <li>
-            <a href="<?= base_url('unit'); ?>">
-                <div class="parent-icon"><i class='bx bx-customize'></i></div>
-                <div class="menu-title">Data Unit</div>
-            </a>
-        </li>
-
-        <?php if (session('user_type') == 'admin'):  ?>
-            <li>
-                <a href="<?= base_url('cabang'); ?>">
-                    <div class="parent-icon"><i class='bx bx-store'></i></div>
-                    <div class="menu-title">Cabang</div>
+        <?php if (session('role') != 'Finance'):  ?>
+            <li class="btn btn-primary">
+                <a href="<?= base_url('unit/add'); ?>">
+                    <div class="parent-icon text-light"><i class='bx bx-plus'></i></div>
+                    <div class="menu-title text-light">Unit Baru</div>
                 </a>
             </li>
+
+            <li>
+                <a href="<?= base_url('unit'); ?>">
+                    <div class="parent-icon"><i class='bx bx-customize'></i></div>
+                    <div class="menu-title">Data Unit</div>
+                </a>
+            </li>
+            <?php if (session('user_type') == 'admin'):  ?>
+                <li>
+                    <a href="<?= base_url('cabang'); ?>">
+                        <div class="parent-icon"><i class='bx bx-store'></i></div>
+                        <div class="menu-title">Cabang</div>
+                    </a>
+                </li>
+            <?php endif;  ?>
         <?php endif;  ?>
+
+
         <li>
             <a href="<?= base_url('closing'); ?>">
                 <div class="parent-icon"><i class='bx bx-cabinet'></i></div>
                 <div class="menu-title">Data Closing</div>
             </a>
         </li>
-        <li>
-            <a href="<?= base_url('inventory/assets'); ?>">
-                <div class="parent-icon"><i class='bx bx-cube'></i></div>
-                <div class="menu-title">Data Inventory</div>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class="bx bx-box"></i></div>
-                <div class="menu-title">Material</div>
-            </a>
-            <ul class="mm-collapse">
-                <li><a href="<?= base_url('material'); ?>"><i class='bx bx-radio-circle'></i>Data Material</a></li>
-                <li><a href="<?= base_url('material-masuk'); ?>"><i class='bx bx-radio-circle'></i>Material Masuk</a></li>
-                <li><a href="<?= base_url('material-keluar'); ?>"><i class='bx bx-radio-circle'></i>Material Keluar</a></li>
-                <li><a href="<?= base_url('material-mixing'); ?>"><i class='bx bx-radio-circle'></i>Mixing</a></li>
-            </ul>
-        </li>
+        <?php if (session('role') != 'Finance'):  ?>
+            <li>
+                <a href="<?= base_url('inventory/assets'); ?>">
+                    <div class="parent-icon"><i class='bx bx-cube'></i></div>
+                    <div class="menu-title">Data Inventory</div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class="bx bx-box"></i></div>
+                    <div class="menu-title">Material</div>
+                </a>
+                <ul class="mm-collapse">
+                    <li><a href="<?= base_url('material'); ?>"><i class='bx bx-radio-circle'></i>Data Material</a></li>
+                    <li><a href="<?= base_url('material-masuk'); ?>"><i class='bx bx-radio-circle'></i>Material Masuk</a></li>
+                    <li><a href="<?= base_url('material-keluar'); ?>"><i class='bx bx-radio-circle'></i>Material Keluar</a></li>
+                    <li><a href="<?= base_url('material-mixing'); ?>"><i class='bx bx-radio-circle'></i>Mixing</a></li>
+                </ul>
+            </li>
+        <?php endif;  ?>
 
         <li>
             <a href="javascript:;" class="has-arrow">
@@ -100,7 +105,7 @@
                 <div class="menu-title">Referensi</div>
             </a>
             <ul class="mm-collapse">
-                <?php if (session('user_type') == 'admin'):  ?>
+                <?php if (session('user_type') == 'admin' && session('role') != 'Finance'):  ?>
                     <li><a href="<?= base_url('inventory'); ?>"><i class='bx bx-radio-circle'></i>Inventory</a></li>
                     <li><a href="<?= base_url('asuransi'); ?>"><i class='bx bx-radio-circle'></i>Asuransi</a></li>
                     <li><a href="<?= base_url('satuan'); ?>"><i class='bx bx-radio-circle'></i>Satuan</a></li>
@@ -109,23 +114,32 @@
                     <li><a href="<?= base_url('status'); ?>"><i class='bx bx-radio-circle'></i>Status</a></li>
                     <li><a href="<?= base_url('komponen-gaji'); ?>"><i class='bx bx-radio-circle'></i>Komponen Gaji</a></li>
                     <li><a href="<?= base_url('transfer/meterial'); ?>"><i class='bx bx-radio-circle'></i>Transfer Material</a></li>
-                <?php endif;  ?>
-                <li><a href="<?= base_url('mekanik'); ?>"><i class='bx bx-radio-circle'></i>Mekanik</a></li>
+                <?php endif; ?>
+                <?php if (session('user_type') == 'admin' && session('role') == 'Finance'):  ?>
+                    <li><a href="<?= base_url('biaya'); ?>"><i class='bx bx-radio-circle'></i>Biaya</a></li>
+                    <li><a href="<?= base_url('status'); ?>"><i class='bx bx-radio-circle'></i>Status</a></li>
+                    <li><a href="<?= base_url('komponen-gaji'); ?>"><i class='bx bx-radio-circle'></i>Komponen Gaji</a></li>
+                <?php endif; ?>
+                <?php if (session('role') == 'Super Admin' || session('user_type') == 'admin_cabang'):  ?>
+                    <li><a href="<?= base_url('mekanik'); ?>"><i class='bx bx-radio-circle'></i>Mekanik</a></li>
+                <?php endif; ?>
             </ul>
         </li>
 
-        <li>
-            <a href="<?= base_url('karyawan'); ?>">
-                <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i></div>
-                <div class="menu-title">Data Karyawan</div>
-            </a>
-        </li>
-        <li>
-            <a href="<?= base_url('gaji-karyawan'); ?>">
-                <div class="parent-icon"><i class='bx bx-food-menu'></i></div>
-                <div class="menu-title">Gaji Karyawan</div>
-            </a>
-        </li>
+        <?php if (session('role') == 'Finance' || session('user_type') == 'admin'):  ?>
+            <li>
+                <a href="<?= base_url('karyawan'); ?>">
+                    <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i></div>
+                    <div class="menu-title">Data Karyawan</div>
+                </a>
+            </li>
+            <li>
+                <a href="<?= base_url('gaji-karyawan'); ?>">
+                    <div class="parent-icon"><i class='bx bx-food-menu'></i></div>
+                    <div class="menu-title">Gaji Karyawan</div>
+                </a>
+            </li>
+        <?php endif; ?>
 
         <li>
             <a href="javascript:;" class="has-arrow">
@@ -133,13 +147,19 @@
                 <div class="menu-title">Cetak</div>
             </a>
             <ul class="mm-collapse">
-                <li><a href="<?= base_url('cetak/epoxy'); ?>"><i class='bx bx-radio-circle'></i>Foto Epoxy</a></li>
-                <li><a href="<?= base_url('cetak/gandeng'); ?>"><i class='bx bx-radio-circle'></i>Foto Gandeng</a></li>
-                <li><a href="<?= base_url('cetak/pemakaian-bahan'); ?>"><i class='bx bx-radio-circle'></i>Pemakaian Bahan</a></li>
+                <?php if (session('role') == 'Finance' || session('role') == 'Super Admin'):  ?>
+                <li><a href="<?= base_url('cetak/epoxy'); ?>"><i class='bx bx-radio-circle'></i>Slip Gaji</a></li>
+                <?php endif; ?>
+
+                <?php if (session('role') != 'Finance'):  ?>
+                    <li><a href="<?= base_url('cetak/epoxy'); ?>"><i class='bx bx-radio-circle'></i>Foto Epoxy</a></li>
+                    <li><a href="<?= base_url('cetak/gandeng'); ?>"><i class='bx bx-radio-circle'></i>Foto Gandeng</a></li>
+                    <li><a href="<?= base_url('cetak/pemakaian-bahan'); ?>"><i class='bx bx-radio-circle'></i>Pemakaian Bahan</a></li>
+                <?php endif; ?>
             </ul>
         </li>
 
-        <?php if (session('user_type') == 'admin'):  ?>
+        <?php if (session('user_type') == 'admin' && session('role') != 'Finance'):  ?>
             <li>
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class="bx bx-user-circle"></i></div>

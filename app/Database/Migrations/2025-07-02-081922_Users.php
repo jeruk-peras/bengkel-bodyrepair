@@ -35,7 +35,7 @@ class Users extends Migration
             ],
             'role' => [
                 'type'       => 'ENUM',
-                'constraint' => ['Super Admin', 'Admin'],
+                'constraint' => ['Super Admin', 'Admin', 'Finance'],
             ],
             'status' => [
                 'type'       => 'INT',
