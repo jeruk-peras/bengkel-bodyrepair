@@ -1683,7 +1683,7 @@ class ServerSideController extends BaseController
         $columns = ['id_gaji', 'tanggal', 'periode', 'status'];
         $orderableColumns = ['tanggal', 'periode', 'status'];
         $searchableColumns = ['tanggal', 'periode', 'status'];
-        $defaultOrder = ['tanggal', 'DESC'];
+        $defaultOrder = ['id_gaji', 'DESC'];
 
         $sideDatatable = new SideServerDatatables($table, $primaryKey);
 
