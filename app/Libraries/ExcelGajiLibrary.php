@@ -7,6 +7,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class ExcelGajiLibrary
 {
@@ -29,13 +30,16 @@ class ExcelGajiLibrary
         $sheet->setCellValue('B4', 'Cabang');
         $sheet->setCellValue('C4', 'NIP');
         $sheet->setCellValue('D4', 'Nama Karyawan');
+        $sheet->setCellValue('E4', 'TOTAL');
 
         $sheet->getColumnDimension('A')->setAutoSize(true);
         $sheet->getColumnDimension('B')->setAutoSize(true);
         $sheet->getColumnDimension('C')->setAutoSize(true);
         $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setWidth('15');
 
-        $col = 'E';
+        $col = 'F';
+        $komponenCell = 'F';
         $row = '4';
 
         foreach ($data['komponen']['pendapatan'] as $key => $pen) {
@@ -44,19 +48,31 @@ class ExcelGajiLibrary
 
             $col++;
         };
+        $sheet->setCellValue($komponenCell . ($row - 1), 'PENDAPATAN');
+        $sheet->mergeCells($komponenCell . '3' . ':' . chr(ord($col) - 1) . '3');
+        $sheet->getStyle($komponenCell . '3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
+        $komponenCell = $col;
         foreach ($data['komponen']['potongan'] as $key => $pen) {
             $sheet->setCellValue($col . $row, $key . '|' . $pen);
             $sheet->getColumnDimension($col)->setWidth('15');
 
             $col++;
         };
+        $sheet->setCellValue($komponenCell . ($row - 1), 'POTONGAN');
+        $sheet->mergeCells($komponenCell . '3' . ':' . chr(ord($col) - 1) . '3');
+        $sheet->getStyle($komponenCell . '3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+
+        $sheet->getStyle('3:3')->getFont()->setBold(true);
         $sheet->getStyle('4:4')->getFont()->setBold(true);
 
         $row++;
         $i = 1;
         foreach ($data['karyawan'] as $key => $kar) {
-            $col = 'E';
+            $col = 'F';
+            $sum = '=SUM(' . $col . $row;
+
             $sheet->setCellValue('A' . $row, $i++);
             $sheet->setCellValue('B' . $row, $kar['cabang']);
             $sheet->setCellValue('C' . $row, $kar['nip']);
@@ -67,13 +83,19 @@ class ExcelGajiLibrary
                 $sheet->getStyle($col . $row)->getNumberFormat()->setFormatCode('"Rp"#,##0');
                 $col++;
             };
+            $sum .= ':' . chr(ord($col) - 1) . $row . ')-SUM(' . $col . $row;
 
             foreach ($kar['potongan'] as $pen) {
                 $sheet->setCellValue($col . $row, $pen);
                 $sheet->getStyle($col . $row)->getNumberFormat()->setFormatCode('"Rp"#,##0');
-
+                
                 $col++;
             };
+            $sum .= ':' . chr(ord($col) - 1) . $row . ')';
+
+            $sheet->setCellValue('E' . $row, $sum);
+            $sheet->getStyle('E' . $row)->getNumberFormat()->setFormatCode('"Rp"#,##0');
+
             $row++;
         }
 
@@ -113,7 +135,7 @@ class ExcelGajiLibrary
         $komponen = [];
         foreach ($rows[3] as $key => $value) {
 
-            if ($key < 4) continue;
+            if ($key < 5) continue;
             $rawData = explode('|', $value);
 
             $komponen[$rawData[0]] = $rawData[1];
@@ -123,7 +145,7 @@ class ExcelGajiLibrary
         foreach ($rows as $key => $value) {
             if ($key < 4) continue;
 
-            $coll = 4;
+            $coll = 5;
             foreach ($komponen as $key => $row) {
 
                 // ambil id karyawan
