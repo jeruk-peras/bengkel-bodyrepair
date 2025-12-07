@@ -51,7 +51,7 @@
                             <td><?= $row['nip']; ?></td>
 
                             <td>STATUS</td>
-                            <td><?= $row['status']; ?></td>
+                            <td><?= $row['status'] ? 'Aktif' : 'Non Aktif'; ?></td>
                         </tr>
 
                         <tr>

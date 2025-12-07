@@ -162,10 +162,7 @@
                 <div class="menu-title">Cetak</div>
             </a>
             <ul class="mm-collapse">
-                <?php if (session('role') == 'Finance' || session('role') == 'Super Admin'):  ?>
-                    <li><a href="<?= base_url('gaji-karyawan/slip-gaji'); ?>"><i class='bx bx-radio-circle'></i>Slip Gaji</a></li>
-                <?php endif; ?>
-
+                <li><a href="<?= base_url('gaji-karyawan/slip-gaji'); ?>"><i class='bx bx-radio-circle'></i>Slip Gaji</a></li>
                 <?php if (session('role') != 'Finance'):  ?>
                     <li><a href="<?= base_url('cetak/epoxy'); ?>"><i class='bx bx-radio-circle'></i>Foto Epoxy</a></li>
                     <li><a href="<?= base_url('cetak/gandeng'); ?>"><i class='bx bx-radio-circle'></i>Foto Gandeng</a></li>
