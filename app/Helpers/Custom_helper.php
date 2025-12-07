@@ -1,6 +1,9 @@
 <?php
 
 // untuk kebutuhan edit aksess // memesiksa apakah sudah ada akses cabang
+
+use Config\Publisher;
+
 function userAkasesCabang(int $id_user, int $id_cabang)
 {
     // global $db;
@@ -72,4 +75,9 @@ function biayaCabang($id_cabang, $data)
     $builder->where('cabang_id', $id_cabang);
     $result = $builder->get()->getRowArray();
     return $result[$data] ?? '';
+}
+
+function countPengajuan(){
+    $db = \Config\Database::connect();
+    return $db->table('kasbon')->where('status', 'pengajuan')->countAllResults();
 }

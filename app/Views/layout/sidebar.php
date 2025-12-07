@@ -126,20 +126,35 @@
             </ul>
         </li>
 
+        <li>
+            <a href="<?= base_url('karyawan'); ?>">
+                <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i></div>
+                <div class="menu-title">Data Karyawan</div>
+            </a>
+        </li>
         <?php if (session('role') == 'Finance' || session('user_type') == 'admin'):  ?>
-            <li>
-                <a href="<?= base_url('karyawan'); ?>">
-                    <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i></div>
-                    <div class="menu-title">Data Karyawan</div>
-                </a>
-            </li>
             <li>
                 <a href="<?= base_url('gaji-karyawan'); ?>">
                     <div class="parent-icon"><i class='bx bx-food-menu'></i></div>
                     <div class="menu-title">Gaji Karyawan</div>
                 </a>
             </li>
+            <li>
+                <a href="<?= base_url('persetujuan-kasbon'); ?>">
+                    <div class="parent-icon"><i class='bx bx-check-double'></i></div>
+                    <div class="menu-title">Persetujuan Kasbon</div>
+                </a>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="left: 90%!important;">
+                    <?= countPengajuan(); ?><span class="visually-hidden">unread messages</span>
+                </span>
+            </li>
         <?php endif; ?>
+        <li>
+            <a href="<?= base_url('kasbon'); ?>">
+                <div class="parent-icon"><i class='bx bx-notepad'></i></div>
+                <div class="menu-title">Kasbon Karyawan</div>
+            </a>
+        </li>
 
         <li>
             <a href="javascript:;" class="has-arrow">
@@ -148,7 +163,7 @@
             </a>
             <ul class="mm-collapse">
                 <?php if (session('role') == 'Finance' || session('role') == 'Super Admin'):  ?>
-                <li><a href="<?= base_url('gaji-karyawan/slip-gaji'); ?>"><i class='bx bx-radio-circle'></i>Slip Gaji</a></li>
+                    <li><a href="<?= base_url('gaji-karyawan/slip-gaji'); ?>"><i class='bx bx-radio-circle'></i>Slip Gaji</a></li>
                 <?php endif; ?>
 
                 <?php if (session('role') != 'Finance'):  ?>

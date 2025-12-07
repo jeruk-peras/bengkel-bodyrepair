@@ -37,6 +37,8 @@ $routes->group('/api', function ($routes) {
     $routes->post('(:num)/cetak-foto/delete', 'ServerSideController::deleteCetakFoto/$1');
     $routes->get('(:num)/fetchunit', 'ServerSideController::fetchUnit/$1');
     $routes->post('tracking-unit', 'UnitController::getTrackingUnit');
+    $routes->get('periode-gaji', 'ServerSideController::fetchPeriodeGaji');
+    $routes->get('komponen-gaji', 'ServerSideController::fetchKomponenGaji');
 });
 
 // routes dashboard
@@ -73,6 +75,7 @@ $routes->group('/datatable-server-side', function ($routes) {
     $routes->post('komponen-gaji', 'ServerSideController::komponen_gaji');
     $routes->post('gaji-karyawan', 'ServerSideController::gaji_karyawan');
     $routes->post('slip-gaji', 'ServerSideController::slip_gaji');
+    $routes->post('kasbon', 'ServerSideController::kasbon');
 });
 
 
@@ -370,4 +373,35 @@ $routes->group('/gaji-karyawan', function ($routes) {
     $routes->get('(:num)/(:num)/printgaji', 'GajiController::printgaji/$1/$2');
     
     $routes->get('slip-gaji', 'GajiController::slipGaji');
+});
+
+
+// routes Kasbon 
+$routes->get('persetujuan-kasbon', 'KasbonController::persetujuan');
+$routes->post('persetujuan-kasbon', 'KasbonController::persetujuanSave');
+
+$routes->group('/kasbon', function ($routes) {
+    $routes->get('/', 'KasbonController::index');
+    $routes->post('/', 'KasbonController::save');
+    
+    $routes->get('import', 'KasbonController::pengajuanImport');
+    $routes->post('import', 'KasbonController::saveImport');
+    $routes->get('import/template', 'KasbonController::exportTemplate');
+    $routes->post('import/load', 'KasbonController::loadImport');
+    
+    $routes->get('(:num)/edit', 'KasbonController::edit/$1');
+    $routes->post('(:num)/edit', 'KasbonController::update/$1');
+    
+    $routes->post('(:num)/delete', 'KasbonController::delete/$1');
+    
+    $routes->get('(:num)/detail', 'KasbonController::detail/$1');
+    $routes->post('(:num)/detail', 'KasbonController::pengajuanSave/$1');
+    
+    $routes->post('pengajuan', 'KasbonController::pengajuanDataAll');
+    $routes->post('(:num)/pengajuan', 'KasbonController::pengajuanData/$1');
+    
+    $routes->get('pembayaran', 'KasbonController::pembayaranKasbon');
+    $routes->post('pembayaran', 'KasbonController::savePembayaranKasbon');
+    $routes->post('pembayaran/load', 'KasbonController::loadPembayaranKasbon');
+    
 });

@@ -1601,9 +1601,19 @@ class ServerSideController extends BaseController
             ],
         ];
 
-        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join);
-        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join);
-        $countAllData = $sideDatatable->countAllData($join);
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'cabang.id_cabang IN' => session('selected_akses'),
+            ];
+        } else {
+            $where = [
+                'cabang.id_cabang IN' => [session('selected_akses')],
+            ];
+        }
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where);
+        $countAllData = $sideDatatable->countAllData($join, $where);
 
         // var_dump($data);die;
         $No = $this->request->getPost('start') + 1;
@@ -1718,19 +1728,27 @@ class ServerSideController extends BaseController
     {
         $table = 'gaji_detail gd';
         $primaryKey = 'gd.id_gaji_detail';
-        $columns = ['g.id_gaji', 'g.periode', 'c.nama_cabang', 'k.nip', 'k.nama_lengkap', 'k.jabatan', 'k.id_karyawan', 
-        "SUM(
+        $columns = [
+            'g.id_gaji',
+            'g.periode',
+            'c.nama_cabang',
+            'k.nip',
+            'k.nama_lengkap',
+            'k.jabatan',
+            'k.id_karyawan',
+            "SUM(
             CASE WHEN kg.jenis = 'Pendapatan' 
                 THEN gd.nilai
                 ELSE 0
             END
-        ) AS total_pendapatan", 
-        "SUM(
+        ) AS total_pendapatan",
+            "SUM(
             CASE WHEN kg.jenis = 'Potongan' 
                 THEN gd.nilai
                 ELSE 0
             END
-        ) AS total_potongan"];
+        ) AS total_potongan"
+        ];
         $orderableColumns = ['g.periode', 'c.nama_cabang', 'k.nip', 'k.nama_lengkap', 'k.jabatan'];
         $searchableColumns = ['g.id_gaji', 'g.id_gaji', 'c.nama_cabang', 'g.periode',  'c.nama_cabang', 'k.nip', 'k.nama_lengkap', 'k.jabatan'];
         $defaultOrder = ['g.id_gaji', 'DESC'];
@@ -1789,7 +1807,7 @@ class ServerSideController extends BaseController
                 htmlspecialchars($row['nip']),
                 htmlspecialchars($row['nama_lengkap']),
                 htmlspecialchars($row['jabatan']),
-                htmlspecialchars("Rp".number_format(($row['total_pendapatan']-$row['total_potongan']))),
+                htmlspecialchars("Rp" . number_format(($row['total_pendapatan'] - $row['total_potongan']))),
                 htmlspecialchars($row['id_karyawan']),
             ];
         }
@@ -1802,5 +1820,89 @@ class ServerSideController extends BaseController
         ];
 
         return $this->response->setJSON($outputdata);
+    }
+
+    public function kasbon()
+    {
+        $table = 'karyawan';
+        $primaryKey = 'id_karyawan';
+        $columns = ['nama_cabang', 'id_karyawan', 'nama_lengkap', 'jabatan'];
+        $orderableColumns = ['nama_cabang', 'nama_lengkap', 'jabatan'];
+        $searchableColumns = ['nama_cabang', 'nama_lengkap', 'jabatan'];
+        $defaultOrder = ['nama_lengkap', 'ASC'];
+
+        $join = [
+            [
+                'table' => 'cabang',
+                'on' => 'cabang.id_cabang = karyawan.cabang_id',
+                'type' => ''
+            ],
+            [
+                'table' => 'kasbon',
+                'on' => 'kasbon.karyawan_id = karyawan.id_karyawan',
+                'type' => 'left'
+            ],
+        ];
+
+        if (is_array(session('selected_akses'))) {
+            $where = [
+                'cabang.id_cabang IN' => session('selected_akses'),
+            ];
+        } else {
+            $where = [
+                'cabang.id_cabang IN' => [session('selected_akses')],
+            ];
+        }
+
+        $groupby = "karyawan.id_karyawan";
+
+        $sideDatatable = new SideServerDatatables($table, $primaryKey);
+
+        $data = $sideDatatable->getData($columns, $orderableColumns, $searchableColumns, $defaultOrder, $join, $where, $groupby);
+        $countData = $sideDatatable->getCountFilter($columns, $searchableColumns, $join, $where, $groupby);
+        $countAllData = $sideDatatable->countAllData($join, $where);
+
+        // var_dump($data);die;
+        $No = $this->request->getPost('start') + 1;
+        $rowData = [];
+        foreach ($data as $row) {
+            $rowData[] = [
+                $No++,
+                htmlspecialchars($row['id_karyawan']),
+                htmlspecialchars($row['nama_cabang']),
+                htmlspecialchars($row['nama_lengkap']),
+                htmlspecialchars($row['jabatan']),
+            ];
+        }
+
+        $outputdata = [
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $countAllData,
+            "recordsFiltered" => $countData,
+            "data" => $rowData,
+        ];
+
+        return $this->response->setJSON($outputdata);
+    }
+
+    public function fetchPeriodeGaji()
+    {
+        $data = $this->db->table('gaji')
+            ->select('id_gaji, periode')
+            ->where('status', 1)
+            ->groupBy('periode')
+            ->get()->getResultArray();
+
+        return ResponseJSONCollection::success($data, 'Data fetched successfully', ResponseInterface::HTTP_OK);
+    }
+
+    public function fetchKomponenGaji()
+    {
+        $data = $this->db->table('komponen_gaji')
+            ->select('id_komponen_gaji, nama_komponen_gaji')
+            ->where('jenis', 'Potongan')
+            ->get()->getResultArray();
+
+        return ResponseJSONCollection::success($data, 'Data fetched successfully', ResponseInterface::HTTP_OK);
     }
 }
