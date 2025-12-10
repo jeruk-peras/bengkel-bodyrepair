@@ -36,9 +36,10 @@
                     <div class="col-md-6">
                         <label for="periode_closing" class="form-label required">Periode Closing</label>
                         <select name="periode_closing" class="form-select" id="periode_closing">
-                            <?php $tahun = date("Y"); $start = new DateTime("$tahun-01-01");
-                            $end = new DateTime("$tahun-12-01"); ?>
-                            <?php while ($start <= $end) : 
+                            <?php $now = new DateTime('first day of this month');
+                            $start = (clone $now)->modify('-3 months');
+                            $end = (clone $now)->modify('+4 months'); ?>
+                            <?php while ($start <= $end) :
                                 $periode = $start->format("F - Y");
                                 $start->modify("+1 month"); ?>
                                 <option value="<?= $periode; ?>"><?= $periode; ?></option>
