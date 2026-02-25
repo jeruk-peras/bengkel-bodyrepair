@@ -12,6 +12,9 @@
         </div>
         <div class="ms-auto d-flex align-items-center gap-2">
             <div>
+                <a href="/material" class="btn px-4 btn-sm btn-primary">Material</a>
+            </div>
+            <div>
                 <label class="mb-0">Filter : </label>
             </div>
             <div style="min-width: 200px;">
